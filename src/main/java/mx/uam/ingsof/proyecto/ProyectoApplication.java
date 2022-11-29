@@ -8,7 +8,6 @@ import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
-import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
 import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
@@ -166,15 +165,7 @@ public class ProyectoApplication {
 		//productoRepository.save(productoPrueba);
 		seccionCatalogoRepository.save(seccionProcesador);
 		
-		var compraPrueba = new Compra();
-		compraPrueba.setCantidad(2);
-		compraPrueba.setEstadoCompra("Mexico");
-		compraPrueba.setFecha("23/05/2022");
-		compraPrueba.setGarantia(null);
-		compraPrueba.setIdCompra(1);
-		compraPrueba.setViaCompra("Internet");
-		
-		compraRepository.save(compraPrueba);
+	
 		
 		
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO

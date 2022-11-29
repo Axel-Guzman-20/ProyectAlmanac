@@ -24,13 +24,18 @@ public class Compra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idCompra;
 	
-	private int cantidad;
+	private long idEmpleado;
 	
 	private String fecha;
 	
-	private String estadoCompra;
+	private String Nombre;
 	
-	private String viaCompra; 
+	private String marca;
+	
+	private Double precio;
+	
+	private Integer cantidad;
+ 
 
 	@OneToOne
 	private Garantia garantia;
