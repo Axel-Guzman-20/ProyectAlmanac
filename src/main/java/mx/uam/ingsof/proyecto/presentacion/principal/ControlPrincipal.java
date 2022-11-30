@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import mx.uam.ingsof.proyecto.presentacion.agregarProducto.ControlAgregarProducto;
 import mx.uam.ingsof.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
+import mx.uam.ingsof.proyecto.presentacion.crearDiagnostico.ControlCrearDiagnostico;
 import mx.uam.ingsof.proyecto.presentacion.crearGarantia.ControlCrearGarantia;
 import mx.uam.ingsof.proyecto.presentacion.modificarProducto.ControlModificarProducto;
 import mx.uam.ingsof.proyecto.presentacion.registrarProveedor.ControlRegistrarProveedor;
@@ -37,6 +38,9 @@ public class ControlPrincipal{
 	
 	@Autowired
 	private ControlRegistrarVenta controlRegistrarVenta;
+	
+	@Autowired
+	private ControlCrearDiagnostico controlCrearDiagnostico;
 	
 	/*
 	@Autowired
@@ -119,6 +123,11 @@ public class ControlPrincipal{
 		
 		controlRegistrarVenta.inicia();
 		
+	}
+	
+	public void crearDiagnostico() {
+		
+		controlCrearDiagnostico.inicia(); 
 	}
 	
 

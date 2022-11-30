@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.UIManager;
 import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
 
 @SuppressWarnings("serial")
 @Component
