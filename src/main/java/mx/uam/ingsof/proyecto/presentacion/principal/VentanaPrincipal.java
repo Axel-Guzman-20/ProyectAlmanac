@@ -197,9 +197,11 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem menuItemModificarCliente = new JMenuItem("Modificar Cliente");
 		menuItemModificarCliente.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-						
+				controlPrincipal.modificarCliente();
 			}
 		});
+		
+		
 		// Se le pone a menuItemModificarCliente tipo de letra y diseño y se agrega a menuCatalogo
 		menuItemModificarCliente.setFont(fuente);
 		menuClientes.add(menuItemModificarCliente);
