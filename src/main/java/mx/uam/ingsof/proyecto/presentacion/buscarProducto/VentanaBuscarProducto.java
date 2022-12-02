@@ -1,6 +1,5 @@
 package mx.uam.ingsof.proyecto.presentacion.buscarProducto;
 
-import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -26,9 +25,7 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.UIManager;
 import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
 
 @SuppressWarnings("serial")
 @Component
@@ -54,8 +51,11 @@ public class VentanaBuscarProducto extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaBuscarProducto() {
-		setLocationRelativeTo(null);
+		
+		setTitle("Buscador de productos");
 		setBounds(100, 100, 858, 646);
+		setLocationRelativeTo(null);
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(89, 126, 170));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -100,7 +100,7 @@ public class VentanaBuscarProducto extends JFrame {
 		lblSeccion.setBounds(120, 144, 65, 15);
 		panel.add(lblSeccion);
 		
-		comboBoxSeccionCatalogo = new JComboBox();
+		comboBoxSeccionCatalogo = new JComboBox<>();
 		comboBoxSeccionCatalogo.setBounds(206, 142, 168, 22);
 		panel.add(comboBoxSeccionCatalogo);
 		

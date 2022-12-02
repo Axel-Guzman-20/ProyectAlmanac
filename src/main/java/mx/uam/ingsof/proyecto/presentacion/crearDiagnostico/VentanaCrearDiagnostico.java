@@ -1,27 +1,30 @@
 package mx.uam.ingsof.proyecto.presentacion.crearDiagnostico;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.springframework.stereotype.Component;
 
+import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
+import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
@@ -31,13 +34,19 @@ public class VentanaCrearDiagnostico extends JFrame {
 	private JPanel contentPane;
 	
 	JScrollPane scrollVentana; 
-	private JTextField textField;
+	private JTextField textFieldFecha;
 	private JTextField textFieldNombre;
 	private JTextField textFieldMarca;
 	private JTextField textFieldDescripcionDelEquipo;
 	private JTextField textFieldReparacionesMantenimientosARealizar;
 	private JTextField textFieldPiezasRequeridas;
 	private JTextField textFieldObservacionesAdicionales;
+	private JComboBox <String> comboBoxNombreDelEmpleado; 
+	private JComboBox <String> comboBoxCategoria; 
+	private JRadioButton rdbtnPreventivo; 
+	private JRadioButton rdbtnCorrectivo; 
+	private ButtonGroup bg = new ButtonGroup();
+	private ControlCrearDiagnostico control;
 
 	/**
 	 * Launch the application.
@@ -48,8 +57,11 @@ public class VentanaCrearDiagnostico extends JFrame {
 	 */
 	public VentanaCrearDiagnostico() {
 		
+		setTitle("Crear Diagnostico");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 877, 578);
+		setLocationRelativeTo(null);
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(89, 126, 170));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -84,20 +96,21 @@ public class VentanaCrearDiagnostico extends JFrame {
 		fechaLabel.setBounds(506, 80, 60, 25);
 		panel.add(fechaLabel);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField.setEditable(false);
-		textField.setBorder(null);
-		textField.setBackground(Color.WHITE);
-		textField.setBounds(560, 80, 100, 25);
-		panel.add(textField);
+		textFieldFecha = new JTextField();
+		textFieldFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldFecha.setEditable(false);
+		textFieldFecha.setBorder(null);
+		textFieldFecha.setBackground(Color.WHITE);
+		textFieldFecha.setBounds(560, 80, 100, 25);
+		panel.add(textFieldFecha);
 		
 		JLabel lblNombreDelEmpleado = new JLabel("Nombre del empleado*");
 		lblNombreDelEmpleado.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNombreDelEmpleado.setBounds(120, 158, 149, 15);
 		panel.add(lblNombreDelEmpleado);
 		
-		JComboBox comboBoxNombreDelEmpleado = new JComboBox();
+		comboBoxNombreDelEmpleado = new JComboBox<>();
+		comboBoxNombreDelEmpleado.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBoxNombreDelEmpleado.setBounds(279, 151, 381, 22);
 		panel.add(comboBoxNombreDelEmpleado);
 		
@@ -122,7 +135,7 @@ public class VentanaCrearDiagnostico extends JFrame {
 		lblCategoria.setBounds(419, 240, 76, 19);
 		panel.add(lblCategoria);
 		
-		JComboBox comboBoxCategoria = new JComboBox();
+		comboBoxCategoria = new JComboBox<>();
 		comboBoxCategoria.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBoxCategoria.setBounds(506, 237, 154, 22);
 		panel.add(comboBoxCategoria);
@@ -165,14 +178,13 @@ public class VentanaCrearDiagnostico extends JFrame {
 		lblTipoDeReparacionMantenimiento.setBounds(120, 613, 238, 25);
 		panel.add(lblTipoDeReparacionMantenimiento);
 		
-		JRadioButton rdbtnPreventivo = new JRadioButton("Preventivo");
+		rdbtnPreventivo = new JRadioButton("Preventivo");
 		rdbtnPreventivo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		rdbtnPreventivo.setSelected(true);
 		rdbtnPreventivo.setBackground(Color.WHITE);
 		rdbtnPreventivo.setBounds(370, 615, 91, 23);
 		panel.add(rdbtnPreventivo);
 		
-		JRadioButton rdbtnCorrectivo = new JRadioButton("Correctivo");
+		rdbtnCorrectivo = new JRadioButton("Correctivo");
 		rdbtnCorrectivo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		rdbtnCorrectivo.setBackground(Color.WHITE);
 		rdbtnCorrectivo.setBounds(470, 615, 91, 23);
@@ -219,10 +231,65 @@ public class VentanaCrearDiagnostico extends JFrame {
 		btnRegresar.setBounds(220, 953, 90, 23);
 		panel.add(btnRegresar);
 		
+		/***********************************
+		 * 
+		 * 
+		 * EVENTOS DE LOS BOTONES
+		 * Buscar, Limpiar, Regresar
+		 * 
+		 ***********************************/
+		
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textFieldNombre.setText("");
+				textFieldMarca.setText("");
+				textFieldDescripcionDelEquipo.setText("");
+				textFieldReparacionesMantenimientosARealizar.setText("");
+				textFieldPiezasRequeridas.setText("");
+				textFieldObservacionesAdicionales.setText("");
+			}
+		});
+		
+		btnRegresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				control.termina();
+			}
+		});
+		
 		
 	}
 	
-	public void muestra(ControlCrearDiagnostico control) {
+	public void muestra(ControlCrearDiagnostico control, List <CategoriaDiagnostico> categorias, List<Empleado> empleados, String fecha) {
+		
+		this.control = control; 
+		
+		textFieldNombre.setText("");
+		textFieldMarca.setText("");
+		textFieldDescripcionDelEquipo.setText("");
+		textFieldReparacionesMantenimientosARealizar.setText("");
+		textFieldPiezasRequeridas.setText("");
+		textFieldObservacionesAdicionales.setText("");
+		textFieldFecha.setText(fecha);
+		
+		
+		DefaultComboBoxModel <String> comboBoxModelEmpleados = new DefaultComboBoxModel <>();
+		
+		comboBoxModelEmpleados.addElement("      ----------------------- Seleccione una opción -----------------------");
+		for(Empleado empleado:empleados) {
+			comboBoxModelEmpleados.addElement(empleado.getNombreCompleto());
+		}
+		
+		comboBoxNombreDelEmpleado.setModel(comboBoxModelEmpleados);
+		
+		DefaultComboBoxModel <String> comboBoxModelCategorias = new DefaultComboBoxModel <>();
+		
+		comboBoxModelCategorias.addElement(" Seleccione una opción");
+		for(CategoriaDiagnostico categoria:categorias) {
+			comboBoxModelCategorias.addElement(categoria.getNombre());
+		}
+		
+		comboBoxCategoria.setModel(comboBoxModelCategorias);
 		
 		setVisible(true);
 		

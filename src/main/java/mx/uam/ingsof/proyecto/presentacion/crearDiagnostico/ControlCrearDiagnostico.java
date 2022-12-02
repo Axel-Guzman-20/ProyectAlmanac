@@ -5,21 +5,52 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import mx.uam.ingsof.proyecto.negocio.ServicioCategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
+import mx.uam.ingsof.proyecto.negocio.ServicioReparacionMantenimiento;
+import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
+
 @Component
 public class ControlCrearDiagnostico {
 	
 	@Autowired 
 	private VentanaCrearDiagnostico ventana; 
 	
+	@Autowired 
+	private ServicioCategoriaDiagnostico servicioCategoriaDiagnostico; 
+	
+	@Autowired 
+	private ServicioEmpleado servicioEmpleado; 
+	
+	@Autowired 
+	private ServicioReparacionMantenimiento servicioReparacionMantenimiento; 
+	
+	private String fecha;
+	
+	/**
+	 * 
+	 * Permite dar inicio al módulo ControlCrearDiagnostico y a sus respectivos métodos de dicho módulo  
+	 * 
+	 */
+	
 	public void inicia() {
 		
-		String fecha;
 		
-		//List <SeccionCatalogo> secciones= servicioSeccionCatalogo.consultarSeccionesDisponibles(); 
+		List <CategoriaDiagnostico> categorias = servicioCategoriaDiagnostico.consultarCategoriasDisponibles(); 
 		
-		// Le dice a servicios que obtenga la fecha actual del sistema, la devuelve y lo coloca en la caja de textos fecha de la VistaBuscarProducto
-		//fecha = servicioProducto.obtenerFechaActual();
+		List<Empleado> empleados = servicioEmpleado.recuperaEmpleados(); 
 		
-		ventana.muestra(this);
+		fecha = servicioReparacionMantenimiento.obtenerFechaActual();
+		
+		ventana.muestra(this,categorias, empleados,fecha);
+	}
+	
+	/**
+	 * Termina la historia de usuario
+	 * 
+	 */
+	public void termina() {
+		ventana.setVisible(false);		
 	}
 }
