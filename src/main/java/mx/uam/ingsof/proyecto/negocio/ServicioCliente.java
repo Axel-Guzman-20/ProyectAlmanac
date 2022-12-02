@@ -134,18 +134,16 @@ public class ServicioCliente {
 	 * 
 	 * Permite modificar un cliente existente en la base de datos
 	 * 
-	 * @param nombreClienteModificar
+
+	 * @param nombreCompleto
 	 * @param direccion
-	 * @param marca
-	 * @param descripcion
-	 * @param precio
-	 * @param descuento
-	 * @param existencia
-	 * @return producto si se modifico correctamente el producto
-	 * @throws IllegalArgumentException si el producto no existe
+	 * @param telefono
+	 * @param correoelectronico
+	 * @return true si el cliente se modifico correctamente, false si hay un error
+	 * @throws IllegalArgumentException si existe un error
 	 */
 
-	public Cliente modificarCliente(String ClienteSeleccionado, String nombreCliente, String genero, String direccion,
+	public Cliente modificarCliente( String ClienteSeleccionado, String nombreCliente, String genero, String direccion,
 			String telefono, String correoElectronico) {
 
 		Cliente cliente = clienteRepository.findBynombreCompleto(ClienteSeleccionado);
@@ -179,20 +177,6 @@ public class ServicioCliente {
 
 	}
 
-	public boolean verificarCorreoElectronicoModificado(String correo) {
-
-		Cliente cliente = clienteRepository.findBycorreoelectronico(correo);
-
-		// Si es igual a null, significa que el correo no ha sido registrado (Criterio
-		// de aceptacion)
-
-		if (cliente == null)
-			return false;
-		
-		else 
-			return true;
-		
-	}
 
 	public boolean comparacorreos(String correo1, String correo2) {
 
@@ -215,10 +199,10 @@ public class ServicioCliente {
 
 	/**
 	 * 
-	 * Recupera un listado de todas los productos disponibles en la base de datos
+	 * Recupera un listado de todas los clientes disponibles en la base de datos
 	 * 
 	 * @param
-	 * @return Una lista con todos los productos disponibles en la base de datos
+	 * @return Una lista con todos los clientes disponibles en la base de datos
 	 */
 
 	public List<Cliente> consultarClientesDisponibles() {

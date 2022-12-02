@@ -1,4 +1,5 @@
 package mx.uam.ingsof.proyecto.presentacion.modificarCliente;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class ControlModificarCliente {
 	 * Manda a llamar al método obtenerCliente() del módulo ServicioCliente
 	 * pasandole los mismos parámetros recibidos
 	 * 
-	 * @param producto
+	 * @param cliente
 
 	 * @return Dialogo con mensaje
 	 */
@@ -57,7 +58,7 @@ public class ControlModificarCliente {
 		if(correo == true) {
 			
 			// Le dice a servicios, que busque en repository, si el correo existe
-			correo2 = servicioCliente.verificarCorreoElectronicoModificado(correoelectronico);
+			correo2 = servicioCliente.verificarCorreoElectronico(correoelectronico);
 			
 			
 			// Si es false, significa que el correo NO ha sido registrado y continua con el registro (criterio de aceptacion)
@@ -121,7 +122,6 @@ public class ControlModificarCliente {
 		}else
 			ventana.muestraDialogoConMensaje("Ingresa un correo válido.");
 		
-		//cierraVentana();
 	}
 
 
