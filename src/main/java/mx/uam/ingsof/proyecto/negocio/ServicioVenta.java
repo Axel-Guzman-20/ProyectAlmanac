@@ -115,22 +115,22 @@ public class ServicioVenta {
 			ventas = ventaRepository.findAll();
 			registrosVentas = ventas.size();
 			datos = new String[registrosVentas][columnasTabla];
-	
+			List<VentaProducto> ventaProducto;
 			
 			for (i = 0; i < datos.length; i++) {
 				
 				cliente = clienteRepository.findByIdCliente(ventas.get(i).getIdCliente());
 				empleado = empleadoRepository.findByIdEmpleado(ventas.get(i).getIdEmpleado());
-				cantidadProductosVendidos = cuentaProductosPorVenta(ventas.get(i).getIdVenta());
-				montoVenta = montoTotalxVenta(ventas.get(i).getIdVenta());
-			
+				ventaProducto = ventaProductoRepository.findByIdVenta(ventas.get(i).getIdVenta());
+				cantidadProductosVendidos = cuentaProductosPorVenta(ventaProducto);
+				montoVenta = montoTotalxVenta(ventaProducto);
+				
 				datos[i][0] = String.valueOf(ventas.get(i).getIdVenta());
 				datos[i][1] = String.valueOf(ventas.get(i).getFechaVenta());
 				datos[i][2] = String.valueOf(cliente.getNombreCompleto());
 				datos[i][3] = String.valueOf(empleado.getNombreCompleto());
 				datos[i][4] = String.valueOf(cantidadProductosVendidos);
-				datos[i][5] = String.valueOf(montoVenta);
-					
+				datos[i][5] = String.format("%.2f", montoVenta);
 			}
 			
 			return datos;
@@ -139,13 +139,11 @@ public class ServicioVenta {
 	}
 	
 	
-	public int cuentaProductosPorVenta (long idVenta) {
+	public int cuentaProductosPorVenta (List<VentaProducto> ventaProducto) {
 		
 		int i;
 		int cantidadProductosVendidos = 0;
 		
-		List<VentaProducto> ventaProducto = ventaProductoRepository.findByIdVenta(idVenta);
-			
 		for (i = 0; i < ventaProducto.size(); i++) 
 			cantidadProductosVendidos = cantidadProductosVendidos + ventaProducto.get(i).getCantidad();
 		
@@ -153,14 +151,11 @@ public class ServicioVenta {
 	}
 	
 	
-	public double montoTotalxVenta (long idVenta) {
+	public double montoTotalxVenta (List<VentaProducto> ventaProducto) {
 		
 		int i;
 		double montoVenta = 0;
-				
-		List<VentaProducto> ventaProducto = ventaProductoRepository.findByIdVenta(idVenta);
-
-		
+						
 		for (i = 0; i < ventaProducto.size(); i++)
 			montoVenta = montoVenta + (ventaProducto.get(i).getCantidad() * ventaProducto.get(i).getProducto().getPrecio());
 		
