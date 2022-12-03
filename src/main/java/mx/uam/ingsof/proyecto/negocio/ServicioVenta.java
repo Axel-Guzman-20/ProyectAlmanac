@@ -97,7 +97,7 @@ public class ServicioVenta {
 	 * @param fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, nombreProducto
 	 * @return matriz de String con los datos
 	 */
-	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String nombreProducto) {
+	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String montoVentaIngresada) {
 		
 		int registrosVentas;
 		int columnasTabla = 6;
@@ -110,7 +110,7 @@ public class ServicioVenta {
 		int i;
 		
 		
-		if(fechaDesde.equals("") && fechaHasta.equals("") && nombreEmpleado.equals("") && nombreCliente.equals("") && nombreProducto.equals("") ) {
+		if(fechaDesde.equals("") && fechaHasta.equals("") && nombreEmpleado.equals("") && nombreCliente.equals("") && montoVentaIngresada.equals("") ) {
 			
 			ventas = ventaRepository.findAll();
 			registrosVentas = ventas.size();

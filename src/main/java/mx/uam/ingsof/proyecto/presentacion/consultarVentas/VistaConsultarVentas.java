@@ -20,7 +20,6 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
-import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 
 @SuppressWarnings("serial")
 @Component
@@ -54,7 +53,7 @@ public class VistaConsultarVentas extends JFrame{
 	
 	private JComboBox <String> comboBoxEmpleados;
 	private JComboBox <String> comboBoxClientes; 
-	private JComboBox <String> comboBoxProductos; 
+	private JTextField textMontoVenta; 
 	private JTextField[][] tablaDatos;
 	private JButton buscarButton;
 	private JButton limpiarButton;
@@ -186,18 +185,18 @@ public class VistaConsultarVentas extends JFrame{
 		
 		
 		//Creamos los label y lo agregamos al panel blanco
-		JLabel nombreProductoLabel = new JLabel("Nombre del Producto:");
+		JLabel nombreProductoLabel = new JLabel("Monto de la Venta:");
 		nombreProductoLabel.setFont(fuente);
 		nombreProductoLabel.setBounds(50, 210, 150, 30);
 		panelBlanco.add(nombreProductoLabel);			
 								
 		// Le damos su caja de texto
-		comboBoxProductos = new JComboBox<String>();
-		comboBoxProductos.setBounds(220, 210, 250, 30);
-		panelBlanco.add(comboBoxProductos);
+		textMontoVenta = new JTextField();
+		textMontoVenta.setBounds(220, 210, 250, 30);
+		panelBlanco.add(textMontoVenta);
 				
 		// Color de las casillas de los encabezados de las tablas
-		colorFondo = new Color(153,204,255);
+		colorFondo = new Color(205, 205, 205);
 		
 		
 		fuente = new Font("Tahoma", Font.BOLD, 12);
@@ -378,11 +377,11 @@ public class VistaConsultarVentas extends JFrame{
 	
 
 	
-	public void muestra(ControlConsultarVentas control, List <Empleado> empleados, List <Cliente> clientes, List <Producto> productos) {
+	public void muestra(ControlConsultarVentas control, List <Empleado> empleados, List <Cliente> clientes) {
 		
 		controlConsultarVentas = control;
 		
-		llenaDatosComboBox(empleados, clientes, productos);
+		llenaDatosComboBox(empleados, clientes);
 		
 		limpiaTodo();
 		
@@ -392,7 +391,7 @@ public class VistaConsultarVentas extends JFrame{
 	
 	// Todas las casillas son de la misma altura	
 	private final int altoCasilla = 25;
-	private final Color colorGrisClaro = new Color(238, 239, 223);
+	private final Color colorAzulClarito = new Color(184, 199, 218);
 	
 	public void mostrarPanelTablaDatos(String [][]datos) {
 		
@@ -406,7 +405,7 @@ public class VistaConsultarVentas extends JFrame{
 		for (int i = 0; i < tablaDatos.length; i++) {
 			
 			if(i%2==0)
-				colorFondo = colorGrisClaro;
+				colorFondo = colorAzulClarito;
 			else
 				colorFondo = Color.WHITE;
 			
@@ -450,7 +449,7 @@ public class VistaConsultarVentas extends JFrame{
 	}
 	
 	
-	public void llenaDatosComboBox(List <Empleado> empleados, List <Cliente> clientes, List <Producto> productos) {
+	public void llenaDatosComboBox(List <Empleado> empleados, List <Cliente> clientes) {
 		
 		DefaultComboBoxModel <String> comboBoxModel = new DefaultComboBoxModel <>();
 		comboBoxModel.addElement("--Seleccione una opción");
@@ -465,13 +464,6 @@ public class VistaConsultarVentas extends JFrame{
 			comboBoxModel.addElement(cliente.getNombreCompleto());
 		comboBoxClientes.setModel(comboBoxModel);
 		
-		
-		comboBoxModel = new DefaultComboBoxModel <>();
-		comboBoxModel.addElement("--Seleccione una opción");
-		for(Producto producto: productos)
-			comboBoxModel.addElement(producto.getNombre());
-		comboBoxProductos.setModel(comboBoxModel);
-		
 	}
 	
 	
@@ -481,10 +473,10 @@ public class VistaConsultarVentas extends JFrame{
 		String fechaHasta = textoFechaHastaDC.getText();
 		int indexComboEmpleado = comboBoxEmpleados.getSelectedIndex();
 		int indexComboCliente = comboBoxClientes.getSelectedIndex();
-		int indexComboProducto = comboBoxProductos.getSelectedIndex();
+		String montoVenta = textMontoVenta.getText();
 		String nombreEmpleado = (String) comboBoxEmpleados.getSelectedItem();
 		String nombreCliente = (String) comboBoxClientes.getSelectedItem();
-		String nombreProducto = (String) comboBoxProductos.getSelectedItem();
+		
 		String[][] datos;
 		
 		if(indexComboEmpleado == 0)
@@ -492,11 +484,8 @@ public class VistaConsultarVentas extends JFrame{
 		
 		if(indexComboCliente == 0)
 			nombreCliente = "";
-		
-		if(indexComboProducto == 0)
-			nombreProducto = "";
-		
-		datos = controlConsultarVentas.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, nombreProducto);
+			
+		datos = controlConsultarVentas.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, montoVenta);
 		
 		if(datos != null) {
 			mostrarPanelTablaDatos(datos);
@@ -512,7 +501,7 @@ public class VistaConsultarVentas extends JFrame{
 		textoFechaHastaDC.setText("");
 		comboBoxEmpleados.setSelectedIndex(0);
 		comboBoxClientes.setSelectedIndex(0);
-		comboBoxProductos.setSelectedIndex(0);
+		textMontoVenta.setText("");
 		
 		// Muestra el panel donde viene la tabla con la información
 		tablaPanel.setVisible(false);

@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
-import mx.uam.ingsof.proyecto.negocio.ServicioProducto;
 import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
-import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 
 @Component
 public class ControlConsultarVentas {
@@ -24,9 +22,6 @@ public class ControlConsultarVentas {
 	private ServicioEmpleado servicioEmpleado;
 	
 	@Autowired
-	private ServicioProducto servicioProducto;
-	
-	@Autowired
 	private ServicioVenta servicioVenta;
 	
 	public void inicia() {
@@ -34,15 +29,12 @@ public class ControlConsultarVentas {
 		List <Empleado> empleado = servicioEmpleado.recuperaEmpleados();
 		
 		List <Cliente> cliente = servicioCliente.recuperaClientes();
-		
-		List <Producto> producto = servicioProducto.recuperaListaProductos();
-		
+				
 		if(empleado.size() != 0) {
 			if(cliente.size() != 0) {
-				if(producto.size() != 0) {
-					vistaConsultarVentas.muestra(this, empleado, cliente, producto);
-				}else
-					vistaConsultarVentas.muestraDialogoConMensaje("No hay productos registrados, por favor registra un producto para consultar esta ventana.");
+				
+					vistaConsultarVentas.muestra(this, empleado, cliente);
+	
 			}else
 				vistaConsultarVentas.muestraDialogoConMensaje("No hay clientes registrados, por favor registra un cliente para consultar esta ventana.");
 		}else 
@@ -51,14 +43,14 @@ public class ControlConsultarVentas {
 	
 	
 	
-	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String nombreProducto) {
+	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String montoVenta) {
 			
 		if(servicioVenta.sizeVentas() == 0) {
 			vistaConsultarVentas.muestraDialogoConMensaje("No hay ventas registradas, registra una venta para usar está función");
 			return null;
 		}
 		
-		return servicioVenta.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, nombreProducto);
+		return servicioVenta.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, montoVenta);
 	}
 	
 	
