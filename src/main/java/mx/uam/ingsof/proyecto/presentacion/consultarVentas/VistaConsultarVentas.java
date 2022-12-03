@@ -41,7 +41,7 @@ public class VistaConsultarVentas extends JFrame{
 	
 	private JPanel panelPrincipal;
 	private JPanel panelBlanco;
-	private JPanel tabla;
+	private JPanel tablaPanel;
 	
 	private Color colorFondo;	
 
@@ -63,7 +63,7 @@ public class VistaConsultarVentas extends JFrame{
 	private int anchoCasillas[];
 	private int anchoVentana = 940;
 	private int altoVentana = 740;
-	private int columnasTablas = 7;
+	private int columnasTablas = 6;
 	
 	public VistaConsultarVentas() {
 		
@@ -237,7 +237,7 @@ public class VistaConsultarVentas extends JFrame{
 		
 		JTextField productoTablaText = new JTextField();
 		productoTablaText.setBackground(colorFondo);
-		productoTablaText.setText("Producto");
+		productoTablaText.setText("Empleado");
 		productoTablaText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		productoTablaText.setBounds(377, 260, 190, 25);
 		productoTablaText.setFont(fuente);
@@ -246,33 +246,23 @@ public class VistaConsultarVentas extends JFrame{
 		productoTablaText.setHorizontalAlignment(SwingConstants.CENTER);
 		panelBlanco.add(productoTablaText);
 		
-		JTextField precioTablaText = new JTextField();
-		precioTablaText.setBackground(colorFondo);
-		precioTablaText.setText("Precio");
-		precioTablaText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		precioTablaText.setBounds(566, 260, 80, 25);
-		precioTablaText.setFont(fuente);
-		precioTablaText.setForeground(Color.BLACK);
-		precioTablaText.setEditable(false);
-		precioTablaText.setHorizontalAlignment(SwingConstants.CENTER);
-		panelBlanco.add(precioTablaText);
+		JTextField cantidadProductosVendidos = new JTextField();
+		cantidadProductosVendidos.setBackground(colorFondo);
+		cantidadProductosVendidos.setText("Cantidad Productos");
+		cantidadProductosVendidos.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		cantidadProductosVendidos.setBounds(566, 260, 130, 25);
+		cantidadProductosVendidos.setFont(fuente);
+		cantidadProductosVendidos.setForeground(Color.BLACK);
+		cantidadProductosVendidos.setEditable(false);
+		cantidadProductosVendidos.setHorizontalAlignment(SwingConstants.CENTER);
+		panelBlanco.add(cantidadProductosVendidos);
 		
-		JTextField cantidadTablaText = new JTextField();
-		cantidadTablaText.setBackground(colorFondo);
-		cantidadTablaText.setText("Cantidad");
-		cantidadTablaText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		cantidadTablaText.setBounds(645, 260, 70, 25);
-		cantidadTablaText.setForeground(Color.BLACK);
-		cantidadTablaText.setFont(fuente);
-		cantidadTablaText.setEditable(false);
-		cantidadTablaText.setHorizontalAlignment(SwingConstants.CENTER);
-		panelBlanco.add(cantidadTablaText);
-		
+
 		JTextField totalTablaText = new JTextField();
 		totalTablaText.setBackground(colorFondo);
-		totalTablaText.setText("Total");
+		totalTablaText.setText("Monto Venta");
 		totalTablaText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		totalTablaText.setBounds(714, 260, 80, 25);
+		totalTablaText.setBounds(695, 260, 100, 25);
 		totalTablaText.setForeground(Color.BLACK);
 		totalTablaText.setFont(fuente);
 		totalTablaText.setEditable(false);
@@ -280,11 +270,11 @@ public class VistaConsultarVentas extends JFrame{
 		panelBlanco.add(totalTablaText);
 		
 		// Panel para la mostrar los datos de la tabla
-		tabla = new JPanel();
-		tabla.setLayout(null);
-		tabla.setBounds(50, 284, 744, 241);
-		tabla.setBackground(Color.WHITE);
-		panelBlanco.add(tabla);
+		tablaPanel = new JPanel();
+		tablaPanel.setLayout(null);
+		tablaPanel.setBounds(50, 284, 745, 241);
+		tablaPanel.setBackground(Color.WHITE);
+		panelBlanco.add(tablaPanel);
 		
 		
 		// Con la información anterior (idVenta, Fecha, etc), pude saber la anchura que le tocara a cada casilla, primero lo hice manual
@@ -293,9 +283,8 @@ public class VistaConsultarVentas extends JFrame{
 		anchoCasillas[1] = 80;
 		anchoCasillas[2] = 190;
 		anchoCasillas[3] = 190;
-		anchoCasillas[4] = 80;
-		anchoCasillas[5] = 70;
-		anchoCasillas[6] = 80;
+		anchoCasillas[4] = 130;
+		anchoCasillas[5] = 100;
 		
 		
 		// Para las label
@@ -359,7 +348,7 @@ public class VistaConsultarVentas extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				recolectaDatos();
+				recolectaDatosConsultaVenta();
 			}
 		});		
 				
@@ -402,10 +391,10 @@ public class VistaConsultarVentas extends JFrame{
 	
 	
 	// Todas las casillas son de la misma altura	
-	private static final int altoCasilla = 25;
-	private static final Color colorGrisClaro = new Color(238, 239, 223);
+	private final int altoCasilla = 25;
+	private final Color colorGrisClaro = new Color(238, 239, 223);
 	
-	public void mostrarPanelTablaDatos(String[][] datos) {
+	public void mostrarPanelTablaDatos(String [][]datos) {
 		
 		tablaDatos = new JTextField[datos.length][columnasTablas];		
 		
@@ -421,26 +410,27 @@ public class VistaConsultarVentas extends JFrame{
 			else
 				colorFondo = Color.WHITE;
 			
-			for (int j = 0; j < tablaDatos[0].length; j++) {
+			for (int j = 0; j < 6; j++) {
 				tablaDatos[i][j] = new JTextField();
 				tablaDatos[i][j].setBackground(colorFondo);
 				tablaDatos[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 				tablaDatos[i][j].setBounds(xCasilla, yCasilla, anchoCasillas[j], altoCasilla);
 				tablaDatos[i][j].setForeground(Color.BLACK);
 				tablaDatos[i][j].setEditable(false);
-				tabla.add(tablaDatos[i][j]);
-				xCasilla = (xCasilla + anchoCasillas[j]) - 1;
-				
-				// Se evita que la columna Cliente y producto se alinean al centro, esos iran por default a la izquierda
+				// Se evita que la columna Cliente y Empleado se alinean al centro, esos iran por default a la izquierda
 				if(j!=2 && j!=3)
 					tablaDatos[i][j].setHorizontalAlignment(SwingConstants.CENTER);
+			
+				tablaDatos[i][j].setText(datos[i][j]);
+				
+				tablaPanel.add(tablaDatos[i][j]);
+				xCasilla = (xCasilla + anchoCasillas[j]) - 1;
 				
 			}
 			xCasilla = 0;
 			yCasilla = yCasilla + (altoCasilla - 1);
 		}
-		
-		tabla.setVisible(true);
+		tablaPanel.setVisible(true);
 	}
 	
 	
@@ -484,41 +474,34 @@ public class VistaConsultarVentas extends JFrame{
 		
 	}
 	
-	public void recolectaDatos() {
+	
+	public void recolectaDatosConsultaVenta() {
 		
 		String fechaDesde = textoFechaDesdeDC.getText();
 		String fechaHasta = textoFechaHastaDC.getText();
-		String nombreEmpleado;
-		String nombreCliente;
-		String nombreProducto;
-		
 		int indexComboEmpleado = comboBoxEmpleados.getSelectedIndex();
 		int indexComboCliente = comboBoxClientes.getSelectedIndex();
 		int indexComboProducto = comboBoxProductos.getSelectedIndex();
+		String nombreEmpleado = (String) comboBoxEmpleados.getSelectedItem();
+		String nombreCliente = (String) comboBoxClientes.getSelectedItem();
+		String nombreProducto = (String) comboBoxProductos.getSelectedItem();
+		String[][] datos;
 		
+		if(indexComboEmpleado == 0)
+			nombreEmpleado = "";
 		
-		if( !fechaDesde.equals("") ) {
-			if( !fechaHasta.equals("") ) {
-				if(indexComboEmpleado != 0) {
-					if(indexComboCliente != 0) {
-						if(indexComboProducto != 0) {
-							
-							nombreEmpleado = (String) comboBoxEmpleados.getSelectedItem();
-							nombreCliente = (String) comboBoxClientes.getSelectedItem();
-							nombreProducto = (String) comboBoxProductos.getSelectedItem();
-								
-							controlConsultarVentas.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, nombreProducto);
-						
-						}else
-							muestraDialogoConMensaje("Selecciona un producto");
-					}else
-						muestraDialogoConMensaje("Selecciona a un cliente");
-				}else
-					muestraDialogoConMensaje("Selecciona a un empleado");
-			}else
-				muestraDialogoConMensaje("Ingresa una fecha final");
-		}else
-			muestraDialogoConMensaje("Ingresa una fecha de inicio");		
+		if(indexComboCliente == 0)
+			nombreCliente = "";
+		
+		if(indexComboProducto == 0)
+			nombreProducto = "";
+		
+		datos = controlConsultarVentas.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, nombreProducto);
+		
+		if(datos != null) {
+			mostrarPanelTablaDatos(datos);
+		}
+			
 	}
 	
 	
@@ -532,7 +515,7 @@ public class VistaConsultarVentas extends JFrame{
 		comboBoxProductos.setSelectedIndex(0);
 		
 		// Muestra el panel donde viene la tabla con la información
-		tabla.setVisible(false);
+		tablaPanel.setVisible(false);
 	}
 	
 	

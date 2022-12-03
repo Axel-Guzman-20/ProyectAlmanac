@@ -10,6 +10,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
  * Repositorio para Producto
  * @author Abigail Morales
  * @author Eduardo Castro
+ * @autor Miguel Guzman
  *
  */
 
@@ -24,5 +25,7 @@ public interface ProductoRepository extends CrudRepository<Producto, Long> {
 	public Producto findByNombre(String nombre);
 	
 	public List <Producto>	findAll();
+	
+	//public Producto findByIdProducto(long id);
 
 }

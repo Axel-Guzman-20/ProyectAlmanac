@@ -50,39 +50,15 @@ public class ControlConsultarVentas {
 	}
 	
 	
-	public void consultarVentas(String fechaDesde) {
-			
-			
-				
-			
-	}
 	
-	public void consultarVentas(String fechaDesde, String fechaHasta) {
-		
-		
-		
-		
-	}
-	
-	public void consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado) {
-		
-		
-		
-		
-	}
-	
-	public void consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente) {
-		
-		
+	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String nombreProducto) {
 			
+		if(servicioVenta.sizeVentas() == 0) {
+			vistaConsultarVentas.muestraDialogoConMensaje("No hay ventas registradas, registra una venta para usar está función");
+			return null;
+		}
 		
-	}
-	
-	public void consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String nombreProducto) {
-		
-		
-			
-		
+		return servicioVenta.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, nombreProducto);
 	}
 	
 	

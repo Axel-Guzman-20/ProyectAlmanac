@@ -1,5 +1,7 @@
 package mx.uam.ingsof.proyecto;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +10,14 @@ import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
+import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
+import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
+import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 import mx.uam.ingsof.proyecto.presentacion.principal.ControlPrincipal;
 
@@ -54,6 +60,12 @@ public class ProyectoApplication {
 	
 	@Autowired
 	ServicioCliente servicioCliente;
+	
+	@Autowired
+	ServicioVenta servicioVenta;
+	
+	@Autowired
+	VentaRepository ventaRepository;
 	
 	/**
 	 * 
@@ -192,5 +204,64 @@ public class ProyectoApplication {
 		servicioCliente.registrarCliente("26/11/2022", "Elver Gonzales", "Masculino", "Calle 11 Alc. Roma, CDMX, CDMX", "5585967414", "cliente2@correo.com");
 		servicioCliente.registrarCliente("25/11/2022", "Rosa Mela", "Femenino", "Calle 12 Alc. Roma, CDMX, CDMX", "5536963696", "cliente3@correo.com");
 		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 13 Alc. Roma, CDMX, CDMX", "5512547854", "cliente4@correo.com");
+		
+		
+		// SE REGISTRAN VENTAS EN AUTOMÁTICO
+		ArrayList<VentaProducto> listaProductos = new ArrayList<VentaProducto>(3);
+		
+		VentaProducto productos = new VentaProducto();
+		
+		productos.setIdVentaProducto(1);
+		productos.setCantidad(3);
+		productos.setProducto(productoPrueba4);
+		
+		listaProductos.add(productos);
+		
+		Venta venta = new Venta();
+		
+		venta.setFechaVenta("20/11/2022");
+		venta.setGarantia(null);
+		venta.setIdCliente(1);
+		venta.setIdEmpleado(2);
+		venta.setIdVenta(1);
+		venta.setListaProducto(listaProductos);
+		ventaRepository.save(venta);
+		
+		
+		
+		// Se crea otra venta, se recrea la instancia
+		listaProductos.clear();
+		
+		VentaProducto v1 = new VentaProducto();
+		VentaProducto v2 = new VentaProducto();
+		VentaProducto v3 = new VentaProducto();
+		
+		v1.setCantidad(1);
+		v1.setIdVentaProducto(2);
+		v1.setProducto(productoPrueba4);
+		
+		v2.setCantidad(4);
+		v2.setIdVentaProducto(3);
+		v2.setProducto(productoPrueba3);
+		
+		v3.setCantidad(2);
+		v3.setIdVentaProducto(4);
+		v3.setProducto(productoPrueba);
+		
+		listaProductos.add(v1);
+		listaProductos.add(v2);
+		listaProductos.add(v3);
+		
+		Venta venta2 = new Venta();
+		
+		venta2.setFechaVenta("25/11/2022");
+		venta2.setGarantia(null);
+		venta2.setIdCliente(3);
+		venta2.setIdEmpleado(1);
+		venta2.setIdVenta(2);
+		venta2.setListaProducto(listaProductos);
+		ventaRepository.save(venta2);
+		
+		
 	}
 }
