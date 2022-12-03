@@ -370,7 +370,11 @@ public class VistaModificarCliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				limpiarradiobutton(VerInformacion);
+				Masculino.setEnabled(false);
+				Femenino.setEnabled(false);
 				control.cierraVentana();
+				
 			}
 		});
 
