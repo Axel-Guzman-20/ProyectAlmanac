@@ -1,17 +1,13 @@
 package mx.uam.ingsof.proyecto.presentacion.buscarProducto;
 
-import java.awt.EventQueue;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import org.springframework.stereotype.Component;
-
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
 import java.awt.Color;
@@ -25,8 +21,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
@@ -111,7 +105,7 @@ public class VentanaBuscarProducto extends JFrame {
 		lblSeccion.setBounds(120, 144, 65, 15);
 		panel.add(lblSeccion);
 		
-		comboBoxSeccionCatalogo = new JComboBox();
+		comboBoxSeccionCatalogo = new JComboBox<String>();
 		comboBoxSeccionCatalogo.setBounds(206, 142, 168, 22);
 		panel.add(comboBoxSeccionCatalogo);
 		

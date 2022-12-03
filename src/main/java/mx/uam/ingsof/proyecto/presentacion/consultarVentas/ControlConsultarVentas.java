@@ -9,6 +9,13 @@ import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
+/**
+ * Control relacionado con las consultas de Ventas
+ * 
+ * @author MiguelGuzman
+ *
+ */
+
 @Component
 public class ControlConsultarVentas {
 	

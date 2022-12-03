@@ -38,10 +38,7 @@ public class VentanaModificarProducto extends JFrame {
 	private JComboBox <String> comboBoxProductos; 
 	private JTextArea textAreaDescripcionProducto;
 	private JRadioButton rdbtnVerInformacion; 
-	
-	private String seccionDelProducto=""; 
 	private String productoSeleccionado=""; 
-	
 	private ControlModificarProducto control;
 	private JTextField textFieldSeccionCatalogo;
 
@@ -270,7 +267,7 @@ public class VentanaModificarProducto extends JFrame {
 		
 		Producto producto=control.obtenerProducto(productoSeleccionado); 
 		SeccionCatalogo seccion=control.obtenerSeccionCatalogoDelProducto(producto);
-		seccionDelProducto=seccion.getNombre();
+		seccion.getNombre();
 		
 		if(producto!=null) {
 			textFieldNombreProducto.setText(producto.getNombre());

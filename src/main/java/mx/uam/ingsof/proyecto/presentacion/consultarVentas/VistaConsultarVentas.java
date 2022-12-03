@@ -25,7 +25,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 @Component
 
 /**
- * Ventana que mira el usuario para consultar las ventas realizadas
+ * Ventana que mira el usuario para consultar las ventas registradas
  * 
  * @author MiguelGuzman
  * 

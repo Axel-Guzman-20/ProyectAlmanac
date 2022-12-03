@@ -109,7 +109,7 @@ public class ServicioVenta {
 		double montoVenta;
 		int i;
 		
-		
+		// Para mostrar todas las ventas
 		if(fechaDesde.equals("") && fechaHasta.equals("") && nombreEmpleado.equals("") && nombreCliente.equals("") && montoVentaIngresada.equals("") ) {
 			
 			ventas = ventaRepository.findAll();
