@@ -1,16 +1,13 @@
 package mx.uam.ingsof.proyecto.datos;
 
 import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
-
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 
 /**
  * Repositorio para Producto
  * @author Abigail Morales
  * @author Eduardo Castro
- * @autor Miguel Guzman
  *
  */
 
@@ -26,6 +23,4 @@ public interface ProductoRepository extends CrudRepository<Producto, Long> {
 	
 	public List <Producto>	findAll();
 	
-	//public Producto findByIdProducto(long id);
-
 }

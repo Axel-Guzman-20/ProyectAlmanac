@@ -1,7 +1,6 @@
 package mx.uam.ingsof.proyecto;
 
 import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -261,7 +260,5 @@ public class ProyectoApplication {
 		venta2.setIdVenta(2);
 		venta2.setListaProducto(listaProductos);
 		ventaRepository.save(venta2);
-		
-		
 	}
 }

@@ -9,7 +9,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
  * Repositorio para Compra
  * 
  * @author Eduardo Castro
- * @author Erika Maya
+ * 
  */
 public interface CompraRepository extends CrudRepository<Compra, Long> {
 
