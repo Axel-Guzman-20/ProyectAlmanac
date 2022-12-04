@@ -132,7 +132,7 @@ public class ServicioVenta {
 		
 				
 		ventas = criterioFechas(fechaDesde, fechaHasta, ventas);
-			
+		
 			if(ventas.size() != 0) {
 		
 				ventas = criterioEmpleado(itemEmpleadoId, ventas);
@@ -150,7 +150,9 @@ public class ServicioVenta {
 					}
 				}
 			}
+			
 		return null;
+	
 	}
 	
 	
@@ -178,7 +180,7 @@ public class ServicioVenta {
 					nuevaVenta.add(ventas.get(i));
 				
 			}
-						
+		
 			return nuevaVenta;
 						
 						
@@ -193,9 +195,8 @@ public class ServicioVenta {
 					if(fechaVenta.compareTo(fechaInicio) >= 0)
 						nuevaVenta.add(ventas.get(i));
 				}
-						
-				if(nuevaVenta.size() != 0)
-					return nuevaVenta;
+				
+				return nuevaVenta;
 						
 					
 			// Solo tiene fecha final
@@ -209,8 +210,7 @@ public class ServicioVenta {
 						nuevaVenta.add(ventas.get(i));
 				}
 				
-				if(nuevaVenta.size() != 0)
-					return nuevaVenta;
+				return nuevaVenta;
 			}
 		
 		return ventas;
@@ -235,8 +235,7 @@ public class ServicioVenta {
 			
 			}
 						
-				if(nuevaVenta.size() != 0)
-					return nuevaVenta;
+			return nuevaVenta;
 		}
 		
 		return ventas;
@@ -261,8 +260,7 @@ public class ServicioVenta {
 			
 			}
 						
-			if(nuevaVenta.size() != 0)
-				return nuevaVenta;
+			return nuevaVenta;
 		}
 		
 		return ventas;
@@ -290,8 +288,7 @@ public class ServicioVenta {
 					nuevaVenta.add(ventas.get(i));
 			}
 									
-			if(nuevaVenta.size() != 0)
-				return nuevaVenta;
+			return nuevaVenta;
 		}
 		
 		return ventas;

@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -510,7 +513,7 @@ public class VistaConsultarVentas extends JFrame{
 		textoFechaHastaDC.setText("");
 		comboBoxEmpleados.setSelectedIndex(0);
 		comboBoxClientes.setSelectedIndex(0);
-		textMontoVenta.setText("");	
+		totalVentasText.setText("");	
 		tablaPanel.setVisible(false);
 	}
 	
