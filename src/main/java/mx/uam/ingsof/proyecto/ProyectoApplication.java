@@ -34,8 +34,6 @@ import mx.uam.ingsof.proyecto.presentacion.principal.ControlPrincipal;
  *
  */
 
-
-
 @SpringBootApplication
 public class ProyectoApplication {
 
@@ -135,7 +133,7 @@ public class ProyectoApplication {
 		productoPrueba.setNombre("Core i3");
 		productoPrueba.setMarca("Intel");
 		productoPrueba.setDescripcion("10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T");
-		productoPrueba.setPrecio(1499.90);
+		productoPrueba.setPrecio(1499.95);
 		productoPrueba.setDescuento(15);
 		productoPrueba.setExistencia(7);
 		productoPrueba.setTotalComprasProducto(0);
@@ -147,7 +145,7 @@ public class ProyectoApplication {
 		productoPrueba2.setNombre("Core i4");
 		productoPrueba2.setMarca("Intel");
 		productoPrueba2.setDescripcion("10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T");
-		productoPrueba2.setPrecio(5000.90);
+		productoPrueba2.setPrecio(5000.93);
 		productoPrueba2.setDescuento(10);
 		productoPrueba2.setExistencia(1);
 		productoPrueba2.setTotalComprasProducto(0);
@@ -159,7 +157,7 @@ public class ProyectoApplication {
 		productoPrueba3.setNombre("Core i1");
 		productoPrueba3.setMarca("AMD");
 		productoPrueba3.setDescripcion("10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T");
-		productoPrueba3.setPrecio(900.90);
+		productoPrueba3.setPrecio(900.94);
 		productoPrueba3.setDescuento(10);
 		productoPrueba3.setExistencia(1);
 		productoPrueba3.setTotalComprasProducto(0);

@@ -412,6 +412,7 @@ public class VistaConsultarVentas extends JFrame{
 		tablaPanel.setBackground(Color.WHITE);
 		panelBlanco.add(tablaPanel);
 		
+		
 		tablaDatos = new JTextField[datos.length][columnasTablas];		
 		
 		// Esta información va variando depende la casilla
@@ -446,6 +447,29 @@ public class VistaConsultarVentas extends JFrame{
 			xCasilla = 0;
 			yCasilla = yCasilla + (altoCasilla - 1);
 		}
+		
+		Locale formatoLocal = new Locale ("en", "UK");
+		
+        NumberFormat formatoDecimal = NumberFormat.getInstance (formatoLocal);
+        
+        String montoConFormatoDec;
+        double montoCaja;
+		double totalVentas = 0;
+		
+		for (int i = 0; i < datos.length; i++) {
+			montoCaja = Double.parseDouble(tablaDatos[i][5].getText());
+			totalVentas = totalVentas + montoCaja;
+			montoConFormatoDec =  formatoDecimal.format(montoCaja);
+			tablaDatos[i][5].setText("$ " + montoConFormatoDec);
+		}
+		
+		
+                
+		montoConFormatoDec= formatoDecimal.format(totalVentas);
+        
+        totalVentasText.setText("$ " + montoConFormatoDec);
+		
+		
 		tablaPanel.setVisible(true);
 	}
 	
@@ -493,6 +517,7 @@ public class VistaConsultarVentas extends JFrame{
 		
 		// En caso que haya echo una busqueda, y le vuelva a dar sin que haya limpiado
 		tablaPanel.setVisible(false);
+		totalVentasText.setText("");
 		
 		// Recupera el texto del item del comboBox Selecionado
 		String itemEmpleadoId = String.valueOf(comboBoxEmpleados.getSelectedIndex());
