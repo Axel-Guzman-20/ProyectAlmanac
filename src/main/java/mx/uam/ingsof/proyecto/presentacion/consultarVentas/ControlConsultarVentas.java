@@ -1,5 +1,6 @@
 package mx.uam.ingsof.proyecto.presentacion.consultarVentas;
 
+import java.text.ParseException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,14 +51,33 @@ public class ControlConsultarVentas {
 	
 	
 	
-	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String nombreEmpleado, String nombreCliente, String montoVenta) {
-			
+	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String itemEmpleadoId, String itemClienteId, String montoVenta) throws ParseException {
+		
+		// Valida que haya registros
 		if(servicioVenta.sizeVentas() == 0) {
 			vistaConsultarVentas.muestraDialogoConMensaje("No hay ventas registradas, registra una venta para usar está función");
 			return null;
 		}
 		
-		return servicioVenta.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, montoVenta);
+		// Valida que la fecha de inicio no sea mayor a la final
+		if(servicioVenta.comparaFechas(fechaDesde, fechaHasta) == false) {
+			vistaConsultarVentas.muestraDialogoConMensaje("La fechaInicio es mayor a la FechaFinal");
+			return null;
+		}
+		
+		// Valida que el monto sea una cifra correcta
+		if(servicioVenta.validarMonto(montoVenta) == false) {
+			vistaConsultarVentas.muestraDialogoConMensaje("El monto de la venta es incorrecto");
+			return null;
+		}
+		
+		String datos[][] = servicioVenta.consultarVentas(fechaDesde, fechaHasta, itemEmpleadoId, itemClienteId, montoVenta);
+		
+		if(datos != null)
+			return datos;
+		else
+			vistaConsultarVentas.muestraDialogoConMensaje("No hay registro de ventas con la información proporcionada");
+			return null;
 	}
 	
 	

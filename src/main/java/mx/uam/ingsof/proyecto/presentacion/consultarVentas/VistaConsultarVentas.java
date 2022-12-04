@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -273,8 +274,8 @@ public class VistaConsultarVentas extends JFrame{
 		tablaPanel.setLayout(null);
 		tablaPanel.setBounds(50, 284, 745, 241);
 		tablaPanel.setBackground(Color.WHITE);
-		panelBlanco.add(tablaPanel);
 		
+		panelBlanco.add(tablaPanel);
 		
 		// Con la información anterior (idVenta, Fecha, etc), pude saber la anchura que le tocara a cada casilla, primero lo hice manual
 		anchoCasillas = new int[columnasTablas];
@@ -347,7 +348,12 @@ public class VistaConsultarVentas extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				recolectaDatosConsultaVenta();
+				try {
+					recolectaDatosConsultaVenta();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					
+				}
 			}
 		});		
 				
@@ -394,6 +400,14 @@ public class VistaConsultarVentas extends JFrame{
 	private final Color colorAzulClarito = new Color(184, 199, 218);
 	
 	public void mostrarPanelTablaDatos(String [][]datos) {
+		
+		// Panel para la mostrar los datos de la tabla
+		// Se vuelve a crear el panel
+		tablaPanel = new JPanel();
+		tablaPanel.setLayout(null);
+		tablaPanel.setBounds(50, 284, 745, 241);
+		tablaPanel.setBackground(Color.WHITE);
+		panelBlanco.add(tablaPanel);
 		
 		tablaDatos = new JTextField[datos.length][columnasTablas];		
 		
@@ -467,30 +481,25 @@ public class VistaConsultarVentas extends JFrame{
 	}
 	
 	
-	public void recolectaDatosConsultaVenta() {
+	public void recolectaDatosConsultaVenta() throws ParseException {
 		
 		String fechaDesde = textoFechaDesdeDC.getText();
 		String fechaHasta = textoFechaHastaDC.getText();
-		int indexComboEmpleado = comboBoxEmpleados.getSelectedIndex();
-		int indexComboCliente = comboBoxClientes.getSelectedIndex();
 		String montoVenta = textMontoVenta.getText();
-		String nombreEmpleado = (String) comboBoxEmpleados.getSelectedItem();
-		String nombreCliente = (String) comboBoxClientes.getSelectedItem();
-		
 		String[][] datos;
 		
-		if(indexComboEmpleado == 0)
-			nombreEmpleado = "";
+		// En caso que haya echo una busqueda, y le vuelva a dar sin que haya limpiado
+		tablaPanel.setVisible(false);
 		
-		if(indexComboCliente == 0)
-			nombreCliente = "";
-			
-		datos = controlConsultarVentas.consultarVentas(fechaDesde, fechaHasta, nombreEmpleado, nombreCliente, montoVenta);
+		// Recupera el texto del item del comboBox Selecionado
+		String itemEmpleadoId = String.valueOf(comboBoxEmpleados.getSelectedIndex());
+		String itemClienteId = String.valueOf(comboBoxClientes.getSelectedIndex());
 		
-		if(datos != null) {
-			mostrarPanelTablaDatos(datos);
-		}
-			
+		datos = controlConsultarVentas.consultarVentas(fechaDesde, fechaHasta, itemEmpleadoId, itemClienteId, montoVenta);
+		 
+		if(datos != null) 
+		  mostrarPanelTablaDatos(datos);
+		
 	}
 	
 	
@@ -501,9 +510,7 @@ public class VistaConsultarVentas extends JFrame{
 		textoFechaHastaDC.setText("");
 		comboBoxEmpleados.setSelectedIndex(0);
 		comboBoxClientes.setSelectedIndex(0);
-		textMontoVenta.setText("");
-		
-		// Muestra el panel donde viene la tabla con la información
+		textMontoVenta.setText("");	
 		tablaPanel.setVisible(false);
 	}
 	
