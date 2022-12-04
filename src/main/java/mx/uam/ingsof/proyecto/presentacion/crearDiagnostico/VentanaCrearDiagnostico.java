@@ -8,18 +8,22 @@ import org.springframework.stereotype.Component;
 
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
-import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JRadioButton;
@@ -58,7 +62,6 @@ public class VentanaCrearDiagnostico extends JFrame {
 	public VentanaCrearDiagnostico() {
 		
 		setTitle("Crear Diagnostico");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 877, 578);
 		setLocationRelativeTo(null);
 		
@@ -178,7 +181,7 @@ public class VentanaCrearDiagnostico extends JFrame {
 		lblTipoDeReparacionMantenimiento.setBounds(120, 613, 238, 25);
 		panel.add(lblTipoDeReparacionMantenimiento);
 		
-		rdbtnPreventivo = new JRadioButton("Preventivo");
+		rdbtnPreventivo = new JRadioButton("Preventivo",true);
 		rdbtnPreventivo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		rdbtnPreventivo.setBackground(Color.WHITE);
 		rdbtnPreventivo.setBounds(370, 615, 91, 23);
@@ -189,6 +192,9 @@ public class VentanaCrearDiagnostico extends JFrame {
 		rdbtnCorrectivo.setBackground(Color.WHITE);
 		rdbtnCorrectivo.setBounds(470, 615, 91, 23);
 		panel.add(rdbtnCorrectivo);
+		
+		bg.add(rdbtnPreventivo); 
+		bg.add(rdbtnCorrectivo); 
 		
 		JLabel lblPiezasRequeridas = new JLabel("Piezas Requeridas ");
 		lblPiezasRequeridas.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -213,11 +219,11 @@ public class VentanaCrearDiagnostico extends JFrame {
 		textFieldObservacionesAdicionales.setBounds(143, 836, 496, 101);
 		panel.add(textFieldObservacionesAdicionales);
 		
-		JButton btnBuscar = new JButton("Crear");
-		btnBuscar.setForeground(Color.WHITE);
-		btnBuscar.setBackground(new Color(0, 158, 15));
-		btnBuscar.setBounds(345, 953, 90, 23);
-		panel.add(btnBuscar);
+		JButton btnCrear = new JButton("Crear");
+		btnCrear.setForeground(Color.WHITE);
+		btnCrear.setBackground(new Color(0, 158, 15));
+		btnCrear.setBounds(345, 953, 90, 23);
+		panel.add(btnCrear);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setForeground(Color.WHITE);
@@ -234,10 +240,68 @@ public class VentanaCrearDiagnostico extends JFrame {
 		/***********************************
 		 * 
 		 * 
+		 * EVENTOS DE LOS RADIOBUTTONS
+		 * Preventivo, Correctivo
+		 * 
+		 ***********************************/
+		
+		rdbtnPreventivo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				textFieldPiezasRequeridas.setText("");
+				textFieldPiezasRequeridas.setEditable(false);
+			}
+		});
+		
+		rdbtnCorrectivo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				textFieldPiezasRequeridas.setText("");
+				textFieldPiezasRequeridas.setEditable(true);
+			}
+		});
+		
+		/***********************************
+		 * 
+		 * 
 		 * EVENTOS DE LOS BOTONES
 		 * Buscar, Limpiar, Regresar
 		 * 
 		 ***********************************/
+		
+		btnCrear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (rdbtnCorrectivo.isSelected() && textFieldPiezasRequeridas.getText().equals("")) {
+					muestraDialogoConMensaje("Ingresar las piezas requeridas.");
+
+				} else {
+					if ((comboBoxNombreDelEmpleado.getSelectedItem()
+							.equals("      ----------------------- Seleccione una opción -----------------------"))
+							|| (comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción"))
+							|| textFieldNombre.getText().equals("") || textFieldMarca.getText().equals("")
+							|| textFieldDescripcionDelEquipo.getText().equals("")
+							|| textFieldReparacionesMantenimientosARealizar.getText().equals("")) {
+						muestraDialogoConMensaje("Campos vacíos, rellena la información marcada con *");
+					} else {
+
+						if (rdbtnCorrectivo.isSelected()) {
+							control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
+									textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
+									textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
+									textFieldReparacionesMantenimientosARealizar.getText(), "Correctivo",
+									textFieldPiezasRequeridas.getText(), textFieldObservacionesAdicionales.getText());
+						} else {
+							control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
+									textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
+									textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
+									textFieldReparacionesMantenimientosARealizar.getText(), "Preventivo", "",
+									textFieldObservacionesAdicionales.getText());
+						}
+					}
+				}
+			}
+		});
 		
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -248,6 +312,12 @@ public class VentanaCrearDiagnostico extends JFrame {
 				textFieldReparacionesMantenimientosARealizar.setText("");
 				textFieldPiezasRequeridas.setText("");
 				textFieldObservacionesAdicionales.setText("");
+				
+				comboBoxNombreDelEmpleado.setSelectedItem("      ----------------------- Seleccione una opción -----------------------");
+				comboBoxCategoria.setSelectedItem(" Seleccione una opción");
+				
+				rdbtnPreventivo.setSelected(true);
+				textFieldPiezasRequeridas.setEditable(false);
 			}
 		});
 		
@@ -291,7 +361,26 @@ public class VentanaCrearDiagnostico extends JFrame {
 		
 		comboBoxCategoria.setModel(comboBoxModelCategorias);
 		
+		rdbtnPreventivo.setSelected(true);
+		textFieldPiezasRequeridas.setEditable(false);
+		
 		setVisible(true);
 		
+	}
+	
+	public void muestraDialogoConMensaje(String mensaje ) {
+		
+		UIManager.put("OptionPane.background", new Color(184,199,218));
+		UIManager.put("Panel.background", new Color(184,199,218));
+		UIManager.put("Button.background", new Color(255,255,255));
+		UIManager.put("Button.foreground", new Color(89, 126, 170));
+		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+		
+		JLabel etiqueta = new JLabel(mensaje, JLabel.CENTER); 
+		etiqueta.setFont(new Font("Tahoma", Font.BOLD, 15)); 
+		etiqueta.setForeground(new Color(255,255,255)); 
+		
+		JOptionPane.showMessageDialog(this ,etiqueta, "AVISO", JOptionPane.INFORMATION_MESSAGE);
+	
 	}
 }

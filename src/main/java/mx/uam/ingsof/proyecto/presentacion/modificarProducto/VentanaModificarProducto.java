@@ -205,7 +205,7 @@ public class VentanaModificarProducto extends JFrame {
 					
 					textFieldNombreProducto.setEditable(true);
 					textFieldMarcaProducto.setEditable(true);
-					textAreaDescripcionProducto.setEnabled(true);
+					textAreaDescripcionProducto.setEditable(true);
 					textFieldPecioProducto.setEditable(true);
 					textFieldDescuentoProducto.setEditable(true);
 					textFieldNumeroEnExistenciaProducto.setEditable(true);

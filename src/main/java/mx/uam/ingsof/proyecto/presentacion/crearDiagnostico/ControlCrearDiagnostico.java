@@ -47,6 +47,43 @@ public class ControlCrearDiagnostico {
 	}
 	
 	/**
+	 * 
+	 * Manda a llamar al método agregarProducto() del módulo ServicioProducto pasandole los mismos parámetros recibidos 
+	 * 
+	 * @param nombre
+	 * @param marca
+	 * @param descripcion
+	 * @param precio
+	 * @param descuento
+	 * @param existencia
+	 * @param seccion
+	 * @return Dialogo con mensaje 
+	 */
+	public void crearDiagnostico(String nombreEmpleado,String nombre,String categoria, String marca, String descripcionEquipo,String reparacionMantenimiento, String tipo, String piezas, String observaciones) {
+		
+		
+		try {
+
+			if (servicioReparacionMantenimiento.crearDiagnostico(nombreEmpleado,nombre,categoria,marca,descripcionEquipo,reparacionMantenimiento,tipo,piezas,observaciones) == true) {
+
+				ventana.muestraDialogoConMensaje("Registro del diagnostico agregado exitosamente");
+				termina();
+			} else {
+
+				ventana.muestraDialogoConMensaje("Se ha llegado al limite maximo de registro de diagnosticos para la categoria " + categoria);
+				termina();
+			}
+
+
+		} catch (Exception ex) {
+			ventana.muestraDialogoConMensaje("Error al registrar el diagnostico: " + ex.getMessage());
+		}
+
+		termina();
+		
+	}
+	
+	/**
 	 * Termina la historia de usuario
 	 * 
 	 */

@@ -12,5 +12,6 @@ import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
  */
 
 public interface ReparacionMantenimientoRepository extends CrudRepository<ReparacionMantenimiento, Long> {
-
+	
+	public ReparacionMantenimiento findByNombreEquipo(String nombre); 
 }
