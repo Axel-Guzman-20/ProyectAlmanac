@@ -40,11 +40,11 @@ public class CategoriaDiagnostico {
 	/**
 	 * 
 	 * Permite agregar un diagnostico a una categoria disponible
-	 * Nota: un mismo producto no puede registrar dos veces (Regla del Negocio 02)
+	 * Nota: un mismo diagnostico no se puede registrar dos veces (Regla del Negocio )
 	 * 
-	 * @param producto el producto que deseo agregar a la seccion
-	 * @return true si el producto se agregó correctamente, false si ya estaba en la SeccionCatalogo
-	 * @throws IllegalArgumentException si el producto es nulo
+	 * @param diagnostico, el diagnostico que desea agregar a la categoria
+	 * @return true si el diagnostico se agregó correctamente, false si ya estaba en la CategoriaDiagnostico
+	 * @throws IllegalArgumentException si el diagnostico es nulo
 	 */
 	public boolean addDiagnostico(ReparacionMantenimiento diagnostico) {
 		

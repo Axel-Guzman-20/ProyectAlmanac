@@ -48,15 +48,17 @@ public class ControlCrearDiagnostico {
 	
 	/**
 	 * 
-	 * Manda a llamar al método agregarProducto() del módulo ServicioProducto pasandole los mismos parámetros recibidos 
-	 * 
+	 * Manda a llamar al método crearDiagnostico() del módulo ServicioReparacionMantenimiento pasandole los mismos parámetros recibidos 
+	 *
+	 * @param nombreEmpleado
 	 * @param nombre
+	 * @param categoria
 	 * @param marca
-	 * @param descripcion
-	 * @param precio
-	 * @param descuento
-	 * @param existencia
-	 * @param seccion
+	 * @param descripcionEquipo
+	 * @param reparacionMantenimiento
+	 * @param tipo
+	 * @param piezas
+	 * @param observaciones
 	 * @return Dialogo con mensaje 
 	 */
 	public void crearDiagnostico(String nombreEmpleado,String nombre,String categoria, String marca, String descripcionEquipo,String reparacionMantenimiento, String tipo, String piezas, String observaciones) {
@@ -66,7 +68,7 @@ public class ControlCrearDiagnostico {
 
 			if (servicioReparacionMantenimiento.crearDiagnostico(nombreEmpleado,nombre,categoria,marca,descripcionEquipo,reparacionMantenimiento,tipo,piezas,observaciones) == true) {
 
-				ventana.muestraDialogoConMensaje("Registro del diagnostico agregado exitosamente");
+				ventana.muestraDialogoConMensaje("El registro del diagnostico del equipo '" +nombre+"' a sido agregado exitosamente.");
 				termina();
 			} else {
 

@@ -16,88 +16,150 @@ import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
 /**
  * Servicio relacionado con las reparaciones y/o mantenimientos de los equipos
  * 
- * @author abigailmorales 
+ * @author abigailmorales
  */
 
 @Slf4j
 @Service
 public class ServicioReparacionMantenimiento {
-	
-	@Autowired 
-	private ReparacionMantenimientoRepository reparacionMantenimientoRepository; 
-	
+
 	@Autowired
-	private CategoriaDiagnosticoRepository categoriaDiagnosticoRepository; 
+	private ReparacionMantenimientoRepository reparacionMantenimientoRepository;
+
+	@Autowired
+	private CategoriaDiagnosticoRepository categoriaDiagnosticoRepository;
 	
-	public boolean crearDiagnostico(String nombreEmpleado,String nombre,String categoria, String marca, String descripcionEquipo,String reparacionMantenimiento, String tipo, String piezas, String observaciones) {
-		
-		
-		// Regla de negocio: No se permite agregar dos productos con el mismo nombre
+	/**
+	 * 
+	 * Permite crear un diagnostico en la categoria deseada 
+	 * Nota: un mismo diagnostico no puede registrarse dos veces (Regla del Negocio)
+	 * 
+	 * @param nombreEmpleado
+	 * @param nombre
+	 * @param categoria
+	 * @param marca
+	 * @param descripcionEquipo
+	 * @param reparacionMantenimiento
+	 * @param tipo
+	 * @param piezas
+	 * @param observaciones
+	 * @return true si el diagnostico se agregó correctamente
+	 * @return false si ya se excedio el maximo de diagnosticos en la categoria seleccionada 
+	 * @throws IllegalArgumentException si los campos del diagnostico son nulos
+	 * @throws IllegalArgumentException si el diagnostico ya existe 
+	 * @throws IllegalArgumentException si no se encontro la categoria a la que se quiere agregar el diagnostico
+	 * @throws IllegalArgumentException si el diagnostico no se pudo agregar exitosamente a la categoria
+	 */
+	
+	public boolean crearDiagnostico(String nombreEmpleado, String nombre, String categoria, String marca,
+			String descripcionEquipo, String reparacionMantenimiento, String tipo, String piezas,
+			String observaciones) {
 
-		if (validarMaximoDiagnosticos(categoria)) {
+		if (validarCampos(nombreEmpleado, nombre, categoria, marca, descripcionEquipo, reparacionMantenimiento, tipo,
+				piezas, observaciones)) {
+			if (validarMaximoDiagnosticos(categoria)) {
 
-			ReparacionMantenimiento diagnostico = reparacionMantenimientoRepository.findByNombreEquipo(nombre);
+				// Regla de negocio: No se permite agregar dos diagnosticos con el mismo nombre
 
-			if (diagnostico != null) {
-				throw new IllegalArgumentException("El diagnostico de este equipo ya existe");
+				ReparacionMantenimiento diagnostico = reparacionMantenimientoRepository.findByNombreEquipo(nombre);
+
+				if (diagnostico != null) {
+					throw new IllegalArgumentException("El diagnostico de este equipo ya existe");
+				}
+
+				CategoriaDiagnostico categoriaDiagnostico = categoriaDiagnosticoRepository.findByNombre(categoria);
+
+				if (categoriaDiagnostico == null) {
+					throw new IllegalArgumentException("No se encontró la categoria del diagnostico");
+				}
+
+				diagnostico = new ReparacionMantenimiento();
+
+				diagnostico.setFecha(obtenerFechaActual());
+				diagnostico.setNombreEmpleado(nombreEmpleado);
+				diagnostico.setNombreEquipo(nombre);
+				diagnostico.setMarca(marca);
+				diagnostico.setDescripcionEquipo(descripcionEquipo);
+				diagnostico.setDescripcionReparacionMantenimiento(reparacionMantenimiento);
+				diagnostico.setTipoReparacionMantenimiento(tipo);
+				diagnostico.setPiezasRequeridas(piezas);
+				diagnostico.setObservacionesAdicionales(observaciones);
+
+				reparacionMantenimientoRepository.save(diagnostico);
+				if (categoriaDiagnostico.addDiagnostico(diagnostico)) {
+					categoriaDiagnosticoRepository.save(categoriaDiagnostico);
+				} else {
+					throw new IllegalArgumentException(
+							"Error: El diagnostico no se pudo agregar exitosamente a la categoria " + categoria);
+				}
+
+				return true;
+
+			} else {
+				return false;
 			}
-
-			CategoriaDiagnostico categoriaDiagnostico = categoriaDiagnosticoRepository.findByNombre(categoria);
-
-			if (categoriaDiagnostico == null) {
-				throw new IllegalArgumentException("No se encontró la categoria del diagnostico");
-			}
-
-			log.info("Agregando nuevo diagnostico por: " + nombreEmpleado + ", con nombre:" + nombre + ", categoria:"
-					+ categoria + ", marca:" + marca + ", descripcion del equipo:" + descripcionEquipo
-					+ ", Reparaciones/Mantenimientos a realizar:" + reparacionMantenimiento + ", tipo:" + tipo
-					+ ", piezas requeridas:" + piezas + ", observaciones adicionales:" + observaciones);
-
-			diagnostico = new ReparacionMantenimiento();
-
-			diagnostico.setFecha(obtenerFechaActual());
-			diagnostico.setNombreEmpleado(nombreEmpleado);
-			diagnostico.setNombreEquipo(nombre);
-			diagnostico.setMarca(marca);
-			diagnostico.setDescripcionEquipo(descripcionEquipo);
-			diagnostico.setDescripcionReparacionMantenimiento(reparacionMantenimiento);
-			diagnostico.setTipoReparacionMantenimiento(tipo);
-			diagnostico.setPiezasRequeridas(piezas);
-			diagnostico.setObservacionesAdicionales(observaciones);
-
-			reparacionMantenimientoRepository.save(diagnostico);
-			categoriaDiagnostico.addDiagnostico(diagnostico);
-			categoriaDiagnosticoRepository.save(categoriaDiagnostico);
-			
-			return true;
-			
 		} else {
-			return false;
+			throw new IllegalArgumentException("Error: Los campos no pueden ser nulos");
 		}
-		 
 	}
-	
-	boolean validarMaximoDiagnosticos(String categoria) {
-		 if(categoriaDiagnosticoRepository.findByNombre(categoria).getDiagnosticos().size()<=2000)
-			 return true;
-		 else 
-			 return true; 
+
+	/**
+	 * 
+	 * Permite validar que los campos del diagnostico no sean nulos 
+	 * 
+	 * @param nombreEmpleado
+	 * @param nombre
+	 * @param categoria
+	 * @param marca
+	 * @param descripcionEquipo
+	 * @param reparacionMantenimiento
+	 * @param tipo
+	 * @param piezas
+	 * @param observaciones
+	 * @return true si los campos del diagnostico no son nulos
+	 * @return false si los campos del diagnostico son nulos 
+	 */
+	boolean validarCampos(String nombreEmpleado, String nombre, String categoria, String marca,
+			String descripcionEquipo, String reparacionMantenimiento, String tipo, String piezas,
+			String observaciones) {
+
+		if ((nombreEmpleado == null) || (nombre == null) || (categoria == null) || (marca == null)
+				|| (descripcionEquipo == null) || (reparacionMantenimiento == null) || (tipo == null)
+				|| (piezas == null) || (observaciones == null))
+			return false;
+		else
+			return true;
 	}
 	
 	/**
 	 * 
+	 * Valida que no se sobrepase el valor máximo asignado para crear diagnosticos en la categoria correspondiente 
+	 * 
+	 * @param categoria
+	 * @return true si aun no execede el valor maximo asignado de diagnosticos en la categoria correspondiente 
+	 * @return false si ya se execede el valor maximo asignado de diagnosticos en la categoria correspondiente
+	 */
+	boolean validarMaximoDiagnosticos(String categoria) {
+		if (categoriaDiagnosticoRepository.findByNombre(categoria).getDiagnosticos().size() <= 2000)
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * 
 	 * Permite recuperar la fecha actual del dispositivo
 	 * 
-	 * @return fecha 
+	 * @return fecha
 	 */
 	public String obtenerFechaActual() {
-		
+
 		String fecha;
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		 
-        fecha = dateFormat.format(new Date());
-		
+
+		fecha = dateFormat.format(new Date());
+
 		return fecha;
 	}
 }

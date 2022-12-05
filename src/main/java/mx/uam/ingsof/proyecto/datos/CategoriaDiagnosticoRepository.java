@@ -14,4 +14,5 @@ import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
 public interface CategoriaDiagnosticoRepository extends CrudRepository<CategoriaDiagnostico, Long> {
 	
 	public CategoriaDiagnostico findByNombre(String nombre);
+	
 }

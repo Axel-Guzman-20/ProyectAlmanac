@@ -75,9 +75,7 @@ public class VentanaCrearDiagnostico extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(Color.WHITE);
-//		panel.setBounds(41, 43, 779, 451);
 		panel.setPreferredSize(new Dimension(0,1000));
-//		contentPane.add(panel);
 		
 		JScrollPane scroll = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(41, 43, 780, 451);
@@ -272,32 +270,20 @@ public class VentanaCrearDiagnostico extends JFrame {
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (rdbtnCorrectivo.isSelected() && textFieldPiezasRequeridas.getText().equals("")) {
-					muestraDialogoConMensaje("Ingresar las piezas requeridas.");
+				if (validaCampos()) {
 
-				} else {
-					if ((comboBoxNombreDelEmpleado.getSelectedItem()
-							.equals("      ----------------------- Seleccione una opción -----------------------"))
-							|| (comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción"))
-							|| textFieldNombre.getText().equals("") || textFieldMarca.getText().equals("")
-							|| textFieldDescripcionDelEquipo.getText().equals("")
-							|| textFieldReparacionesMantenimientosARealizar.getText().equals("")) {
-						muestraDialogoConMensaje("Campos vacíos, rellena la información marcada con *");
+					if (rdbtnCorrectivo.isSelected()) {
+						control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
+								textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
+								textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
+								textFieldReparacionesMantenimientosARealizar.getText(), "Correctivo",
+								textFieldPiezasRequeridas.getText(), textFieldObservacionesAdicionales.getText());
 					} else {
-
-						if (rdbtnCorrectivo.isSelected()) {
-							control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
-									textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
-									textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
-									textFieldReparacionesMantenimientosARealizar.getText(), "Correctivo",
-									textFieldPiezasRequeridas.getText(), textFieldObservacionesAdicionales.getText());
-						} else {
-							control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
-									textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
-									textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
-									textFieldReparacionesMantenimientosARealizar.getText(), "Preventivo", "",
-									textFieldObservacionesAdicionales.getText());
-						}
+						control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
+								textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
+								textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
+								textFieldReparacionesMantenimientosARealizar.getText(), "Preventivo",
+								textFieldPiezasRequeridas.getText(), textFieldObservacionesAdicionales.getText());
 					}
 				}
 			}
@@ -306,18 +292,7 @@ public class VentanaCrearDiagnostico extends JFrame {
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				textFieldNombre.setText("");
-				textFieldMarca.setText("");
-				textFieldDescripcionDelEquipo.setText("");
-				textFieldReparacionesMantenimientosARealizar.setText("");
-				textFieldPiezasRequeridas.setText("");
-				textFieldObservacionesAdicionales.setText("");
-				
-				comboBoxNombreDelEmpleado.setSelectedItem("      ----------------------- Seleccione una opción -----------------------");
-				comboBoxCategoria.setSelectedItem(" Seleccione una opción");
-				
-				rdbtnPreventivo.setSelected(true);
-				textFieldPiezasRequeridas.setEditable(false);
+				limpiaCampos(); 
 			}
 		});
 		
@@ -328,6 +303,61 @@ public class VentanaCrearDiagnostico extends JFrame {
 		});
 		
 		
+	}
+	
+	/***********************************
+	 * 
+	 * Limpieza de campos
+	 * 
+	 ***********************************/
+	public void limpiaCampos() {
+		
+		textFieldNombre.setText("");
+		textFieldMarca.setText("");
+		textFieldDescripcionDelEquipo.setText("");
+		textFieldReparacionesMantenimientosARealizar.setText("");
+		textFieldPiezasRequeridas.setText("");
+		textFieldObservacionesAdicionales.setText("");
+		
+		comboBoxNombreDelEmpleado.setSelectedItem("      ----------------------- Seleccione una opción -----------------------");
+		comboBoxCategoria.setSelectedItem(" Seleccione una opción");
+		
+		rdbtnPreventivo.setSelected(true);
+		textFieldPiezasRequeridas.setEditable(false);
+	}
+
+	/***********************************
+	 * 
+	 * Validación de campos
+	 * 
+	 ***********************************/
+	public boolean validaCampos() {
+
+		if ((comboBoxNombreDelEmpleado.getSelectedItem().equals(null))
+				|| (comboBoxCategoria.getSelectedItem().equals(null)) || textFieldNombre.getText().equals(null)
+				|| textFieldMarca.getText().equals(null) || textFieldDescripcionDelEquipo.getText().equals(null)
+				|| textFieldReparacionesMantenimientosARealizar.getText().equals(null)) {
+			muestraDialogoConMensaje("Los campos no pueden ser nulos");
+			return false;
+		} else {
+			if (rdbtnCorrectivo.isSelected() && textFieldPiezasRequeridas.getText().equals("")) {
+				muestraDialogoConMensaje("Ingresar las piezas requeridas.");
+				return false;
+
+			} else {
+				if ((comboBoxNombreDelEmpleado.getSelectedItem()
+						.equals("      ----------------------- Seleccione una opción -----------------------"))
+						|| (comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción"))
+						|| textFieldNombre.getText().equals("") || textFieldMarca.getText().equals("")
+						|| textFieldDescripcionDelEquipo.getText().equals("")
+						|| textFieldReparacionesMantenimientosARealizar.getText().equals("")) {
+					muestraDialogoConMensaje("Campos vacíos, rellena la información marcada con *");
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
 	}
 	
 	public void muestra(ControlCrearDiagnostico control, List <CategoriaDiagnostico> categorias, List<Empleado> empleados, String fecha) {

@@ -125,6 +125,10 @@ public class ControlPrincipal{
 		
 	}
 	
+	/**
+	 * Método que arranca la historia de usuario "Crear Diagnostico"
+	 * 
+	 */
 	public void crearDiagnostico() {
 		
 		controlCrearDiagnostico.inicia(); 
