@@ -52,7 +52,8 @@ public class VistaModificarCliente extends JFrame {
 	public JTextField telefonoText;
 	public JTextField correoelectronicoText;
 	public JTextField correoelectronicoText2;
-	private String clienteSeleccionado = "";
+
+	private long IdCliente;
 
 	private JComboBox<String> comboBoxClientes;
 	private JButton modificarButton;
@@ -170,7 +171,7 @@ public class VistaModificarCliente extends JFrame {
 		JRadioButton Femenino = new JRadioButton("Femenino");
 
 		JRadioButton VerInformacion = new JRadioButton("Ver información");
-		
+
 		VerInformacion.setBackground(new Color(255, 255, 255));
 		VerInformacion.setBounds(455, 112, 109, 23);
 		panelBlanco.add(VerInformacion);
@@ -244,52 +245,45 @@ public class VistaModificarCliente extends JFrame {
 		bg.add(Femenino);
 		Masculino.setEnabled(false);
 		Femenino.setEnabled(false);
+
 		// Accion de los radioButton
-		
-			
-		
 		Masculino.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(Masculino.isSelected()) {
-				generoText.setText("Masculino");
-				}
-				else {
+				if (Masculino.isSelected()) {
+					generoText.setText("Masculino");
+				} else {
 					generoText.setText("");
 				}
 			}
 		});
-		
-		
+
 		Masculino.setBackground(new Color(255, 255, 255));
 		Masculino.setBounds(420, 242, 109, 23);
-		
+
 		panelBlanco.add(Masculino);
-		
+
 		Femenino.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(Femenino.isSelected()) {
+				if (Femenino.isSelected()) {
 					generoText.setText("Femenino");
-					}
-					else {
-						generoText.setText("");
-					}
+				} else {
+					generoText.setText("");
+				}
 
 			}
 		});
-		
+
 		Femenino.setBackground(new Color(255, 255, 255));
 		Femenino.setBounds(420, 268, 109, 23);
 		panelBlanco.add(Femenino);
 
-		
-		//bg2.add(VerInformacion);
-
 		VerInformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (VerInformacion.isSelected()	&& (String) comboBoxClientes.getSelectedItem() != "Seleccione Cliente") {
+				if (VerInformacion.isSelected() && (String) comboBoxClientes.getSelectedItem() != "Seleccione Cliente"
+						&& comboBoxClientes.getSelectedIndex() != 0) {
 
 					muestraInformacionCliente();
 					Masculino.setEnabled(true);
@@ -301,14 +295,14 @@ public class VistaModificarCliente extends JFrame {
 					correoelectronicoText.setEditable(true);
 					comboBoxClientes.setEnabled(false);
 
-				} else if (VerInformacion.isSelected() && (String) comboBoxClientes.getSelectedItem() == "Seleccione Cliente"){
-					
+				} else if (VerInformacion.isSelected()
+						&& (String) comboBoxClientes.getSelectedItem() == "Seleccione Cliente") {
+
 					muestraDialogoConMensaje("No se ha seleccionado un cliente ");
 					VerInformacion.setSelected(false);
 					Masculino.setEnabled(false);
 					Femenino.setEnabled(false);
-				}
-				else {
+				} else {
 					nombreCompletoText.setEditable(false);
 					generoText.setEditable(false);
 					generoText.setEnabled(false);
@@ -317,7 +311,7 @@ public class VistaModificarCliente extends JFrame {
 					correoelectronicoText.setEditable(false);
 					Masculino.setEnabled(false);
 					Femenino.setEnabled(false);
-				//	Masculino.Set
+					// Masculino.Set
 
 					bg.clearSelection();
 					nombreCompletoText.setText("");
@@ -326,7 +320,6 @@ public class VistaModificarCliente extends JFrame {
 					telefonoText.setText("");
 					correoelectronicoText.setText("");
 					VerInformacion.setSelected(false);
-					
 
 				}
 			}
@@ -344,14 +337,14 @@ public class VistaModificarCliente extends JFrame {
 							|| correoelectronicoText2.getText().equals(""))
 						muestraDialogoConMensaje("Campos vacíos, rellena la información marcada con *");
 					else {
-						control.modificarCliente(clienteSeleccionado, nombreCompletoText.getText(),
-								generoText.getText(), direccionText.getText(), telefonoText.getText(),
-								correoelectronicoText.getText(), correoelectronicoText2.getText());
-					VerInformacion.setSelected(false);
-					Masculino.setEnabled(false);
-					Femenino.setEnabled(false);
+						control.modificarCliente(IdCliente, nombreCompletoText.getText(), generoText.getText(),
+								direccionText.getText(), telefonoText.getText(), correoelectronicoText.getText(),
+								correoelectronicoText2.getText());
+						VerInformacion.setSelected(false);
+						Masculino.setEnabled(false);
+						Femenino.setEnabled(false);
 					}
-				}else
+				} else
 					muestraDialogoConMensaje("Seleccione a un cliente");
 			}
 
@@ -374,7 +367,7 @@ public class VistaModificarCliente extends JFrame {
 				Masculino.setEnabled(false);
 				Femenino.setEnabled(false);
 				control.cierraVentana();
-				
+
 			}
 		});
 
@@ -399,13 +392,11 @@ public class VistaModificarCliente extends JFrame {
 		direccionText.setEditable(false);
 		telefonoText.setEditable(false);
 		correoelectronicoText.setEditable(false);
-		
-		
-		
+
 		DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 		comboBoxModel.addElement("Seleccione Cliente");
 		for (Cliente cliente : clientes) {
-			comboBoxModel.addElement(cliente.getNombreCompleto());
+			comboBoxModel.addElement(Long.toString(cliente.getIdCliente()) + "  " + cliente.getNombreCompleto());
 		}
 
 		comboBoxClientes.setModel(comboBoxModel);
@@ -418,9 +409,10 @@ public class VistaModificarCliente extends JFrame {
 	}
 
 	public void muestraInformacionCliente() {
-		clienteSeleccionado = (String) comboBoxClientes.getSelectedItem();
 
-		Cliente cliente = control.obtenerCliente(clienteSeleccionado);
+		IdCliente = (long) comboBoxClientes.getSelectedIndex();
+
+		Cliente cliente = control.obtenerCliente(IdCliente);
 
 		if (cliente != null) {
 			nombreCompletoText.setText(cliente.getNombreCompleto());
@@ -443,7 +435,7 @@ public class VistaModificarCliente extends JFrame {
 			direccionText.setEditable(false);
 			telefonoText.setEditable(false);
 			correoelectronicoText.setEditable(false);
-			
+
 			comboBoxClientes.setEnabled(true);
 
 		}
@@ -461,10 +453,11 @@ public class VistaModificarCliente extends JFrame {
 		JOptionPane.showMessageDialog(this, mensaje, "Aviso", JOptionPane.INFORMATION_MESSAGE);
 
 	}
-
+	
+	
+	// Limpia todas las cajas de texto
 	public void limpiarCajas() {
 
-		// Limpia todas las cajas de texto
 
 		nombreCompletoText.setText("");
 		generoText.setText("");
@@ -482,10 +475,11 @@ public class VistaModificarCliente extends JFrame {
 
 		comboBoxClientes.setEnabled(true);
 		comboBoxClientes.setSelectedItem("Seleccione Cliente");
-		
+
 	}
+
 	public void limpiarradiobutton(JRadioButton VerInformacion) {
 		VerInformacion.setSelected(false);
-		
+
 	}
 }

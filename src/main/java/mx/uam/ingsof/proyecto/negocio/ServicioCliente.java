@@ -94,6 +94,7 @@ public class ServicioCliente {
 	 * 
 	 * @param fecha
 	 * @param nombreCompleto
+	 * @param genero
 	 * @param direccion
 	 * @param telefono
 	 * @param correoelectronico
@@ -136,6 +137,7 @@ public class ServicioCliente {
 	 * 
 
 	 * @param nombreCompleto
+	 * @param genero
 	 * @param direccion
 	 * @param telefono
 	 * @param correoelectronico
@@ -143,10 +145,10 @@ public class ServicioCliente {
 	 * @throws IllegalArgumentException si existe un error
 	 */
 
-	public Cliente modificarCliente( String ClienteSeleccionado, String nombreCliente, String genero, String direccion,
+	public Cliente modificarCliente( long id, String nombreCliente, String genero, String direccion,
 			String telefono, String correoElectronico) {
 
-		Cliente cliente = clienteRepository.findBynombreCompleto(ClienteSeleccionado);
+		Cliente cliente = clienteRepository.findByIdCliente(id);
 
 		if (cliente == null) {
 			throw new IllegalArgumentException("El Cliente no existe");
@@ -178,18 +180,11 @@ public class ServicioCliente {
 	}
 
 
-	public boolean comparacorreos(String correo1, String correo2) {
 
-		if (correo1.compareTo(correo2) == 0) {
-			return true;
-		} else
-			return false;
 
-	}
+	public Cliente obtenerCliente(long id) {
 
-	public Cliente obtenerCliente(String nombre) {
-
-		Cliente cliente = clienteRepository.findBynombreCompleto(nombre);
+		Cliente cliente = clienteRepository.findByIdCliente(id);
 
 		if (cliente == null) {
 			throw new IllegalArgumentException("El cliente no existe");
@@ -215,11 +210,27 @@ public class ServicioCliente {
 
 		return clientes;
 	}
+	
+	
+	/**
+	 * 
+	 * Compara el correo electronico registrado con el nuevo correo electronico retorna un
+	 * false si el correo nuevo es igual a un correo de diferentecliente
+	 * true si el nuevo correo es el mismo correo al cliente a modificar
+	 * */
+	public boolean comparacorreos(String correo1, String correo2) {
+
+		if (correo1.compareTo(correo2) == 0) {
+			return true;
+		} else
+			return false;
+
+	}
 
 	/**
-	 * Recupera todos los clientes existentes Contrato:
+	 * Recupera todos los clientes existentes 
 	 * 
-	 * @return Una lista con todos los clientes existentes Una lista vacía
+	 * @return Una lista con todos los clientes existentes. Una lista vacía
 	 */
 	public List<Cliente> recuperaClientes() {
 

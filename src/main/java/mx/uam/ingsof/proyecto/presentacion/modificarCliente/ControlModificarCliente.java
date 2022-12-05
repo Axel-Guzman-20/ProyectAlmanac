@@ -33,20 +33,9 @@ public class ControlModificarCliente {
 
 	}
 
-	/**
-	 * 
-	 * Manda a llamar al método obtenerCliente() del módulo ServicioCliente
-	 * pasandole los mismos parámetros recibidos
-	 * 
-	 * @param cliente
-
-	 * @return Dialogo con mensaje
-	 */
-	
-
 	
 	
-	public void modificarCliente(String ClienteSeleccionado, String nombreCompleto, String genero, String direccion,
+	public void modificarCliente(long IdCliente, String nombreCompleto, String genero, String direccion,
 			String telefono, String correoelectronico,  String correoelectronico2) {
 		
 		boolean correo;
@@ -73,7 +62,7 @@ public class ControlModificarCliente {
 					
 					try {
 			
-						servicioCliente.modificarCliente(ClienteSeleccionado, nombreCompleto, genero, direccion, telefono,
+						servicioCliente.modificarCliente(IdCliente, nombreCompleto, genero, direccion, telefono,
 								correoelectronico);
 
 						ventana.muestraDialogoConMensaje("El Cliente " + nombreCompleto + " ha sido modificado exitosamente");
@@ -102,7 +91,7 @@ public class ControlModificarCliente {
 						
 						try {
 						
-							servicioCliente.modificarCliente(ClienteSeleccionado, nombreCompleto, genero, direccion, telefono,
+							servicioCliente.modificarCliente(IdCliente, nombreCompleto, genero, direccion, telefono,
 								correoelectronico);
 
 							ventana.muestraDialogoConMensaje("El Cliente " + nombreCompleto + " ha sido modificado exitosamente");
@@ -127,15 +116,15 @@ public class ControlModificarCliente {
 
 	/**
 	 * 
-	 * Manda a llamar al método obtenerCliente() del módulo ServicioProducto
+	 * Manda a llamar al método obtenerCliente() del módulo ServicioCliente
 	 * pasandole los mismos parámetros recibidos
 	 * 
-	 * @param nombre
+	 * @param id
 	 * @return cliente
 	 */
 
-	public Cliente obtenerCliente(String nombre) {
-		Cliente cliente = servicioCliente.obtenerCliente(nombre);
+	public Cliente obtenerCliente(long id) {
+		Cliente cliente = servicioCliente.obtenerCliente(id);
 		return cliente;
 	}
 
