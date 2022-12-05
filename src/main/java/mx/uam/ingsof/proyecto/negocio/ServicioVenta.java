@@ -117,11 +117,9 @@ public class ServicioVenta {
 	 * @return matriz de String con los datos
 	 * @throws ParseException 
 	 */
-	@SuppressWarnings({ "null", "unused" })
+	@SuppressWarnings({"unused" })
 	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String itemEmpleadoId, String itemClienteId, String montoVentaIngresada) throws ParseException {
-		
-		int i;
-		
+				
 		List<Venta> ventas;
 		ventas = ventaRepository.findAll();
 		ArrayList<Venta> nuevaVenta = new ArrayList<Venta>();

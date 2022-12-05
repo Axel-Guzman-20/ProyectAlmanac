@@ -387,7 +387,7 @@ public class VistaConsultarVentas extends JFrame{
 
 	
 	public void muestra(ControlConsultarVentas control, List <Empleado> empleados, List <Cliente> clientes) {
-		
+			
 		controlConsultarVentas = control;
 		
 		llenaDatosComboBox(empleados, clientes);
@@ -519,6 +519,7 @@ public class VistaConsultarVentas extends JFrame{
 		tablaPanel.setVisible(false);
 		totalVentasText.setText("");
 		
+		
 		// Recupera el texto del item del comboBox Selecionado
 		String itemEmpleadoId = String.valueOf(comboBoxEmpleados.getSelectedIndex());
 		String itemClienteId = String.valueOf(comboBoxClientes.getSelectedIndex());
@@ -538,8 +539,10 @@ public class VistaConsultarVentas extends JFrame{
 		textoFechaHastaDC.setText("");
 		comboBoxEmpleados.setSelectedIndex(0);
 		comboBoxClientes.setSelectedIndex(0);
+		textMontoVenta.setText("");
 		totalVentasText.setText("");	
 		tablaPanel.setVisible(false);
+		
 	}
 	
 	

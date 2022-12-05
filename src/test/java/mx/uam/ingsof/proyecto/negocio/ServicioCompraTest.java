@@ -1,12 +1,9 @@
 package mx.uam.ingsof.proyecto.negocio;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,9 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
-import mx.uam.ingsof.proyecto.negocio.ServicioCompra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 /**
