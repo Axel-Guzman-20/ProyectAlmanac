@@ -37,5 +37,5 @@ public class Garantia {
 	private String descripcionEquipo;
 	@OneToOne
 	@JoinColumn(name="idNumeroGaratia")
-	Compra compra;
+	Venta venta;
 }

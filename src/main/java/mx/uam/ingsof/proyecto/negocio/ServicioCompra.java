@@ -1,5 +1,6 @@
 package mx.uam.ingsof.proyecto.negocio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class ServicioCompra {
 	private CompraRepository compraRepository;
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	private List <Compra> listaCompras = new ArrayList<Compra>();
 	
 	/**
 	 * Recupera todas las compras de un cliente.
@@ -50,7 +53,51 @@ public class ServicioCompra {
 	 * @return Compra de un cliente/null
 	 */
 	
-	public Compra obtenCompra(long idCompra) {
-		return compraRepository.findById(idCompra); 
+	
+	public  boolean creaGrantia(long idEmpleado, String nombreProducto, String marcaProducto, int cantidadProdcuto,double precioProducto,String fecha) {
+		if(idEmpleado == 0)
+			throw new IllegalArgumentException("El id no es valido");
+		if(nombreProducto == null)
+			throw new IllegalArgumentException("El nombre es null, ingresa un nombre valido");
+		if(marcaProducto ==  null)
+			throw new IllegalArgumentException("El nombre es null, ingresa un nombre valido");
+		if(cantidadProdcuto == 0)
+			throw new IllegalArgumentException("No es valido el numero de productos");
+		if(precioProducto == 0)
+			throw new IllegalArgumentException("No es valido el precio de los prodctos");
+		if(fecha ==  null)
+			throw new IllegalArgumentException("La fecha no es valida");
+
+		Compra compra = new Compra();
+		compra.setNombre(nombreProducto);
+		compra.setMarca(marcaProducto);
+		compra.setFecha(fecha);
+		compra.setPrecio(precioProducto);
+		compra.setIdEmpleado(idEmpleado);
+		compra.setCantidad(cantidadProdcuto);
+		listaCompras.add(compra);
+		return true;
 	}
+	public boolean guardaCompras() {
+		if(listaCompras.size() == 0)
+			return false;
+		else {
+			compraRepository.saveAll(listaCompras);
+			return true;
+		}
+			
+	}
+	public boolean limpiaCompras() {
+		if(listaCompras.size() == 0) {
+			return true;
+		}else {
+			if(listaCompras.size() != 0) {
+				listaCompras.clear();
+				return true;
+			}else {
+				return false;
+			}
+		}
+	}
+	
 }

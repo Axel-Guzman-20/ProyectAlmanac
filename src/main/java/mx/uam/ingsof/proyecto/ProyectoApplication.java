@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
+import mx.uam.ingsof.proyecto.datos.EmpleadoRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
+import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
 import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
@@ -36,7 +38,10 @@ public class ProyectoApplication {
 	ControlPrincipal controlPrincipal;
 	
 	@Autowired
-	SeccionCatalogoRepository seccionCatalogoRepository; 
+	SeccionCatalogoRepository seccionCatalogoRepository;
+	
+	@Autowired
+	EmpleadoRepository empleadoRepository;
 	
 	@Autowired
 	ProductoRepository productoRepository;
@@ -165,7 +170,15 @@ public class ProyectoApplication {
 		//productoRepository.save(productoPrueba);
 		seccionCatalogoRepository.save(seccionProcesador);
 		
-	
+		var empleadoPrueba = new Empleado();
+		empleadoPrueba.setIdEmpleado(1);
+		empleadoPrueba.setTelefono("55102417178");
+		empleadoPrueba.setNombreCompleto("Ricardo");
+		empleadoPrueba.setGenero("M");
+		empleadoPrueba.setFechaIngreso("29/11/2022");
+		empleadoPrueba.setDireccionCompleta("Calle Creacion");
+		empleadoPrueba.setCorreoElectronico("Eduardo@gmail.com");
+		empleadoRepository.save(empleadoPrueba);
 		
 		
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO

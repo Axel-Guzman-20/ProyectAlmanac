@@ -42,10 +42,6 @@ public class ControlPrincipal{
 	@Autowired
 	private ControlRegistrarCompra controlRegistrarCompra;
 	
-	/*
-	@Autowired
-	private ControlVizualizarProducto controlVizualizarProducto;
-	*/
 	
 	
 	/**

@@ -3,6 +3,7 @@ package mx.uam.ingsof.proyecto.datos;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 
 
 /**
@@ -23,6 +24,8 @@ public interface CompraRepository extends CrudRepository<Compra, Long> {
 	public Compra findById(long idCompra);
 	
 	public List <Compra> findAll();
+
+	public void save(Venta venta);
 	
 	//public List <Compra> findByIdCliente(Cliente idCliente); //el Repository recupera las compras del cliente
 

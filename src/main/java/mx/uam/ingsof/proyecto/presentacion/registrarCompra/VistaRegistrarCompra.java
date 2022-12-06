@@ -1,7 +1,5 @@
 package mx.uam.ingsof.proyecto.presentacion.registrarCompra;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -9,13 +7,19 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.springframework.stereotype.Component;
+
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -23,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
+@Component
 public class VistaRegistrarCompra extends JFrame {
 
 	private ControlRegistrarCompra controlRegistrarCompra;
@@ -37,27 +43,20 @@ public class VistaRegistrarCompra extends JFrame {
 	private JComboBox<String> comboBoxEmpleado;
 
 	private List<Empleado> listaEmpleados;
+	private Empleado empleado;
+	private String nomProducto;
+	private String marca;
+	private String cantidad;
+	private String precio;
+	private String fecha;
+
+	private int i = 0, j = 0;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaRegistrarCompra frame = new VistaRegistrarCompra();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
+	 * Launch the application. /** Create the frame.
 	 */
 	public VistaRegistrarCompra() {
+		fecha = fechaActual();
 		setTitle("Registrar Compra");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 688, 491);
@@ -69,6 +68,7 @@ public class VistaRegistrarCompra extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(20, 11, 632, 430);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -140,46 +140,174 @@ public class VistaRegistrarCompra extends JFrame {
 		lblFecha.setBounds(395, 56, 67, 17);
 		panel.add(lblFecha);
 
-		JLabel lblFecha_1 = new JLabel("Fecha *");
+		JLabel lblFecha_1 = new JLabel(fecha);
 		lblFecha_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFecha_1.setBounds(500, 56, 67, 17);
+		lblFecha_1.setBounds(472, 56, 95, 17);
 		panel.add(lblFecha_1);
 
 		JButton btnAgregarLista = new JButton("Agregar a lista");
 		btnAgregarLista.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnAgregarLista.setBackground(new Color(0, 158, 15));
 		btnAgregarLista.setBounds(259, 162, 132, 23);
+
 		btnAgregarLista.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				if (e.getSource() == btnAgregarLista) {
+
+					int indexEmpleado = comboBoxEmpleado.getSelectedIndex();
+					int cantidadProductos = 0;
+					double precioProducto = 0.0;
+					empleado = listaEmpleados.get(indexEmpleado);
+					nomProducto = textNombreProducto.getText();
+					marca = textMarca.getText();
+					cantidad = textCantidad.getText();
+					precio = textPrecio.getText();
+
+					if (esEntero(cantidad)) {
+						cantidadProductos = Integer.parseInt(cantidad);
+					}
+					if (esReal(precio)) {
+						precioProducto = Double.parseDouble(precio);
+					}
+
+					if (nomProducto.equals("") || marca.equals("") || cantidad.equals("") || precio.equals("") || (!esEntero(cantidad)) || (!esReal(precio))) {
+						muestraDialogoConMensaje("¡Debes ingresar todos los datos deacuerdo a su tipo!");
+					} else {
+						if (empleado == null || cantidadProductos <= 0 || precioProducto <= 0) {
+							muestraDialogoConMensaje("Elige un ID de empleado");
+						} else {
+							comboBoxEmpleado.setEnabled(false);
+							if (controlRegistrarCompra.crearCompra(empleado.getIdEmpleado(), nomProducto, marca,
+									cantidadProductos, precioProducto, fecha)) {
+								while (j < 5) {
+									tabla.setValueAt(nomProducto, i, j);
+									j++;
+									tabla.setValueAt(marca, i, j);
+									j++;
+									tabla.setValueAt(cantidadProductos, i, j);
+									j++;
+									tabla.setValueAt(precioProducto, i, j);
+									j++;
+									tabla.setValueAt(precioProducto * cantidadProductos, i, j);
+									j++;
+
+								}
+								j = 0;
+								i++;
+								textNombreProducto.setText("");
+								textMarca.setText("");
+								textCantidad.setText("");
+								textPrecio.setText("");
+							} else {
+								muestraDialogoConMensaje("La compra no pudo ser creada");
+							}
+						}
+					}
+
+				}
+
 			}
 		});
 		panel.add(btnAgregarLista);
 
-		JButton btnAgregarCompra = new JButton("Agregar a lista");
+		JButton btnAgregarCompra = new JButton("Agregar compra");
 		btnAgregarCompra.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnAgregarCompra.setBackground(new Color(0, 158, 15));
 		btnAgregarCompra.setBounds(180, 399, 132, 23);
+		btnAgregarCompra.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getSource() == btnAgregarCompra) {
+					int m = 0, n = 0;
+					while (m < i) {
+						while (n < 5) {
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+
+						}
+						n = 0;
+						m++;
+					}
+					i = 0;
+					if(controlRegistrarCompra.guardaCompras()) {
+						muestraDialogoConMensaje("Venta creada con exito!");
+						setVisible(false);
+					}
+					else {
+						muestraDialogoConMensaje("La venta no pudo ser creada");
+						setVisible(false);
+					}
+					
+				}
+
+			}
+		});
 		panel.add(btnAgregarCompra);
 
-		JButton btnCancelar = new JButton("Agregar a lista");
+		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnCancelar.setBackground(new Color(204, 0, 0));
 		btnCancelar.setBounds(322, 399, 121, 23);
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getSource() == btnCancelar) {
+					int m = 0, n = 0;
+					while (m < i) {
+						while (n < 5) {
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+							tabla.setValueAt(null, m, n);
+							n++;
+
+						}
+						n = 0;
+						m++;
+					}
+					i = 0;
+					if(controlRegistrarCompra.limpiaLista())
+						muestraDialogoConMensaje("¡Compra cancelada exitosamente!");
+					else
+						muestraDialogoConMensaje("¡Evento desafortunado!, la venta no pudo ser creada");
+					setVisible(false);
+				}
+				
+			}
+		});
 		panel.add(btnCancelar);
+
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 196, 612, 190);
 		panel.add(scrollPane);
-		Object[] colName = {"Nombre producto","Marca", "Cantidad", "Precio", "Precio Total" };
+		int k,o;
+		Object[] colName = { "Nombre producto", "Marca", "Cantidad", "Precio", "Precio Total" };
 		Object[][] datos = new Object[5][10];
-		for (int k = 0; k < 5; k++) {
-			for (int o = 0; o < 10; o++) {
+		for (k = 0; k < 10; k++) {//renglones
+			for (o = 0; o < 5; o++) {//columnas
 				datos[k][o] = null;
 			}
 		}
+	
 		DefaultTableModel model = new DefaultTableModel(datos, colName);
 		tabla = new JTable(model) {
 			private static final long serialVersionUID = 1L;
@@ -220,5 +348,39 @@ public class VistaRegistrarCompra extends JFrame {
 			comboBoxModeloEmpleado.addElement(Long.toString(empleado.getIdEmpleado()));
 		}
 		comboBoxEmpleado.setModel(comboBoxModeloEmpleado);
+		setVisible(true);
+	}
+
+	public void muestraDialogoConMensaje(String mensaje) {
+		JOptionPane.showMessageDialog(this, mensaje);
+	}
+
+	public String fechaActual() {
+		Date facha = new Date();
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("d/MM/YYYY");
+		return formatoFecha.format(facha);
+	}
+
+	public boolean esEntero(String s) {
+		if (s == null || s.equals("")) {
+			return false;
+		}
+
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c < '0' || c > '9') {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean esReal(String cad) {
+		try {
+			Double.parseDouble(cad);
+			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
 	}
 }

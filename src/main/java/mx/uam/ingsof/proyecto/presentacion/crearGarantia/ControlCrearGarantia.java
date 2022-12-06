@@ -2,9 +2,9 @@ package mx.uam.ingsof.proyecto.presentacion.crearGarantia;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import mx.uam.ingsof.proyecto.negocio.ServicioCompra;
 import mx.uam.ingsof.proyecto.negocio.ServicioGarantia;
-import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
+import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 
 
 
@@ -22,12 +22,12 @@ public class ControlCrearGarantia {
 	private VistaCrearGrantia ventanaCrearGarantia;
 	
 	@Autowired
-	private ServicioCompra servicioCompra;
+	private ServicioVenta servicioVenta;
 	
 	@Autowired
 	private ServicioGarantia servicioGarantia;
 
-	Compra compra;
+	Venta venta;
 	
 	/**
 	 * Inicia la historia de usuario
@@ -40,8 +40,8 @@ public class ControlCrearGarantia {
 	
 	public boolean validaCompra(long idCompra) {
 		
-	   compra = servicioCompra.obtenCompra(idCompra);
-		if(compra == null)
+	   venta = servicioVenta.obtenCompra(idCompra);
+		if(venta == null)
 			return false;
 		else
 			return true;
@@ -50,7 +50,7 @@ public class ControlCrearGarantia {
 	public void creaGarantia(long idCompra,String nombreCompleto,String fecha, String calle, String numExt, String numInt, String descipEquipo) {
 		
 		try {
-			 servicioGarantia.creaGarantia(compra, nombreCompleto, fecha, calle, numExt, numInt, descipEquipo);
+			 servicioGarantia.creaGarantia(venta, nombreCompleto, fecha, calle, numExt, numInt, descipEquipo);
 			 ventanaCrearGarantia.muestraDialogoConMensaje("Garantia creada correctamente");
 		} catch (Exception e) {
 			// TODO: handle exception
