@@ -4,13 +4,13 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-
 import mx.uam.ingsof.proyecto.datos.CategoriaDiagnosticoRepository;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
@@ -56,6 +56,9 @@ public class ProyectoApplication {
 	
 	@Autowired
 	ControladorEmpleado controladorEmpleado;
+	
+	@Autowired
+	ServicioCliente servicioCliente;
 	
 	/**
 	 * 
@@ -198,5 +201,13 @@ public class ProyectoApplication {
 		controladorEmpleado.registraEmpleado("Miguel Guzman", "H", "miguel@correo.com", "5896479625", "Calle 2, Col, Roma, Alc Carranza, CDMX, CDMX");
 		controladorEmpleado.registraEmpleado("Axel Guzman", "H", "axel@correo.com", "2563149563", "Calle 3, Col, Roma, Alc Carranza, CDMX, CDMX");
 		controladorEmpleado.registraEmpleado("Eduardo Castro", "H", "eduardo@correo.com", "9674852893", "Calle 4, Col, Roma, Alc Carranza, CDMX, CDMX");
+	
+		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
+		servicioCliente.registrarCliente("27/11/2022", "Benito Camelo", "Masculino", "Calle 10 Alc. Roma, CDMX, CDMX", "5536521474", "cliente1@correo.com");
+		servicioCliente.registrarCliente("26/11/2022", "Elver Gonzales", "Masculino", "Calle 11 Alc. Roma, CDMX, CDMX", "5585967414", "cliente2@correo.com");
+		servicioCliente.registrarCliente("25/11/2022", "Rosa Mela", "Femenino", "Calle 12 Alc. Roma, CDMX, CDMX", "5536963696", "cliente3@correo.com");
+		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 13 Alc. Roma, CDMX, CDMX", "5512547854", "cliente4@correo.com");
+		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 63 Alc. Roma, CDMX, CDMX", "5512547854", "cliente5@correo.com");
+
 	}
 }

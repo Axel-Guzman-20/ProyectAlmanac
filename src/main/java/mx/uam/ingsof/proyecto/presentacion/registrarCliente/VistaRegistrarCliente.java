@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+
 import org.springframework.stereotype.Component;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
@@ -320,17 +322,25 @@ public class VistaRegistrarCliente  extends JFrame {
 	
 	public void muestraDialogoConMensaje(String mensaje ) {
 		
-		JOptionPane.showMessageDialog(this , mensaje, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+		UIManager.put("OptionPane.background", new Color(184,199,218));
+		UIManager.put("Panel.background", new Color(184,199,218));
+		UIManager.put("Button.background", new Color(255,255,255));
+		UIManager.put("Button.foreground", new Color(89, 126, 170));
+		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+		
+		JLabel etiqueta = new JLabel(mensaje, JLabel.CENTER); 
+		etiqueta.setFont(new Font("Tahoma", Font.BOLD, 15)); 
+		etiqueta.setForeground(new Color(255,255,255)); 
+		
+		JOptionPane.showMessageDialog(this ,etiqueta, "AVISO", JOptionPane.INFORMATION_MESSAGE);
 	
 	}
 	
 	
 	
 	
-	public void limpiarCajas() {
-		
-		// Limpia todas las cajas de texto
-		
+	public void limpiarCajas() {// Limpia todas las cajas de texto
+			
 		nombreCompletoText.setText("");
 		generoText.setText("");
 		direccionText.setText("");
