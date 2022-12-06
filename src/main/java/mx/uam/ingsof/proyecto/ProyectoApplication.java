@@ -4,10 +4,12 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import mx.uam.ingsof.proyecto.datos.CategoriaDiagnosticoRepository;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
+import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
@@ -48,6 +50,9 @@ public class ProyectoApplication {
 	
 	@Autowired
 	CompraRepository compraRepository;
+	
+	@Autowired
+	CategoriaDiagnosticoRepository categoriaDiagnosticoRepository; 
 	
 	@Autowired
 	ControladorEmpleado controladorEmpleado;
@@ -93,7 +98,7 @@ public class ProyectoApplication {
 	 */
 	public void inicializaBD() {
 		
-		// Vamos a crear los dos grupos de usuarios
+		// Vamos a crear las secciones del catalogo
 		
 		SeccionCatalogo seccionImpresora = new SeccionCatalogo();
 		seccionImpresora.setNombre("Impresora");
@@ -117,6 +122,16 @@ public class ProyectoApplication {
 		SeccionCatalogo seccionLaptop = new SeccionCatalogo();
 		seccionLaptop.setNombre("Laptops");
 		seccionCatalogoRepository.save(seccionLaptop);
+		
+		//Vamos a crear las categorias para los diagnosticos 
+		
+		CategoriaDiagnostico  categoriaReparacion = new CategoriaDiagnostico(); 
+		categoriaReparacion.setNombre("Reparación");
+		categoriaDiagnosticoRepository.save(categoriaReparacion); 
+		
+		CategoriaDiagnostico  categoriaMantenimiento = new CategoriaDiagnostico(); 
+		categoriaMantenimiento.setNombre("Mantenimiento");
+		categoriaDiagnosticoRepository.save(categoriaMantenimiento); 
 		
 		
 		var productoPrueba = new Producto();

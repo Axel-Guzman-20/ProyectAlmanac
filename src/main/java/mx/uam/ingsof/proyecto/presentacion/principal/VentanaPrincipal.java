@@ -331,6 +331,8 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem menuItemNuevaReparacion = new JMenuItem("Nueva Reparación");
 		menuItemNuevaReparacion.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			
+			controlPrincipal.crearDiagnostico();
 				
 			}
 		});
