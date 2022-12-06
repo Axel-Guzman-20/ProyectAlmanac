@@ -45,4 +45,4 @@ public class ControlRegistrarCompra {
 			return false;
 	}
 }
-//Eduardo castro estuvo aqui
+//Eduardo castro estuvo aqui :v
