@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
@@ -222,6 +223,7 @@ public class VistaRegistrarCompra extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (e.getSource() == btnAgregarCompra) {
+					comboBoxEmpleado.setEnabled(true);
 					int m = 0, n = 0;
 					while (m < i) {
 						while (n < 5) {
@@ -266,6 +268,7 @@ public class VistaRegistrarCompra extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(e.getSource() == btnCancelar) {
+					comboBoxEmpleado.setEnabled(true);
 					int m = 0, n = 0;
 					while (m < i) {
 						while (n < 5) {
@@ -302,7 +305,7 @@ public class VistaRegistrarCompra extends JFrame {
 		int k,o;
 		Object[] colName = { "Nombre producto", "Marca", "Cantidad", "Precio", "Precio Total" };
 		Object[][] datos = new Object[5][10];
-		for (k = 0; k < 10; k++) {//renglones
+		for (k = 0; k < 5; k++) {//renglones
 			for (o = 0; o < 5; o++) {//columnas
 				datos[k][o] = null;
 			}
@@ -352,7 +355,17 @@ public class VistaRegistrarCompra extends JFrame {
 	}
 
 	public void muestraDialogoConMensaje(String mensaje) {
-		JOptionPane.showMessageDialog(this, mensaje);
+		UIManager.put("OptionPane.background", new Color(184,199,218));
+		UIManager.put("Panel.background", new Color(184,199,218));
+		UIManager.put("Button.background", new Color(255,255,255));
+		UIManager.put("Button.foreground", new Color(89, 126, 170));
+		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+		
+		JLabel etiqueta = new JLabel(mensaje, JLabel.CENTER); 
+		etiqueta.setFont(new Font("Tahoma", Font.BOLD, 15)); 
+		etiqueta.setForeground(new Color(255,255,255)); 
+		
+		JOptionPane.showMessageDialog(this ,etiqueta, "AVISO", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public String fechaActual() {

@@ -14,16 +14,20 @@ public class ControlRegistrarCompra {
 	@Autowired
 	private ServicioEmpleado servicioEmpleado;
 	@Autowired
-	private VistaRegistrarCompra vistaRegistrarVenta;
+	private VistaRegistrarCompra vistaRegistrarCompra;
 	@Autowired
 	private ServicioCompra servicioCompra;
+	/**
+	 * Inicia la historia de usuario
+	 * 
+	 */
 	public void inicia() {
 		List <Empleado> listaEmpleado = servicioEmpleado.recuperaEmpleados();
-		vistaRegistrarVenta.muestra(this, listaEmpleado);
+		vistaRegistrarCompra.muestra(this, listaEmpleado);
 		
 	}
 	public boolean crearCompra(long idEmpleado, String nombreProducto, String marcaProducto, int cantidadProdcuto,double precioProducto,String fecha){
-		if(servicioCompra.creaGrantia(idEmpleado, nombreProducto, marcaProducto, cantidadProdcuto, precioProducto, fecha)) {
+		if(servicioCompra.agregaProducto(idEmpleado, nombreProducto, marcaProducto, cantidadProdcuto, precioProducto, fecha)) {
 			return true;
 		}else {
 			return false;
@@ -33,7 +37,6 @@ public class ControlRegistrarCompra {
 	public boolean guardaCompras() {
 		if(servicioCompra.guardaCompras()) {
 			return true;
-			
 		}
 		else
 			return false;
@@ -44,5 +47,9 @@ public class ControlRegistrarCompra {
 		else
 			return false;
 	}
+	/**
+	 * Termina la historia de usuario
+	 * 
+	 */
+	
 }
-//Eduardo castro estuvo aqui :v
