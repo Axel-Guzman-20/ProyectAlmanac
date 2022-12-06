@@ -34,6 +34,7 @@ public class ServicioVenta {
 		venta =  ventaRepository.findById(idCompra); 
 		return venta;
 	}
+	
 	/**
 	 * Retorna  una VentaProducto despues de crearla
 	 * @param Producto, cantidad

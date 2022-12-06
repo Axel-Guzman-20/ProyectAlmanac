@@ -7,8 +7,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import mx.uam.ingsof.proyecto.datos.CategoriaDiagnosticoRepository;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
+import mx.uam.ingsof.proyecto.datos.EmpleadoRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
+import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
@@ -40,7 +42,10 @@ public class ProyectoApplication {
 	ControlPrincipal controlPrincipal;
 	
 	@Autowired
-	SeccionCatalogoRepository seccionCatalogoRepository; 
+	SeccionCatalogoRepository seccionCatalogoRepository;
+	
+	@Autowired
+	EmpleadoRepository empleadoRepository;
 	
 	@Autowired
 	ProductoRepository productoRepository;
@@ -185,15 +190,15 @@ public class ProyectoApplication {
 		//productoRepository.save(productoPrueba);
 		seccionCatalogoRepository.save(seccionProcesador);
 		
-		var compraPrueba = new Compra();
-		compraPrueba.setCantidad(2);
-		compraPrueba.setEstadoCompra("Mexico");
-		compraPrueba.setFecha("23/05/2022");
-		compraPrueba.setGarantia(null);
-		compraPrueba.setIdCompra(1);
-		compraPrueba.setViaCompra("Internet");
-		
-		compraRepository.save(compraPrueba);
+		var empleadoPrueba = new Empleado();
+		empleadoPrueba.setIdEmpleado(1);
+		empleadoPrueba.setTelefono("55102417178");
+		empleadoPrueba.setNombreCompleto("Ricardo");
+		empleadoPrueba.setGenero("M");
+		empleadoPrueba.setFechaIngreso("29/11/2022");
+		empleadoPrueba.setDireccionCompleta("Calle Creacion");
+		empleadoPrueba.setCorreoElectronico("Eduardo@gmail.com");
+		empleadoRepository.save(empleadoPrueba);
 		
 		
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO

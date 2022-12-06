@@ -12,6 +12,7 @@ import mx.uam.ingsof.proyecto.presentacion.modificarProducto.ControlModificarPro
 import mx.uam.ingsof.proyecto.presentacion.registrarProveedor.ControlRegistrarProveedor;
 import mx.uam.ingsof.proyecto.presentacion.registrarVenta.ControlRegistrarVenta;
 import mx.uam.ingsof.proyecto.presentacion.registrarCliente.ControlRegistrarCliente;
+import mx.uam.ingsof.proyecto.presentacion.registrarCompra.ControlRegistrarCompra;
 
 @Component
 public class ControlPrincipal{
@@ -43,13 +44,14 @@ public class ControlPrincipal{
 	@Autowired
 	private ControlRegistrarVenta controlRegistrarVenta;
 	
+
 	@Autowired
 	private ControlCrearDiagnostico controlCrearDiagnostico;
 	
-	/*
+
 	@Autowired
-	private ControlVizualizarProducto controlVizualizarProducto;
-	*/
+	private ControlRegistrarCompra controlRegistrarCompra;
+	
 	
 	
 	/**
@@ -137,6 +139,15 @@ public class ControlPrincipal{
 	public void nuevaVenta() {
 		
 		controlRegistrarVenta.inicia();
+		
+	}
+	/**
+	 * Método que arranca la historia de usuario "Registra Compras"
+	 * 
+	 */
+	public void nuevaCompra() {
+		
+		controlRegistrarCompra.inicia();
 		
 	}
 	
