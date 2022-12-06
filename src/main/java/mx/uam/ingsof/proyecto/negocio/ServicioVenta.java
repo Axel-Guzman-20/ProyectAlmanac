@@ -117,18 +117,18 @@ public class ServicioVenta {
 	 * @return matriz de String con los datos
 	 * @throws ParseException 
 	 */
-	@SuppressWarnings({"unused" })
 	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String itemEmpleadoId, String itemClienteId, String montoVentaIngresada) throws ParseException {
 				
 		List<Venta> ventas;
 		ventas = ventaRepository.findAll();
-		ArrayList<Venta> nuevaVenta = new ArrayList<Venta>();
 		
 		// Para mostrar todas las ventas
 		if(fechaDesde.equals("") && fechaHasta.equals("") && itemEmpleadoId.equals("0") && itemClienteId.equals("0") && montoVentaIngresada.equals("") )
 			return llenarDatosString(ventas);	
 		
-				
+		
+		// CORREGIR IF
+		
 		ventas = criterioFechas(fechaDesde, fechaHasta, ventas);
 		
 			if(ventas.size() != 0) {

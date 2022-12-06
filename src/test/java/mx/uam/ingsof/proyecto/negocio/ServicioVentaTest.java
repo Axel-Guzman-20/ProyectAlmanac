@@ -2,6 +2,7 @@ package mx.uam.ingsof.proyecto.negocio;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -38,36 +39,56 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 
 	@Mock
 	VentaRepository ventaRepository;
+	
+	@Mock
 	ClienteRepository clienteRepository;
+	
+	@Mock
 	EmpleadoRepository empleadoRepository;
-	@InjectMocks
-	ServicioVenta servicioVenta;
+	
+	@Mock
 	VentaProductoRepository ventaProductoRepository;
-	ControladorEmpleado controladorEmpleado;
-	ServicioCliente servicioCliente;
+	
+	@Mock
 	CompraRepository compraRepository;
+	
+	@Mock
 	SeccionCatalogoRepository seccionCatalogoRepository;
 	
-	private Producto producto;
-	private Cliente cliente;
-	private Empleado empleado;
+	@InjectMocks
+	ServicioVenta servicioVenta;
 	
+	@InjectMocks
+	ControladorEmpleado controladorEmpleado;
+	
+	@InjectMocks
+	ServicioCliente servicioCliente;
+	
+	
+	private Producto producto;
+	private Cliente cliente2;
+	private Empleado empleado;
+	private Venta venta1;
+	private VentaProducto ventaProducto1;
+	private ArrayList<VentaProducto> listaProductos;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		
 
 		producto = new Producto();
-		cliente = new Cliente();
+		cliente2 = new Cliente();
 		empleado = new Empleado();
+		venta1 = new Venta();
 		
-		cliente.setIdCliente(1);
-		cliente.setNombreCompleto("Abel Ramirez");
-		cliente.setTelefono("5535857414");
-		cliente.setGenero("Masculino");
-		cliente.setFechaRegistro("03/12/2022");
-		cliente.setDireccion("Calle 1");
-		cliente.setCorreoelectronico("a@com");
+		
+		cliente2.setIdCliente(1);
+		cliente2.setNombreCompleto("Abel Ramirez");
+		cliente2.setTelefono("5535857414");
+		cliente2.setGenero("Masculino");
+		cliente2.setFechaRegistro("03/12/2022");
+		cliente2.setDireccion("Calle 1");
+		cliente2.setCorreoelectronico("a@com");
 		
 		
 		empleado.setIdEmpleado(1);
@@ -88,7 +109,27 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 		producto.setTotalComprasProducto(0);
 		
 		
+		listaProductos = new ArrayList<VentaProducto>(3);
+						
+		ventaProducto1 = new VentaProducto();
+					
+		ventaProducto1.setIdVentaProducto(1);
+		ventaProducto1.setCantidad(3);
+		ventaProducto1.setProducto(producto);
+						
+		listaProductos.add(ventaProducto1);
+						
+		venta1 = new Venta();
+						
+		venta1.setFechaVenta("20/11/2022");
+		venta1.setGarantia(null);
+		venta1.setIdCliente(1);
+		venta1.setIdEmpleado(1);
+		venta1.setIdVenta(1);
+		venta1.setListaProducto(listaProductos);
+		
 	}
+	
 	
 	@Test
 	void testAgregaProducto() {
@@ -110,25 +151,45 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 		assertEquals(ventaProducto,ventaProducto2);
 	}
 
-	
+	/*
 	@Test
-	void consultarVentas() {
-		
-		
+	void sizeVentas() {
 		
 		List<Venta> ventas;
+		
 		ventas = ventaRepository.findAll();
+	
+		// Prueba 1: Corroborar que regresa un null cuando no hay ventas registradas
 		
-		//ArrayList<Venta> nuevaVenta = new ArrayList<Venta>();
+	}
+	*/
+	
+	@Test
+	void consultarVentas() throws ParseException {
 		
-		// Prueba 1: corroborar que regresa una lista vacía si no hay ventas en la BD
-		ventas = ventaRepository.findAll();
-		assertTrue(ventas.isEmpty());
+		List<Venta> ventas = new ArrayList<Venta>();
 		
+		ventas.add(venta1);
 		
-			
+		when(ventaRepository.findAll()).thenReturn(ventas);
+		
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente2);
+		
+		when(empleadoRepository.findByIdEmpleado(1)).thenReturn(empleado);
+		
+		String [][] datos = servicioVenta.consultarVentas("", "", "0", "0", "");
+		
+		// Prueba 1: corroborar que regresa una lista si hay ventas
+		assertNotEquals(null, datos);
+		
+		datos = servicioVenta.consultarVentas("", "", "1", "1", "100");
+		
+		// Prueba 2: Corroborar que regresa un null cuando hay ventas de acuerdo con los criterios de busqueda establecido
+		assertEquals(null, datos);
+		
 	}
 	
+	/*
 	
 	@Test	
 	void criterioFechas() throws ParseException {
@@ -409,6 +470,6 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 		ventas = ventaRepository.findAll();
 	}
 	
-	
+	*/
 	
 }
