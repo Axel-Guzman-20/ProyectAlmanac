@@ -29,8 +29,6 @@ public class ControlBuscarProducto {
 	@Autowired 
 	private VentanaBuscarProducto ventana;
 	
-	private String fecha;
-	
 	/**
 	 * 
 	 * Permite dar inicio al módulo ControlBuscarProducto y a sus respectivos métodos de dicho módulo  

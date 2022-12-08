@@ -13,6 +13,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
  * 
  *
  * @author Axel Guzman
+ * 
  */
 public interface ClienteRepository extends CrudRepository<Cliente, Long>{
 	

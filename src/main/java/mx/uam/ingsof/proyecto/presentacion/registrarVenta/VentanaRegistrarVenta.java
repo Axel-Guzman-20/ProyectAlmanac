@@ -375,7 +375,7 @@ public class VentanaRegistrarVenta extends JFrame {
 
 	public String fechaActual() {
 		Date facha = new Date();
-		SimpleDateFormat formatoFecha = new SimpleDateFormat("d/MM/YYYY");
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/YYYY");
 		return formatoFecha.format(facha);
 	}
 

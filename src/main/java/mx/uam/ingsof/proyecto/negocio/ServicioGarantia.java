@@ -2,7 +2,6 @@ package mx.uam.ingsof.proyecto.negocio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.GarantiaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Garantia;

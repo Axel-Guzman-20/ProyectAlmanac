@@ -2,15 +2,14 @@ package mx.uam.ingsof.proyecto.negocio;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import mx.uam.ingsof.proyecto.datos.GarantiaRepository;
+import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Garantia;
 import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 

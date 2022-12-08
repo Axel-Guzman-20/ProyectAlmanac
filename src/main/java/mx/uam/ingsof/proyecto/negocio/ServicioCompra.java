@@ -2,18 +2,19 @@ package mx.uam.ingsof.proyecto.negocio;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
+
 /**
  * Servicio relacionado con las compras
  * 
  * @author AxelGuzman
  * @author EduardoCastro
  */
+
 @Service
 public class ServicioCompra {
 	

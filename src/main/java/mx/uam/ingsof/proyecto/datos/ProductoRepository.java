@@ -1,9 +1,7 @@
 package mx.uam.ingsof.proyecto.datos;
 
 import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
-
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 
 /**
@@ -24,5 +22,5 @@ public interface ProductoRepository extends CrudRepository<Producto, Long> {
 	public Producto findByNombre(String nombre);
 	
 	public List <Producto>	findAll();
-
+	
 }

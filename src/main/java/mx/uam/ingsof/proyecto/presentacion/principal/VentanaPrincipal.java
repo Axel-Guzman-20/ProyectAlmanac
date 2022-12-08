@@ -273,7 +273,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem menuItemMostrarVentas = new JMenuItem("Mostrar Ventas");
 		menuItemMostrarVentas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				controlPrincipal.mostrarVentas();
 			}
 		});
 		// Se le pone a menuItemMostrarVentas tipo de letra y diseño y se agrega a menuVentas
