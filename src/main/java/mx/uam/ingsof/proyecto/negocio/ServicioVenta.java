@@ -53,8 +53,7 @@ public class ServicioVenta {
 		return venta;
 	}
 	
-	
-	
+
 	/**
 	 * Retorna  una VentaProducto despues de crearla
 	 * @param Producto, cantidad

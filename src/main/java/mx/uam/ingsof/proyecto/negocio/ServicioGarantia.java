@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.GarantiaRepository;
-import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Garantia;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 
 
 /**
@@ -31,9 +31,9 @@ public class ServicioGarantia {
 	 * 
 	 * @return lista de productos (o una lista vacia)
 	 */
-	public Garantia creaGarantia(Compra compra,String nombreCompleto,String fecha, String calle, String numExt, String numInt, String descipEquipo){
+	public Garantia creaGarantia(Venta venta,String nombreCompleto,String fecha, String calle, String numExt, String numInt, String descipEquipo){
 			
-		if(compra == null)
+		if(venta == null)
 			throw new IllegalArgumentException("Compra no debe ser null");
 		if(nombreCompleto == null)
 			throw new IllegalArgumentException("Nombre no debe ser null");
@@ -48,7 +48,7 @@ public class ServicioGarantia {
 		if(descipEquipo == null)
 			throw new IllegalArgumentException("Descripcion de equipo no debe ser null");
 		Garantia garantia = new Garantia();
-		garantia.setCompra(compra);
+		garantia.setVenta(venta);
 		garantia.setNombreCompleto(nombreCompleto);
 		garantia.setFecha(fecha);
 		garantia.setCalle(calle);
@@ -56,8 +56,8 @@ public class ServicioGarantia {
 		garantia.setNumInt(numInt);
 		garantia.setDescripcionEquipo(descipEquipo);
 		garantia = garantiaRepository.save(garantia);
-		compra.setGarantia(garantia);
-		compraRepository.save(compra);
+		venta.setGarantia(garantia);
+		compraRepository.save(venta);
 		return garantia;
 		
 

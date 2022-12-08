@@ -5,13 +5,18 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import mx.uam.ingsof.proyecto.datos.CategoriaDiagnosticoRepository;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.CompraRepository;
+import mx.uam.ingsof.proyecto.datos.EmpleadoRepository;
 import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
 import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
+import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
+import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
@@ -41,7 +46,10 @@ public class ProyectoApplication {
 	ControlPrincipal controlPrincipal;
 	
 	@Autowired
-	SeccionCatalogoRepository seccionCatalogoRepository; 
+	SeccionCatalogoRepository seccionCatalogoRepository;
+	
+	@Autowired
+	EmpleadoRepository empleadoRepository;
 	
 	@Autowired
 	ProductoRepository productoRepository;
@@ -51,6 +59,9 @@ public class ProyectoApplication {
 	
 	@Autowired
 	CompraRepository compraRepository;
+	
+	@Autowired
+	CategoriaDiagnosticoRepository categoriaDiagnosticoRepository; 
 	
 	@Autowired
 	ControladorEmpleado controladorEmpleado;
@@ -63,7 +74,7 @@ public class ProyectoApplication {
 	
 	@Autowired
 	VentaRepository ventaRepository;
-	
+
 	/**
 	 * 
 	 * Método principal
@@ -102,7 +113,7 @@ public class ProyectoApplication {
 	 */
 	public void inicializaBD() {
 		
-		// Vamos a crear los dos grupos de usuarios
+		// Vamos a crear las secciones del catalogo
 		
 		SeccionCatalogo seccionImpresora = new SeccionCatalogo();
 		seccionImpresora.setNombre("Impresora");
@@ -126,6 +137,16 @@ public class ProyectoApplication {
 		SeccionCatalogo seccionLaptop = new SeccionCatalogo();
 		seccionLaptop.setNombre("Laptops");
 		seccionCatalogoRepository.save(seccionLaptop);
+		
+		//Vamos a crear las categorias para los diagnosticos 
+		
+		CategoriaDiagnostico  categoriaReparacion = new CategoriaDiagnostico(); 
+		categoriaReparacion.setNombre("Reparación");
+		categoriaDiagnosticoRepository.save(categoriaReparacion); 
+		
+		CategoriaDiagnostico  categoriaMantenimiento = new CategoriaDiagnostico(); 
+		categoriaMantenimiento.setNombre("Mantenimiento");
+		categoriaDiagnosticoRepository.save(categoriaMantenimiento); 
 		
 		
 		var productoPrueba = new Producto();
@@ -179,15 +200,15 @@ public class ProyectoApplication {
 		//productoRepository.save(productoPrueba);
 		seccionCatalogoRepository.save(seccionProcesador);
 		
-		var compraPrueba = new Compra();
-		compraPrueba.setCantidad(2);
-		compraPrueba.setEstadoCompra("Mexico");
-		compraPrueba.setFecha("23/05/2022");
-		compraPrueba.setGarantia(null);
-		compraPrueba.setIdCompra(1);
-		compraPrueba.setViaCompra("Internet");
-		
-		compraRepository.save(compraPrueba);
+		var empleadoPrueba = new Empleado();
+		empleadoPrueba.setIdEmpleado(1);
+		empleadoPrueba.setTelefono("55102417178");
+		empleadoPrueba.setNombreCompleto("Ricardo");
+		empleadoPrueba.setGenero("M");
+		empleadoPrueba.setFechaIngreso("29/11/2022");
+		empleadoPrueba.setDireccionCompleta("Calle Creacion");
+		empleadoPrueba.setCorreoElectronico("Eduardo@gmail.com");
+		empleadoRepository.save(empleadoPrueba);
 		
 		/*
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
@@ -195,14 +216,12 @@ public class ProyectoApplication {
 		controladorEmpleado.registraEmpleado("Miguel Guzman", "H", "miguel@correo.com", "5896479625", "Calle 2, Col, Roma, Alc Carranza, CDMX, CDMX");
 		controladorEmpleado.registraEmpleado("Axel Guzman", "H", "axel@correo.com", "2563149563", "Calle 3, Col, Roma, Alc Carranza, CDMX, CDMX");
 		controladorEmpleado.registraEmpleado("Eduardo Castro", "H", "eduardo@correo.com", "9674852893", "Calle 4, Col, Roma, Alc Carranza, CDMX, CDMX");
-		
+
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
 		servicioCliente.registrarCliente("27/11/2022", "Benito Camelo", "Masculino", "Calle 10 Alc. Roma, CDMX, CDMX", "5536521474", "cliente1@correo.com");
 		servicioCliente.registrarCliente("26/11/2022", "Elver Gonzales", "Masculino", "Calle 11 Alc. Roma, CDMX, CDMX", "5585967414", "cliente2@correo.com");
 		servicioCliente.registrarCliente("25/11/2022", "Rosa Mela", "Femenino", "Calle 12 Alc. Roma, CDMX, CDMX", "5536963696", "cliente3@correo.com");
 		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 13 Alc. Roma, CDMX, CDMX", "5512547854", "cliente4@correo.com");
-		
-		
 		
 		// SE REGISTRAN VENTAS EN AUTOMÁTICO
 		ArrayList<VentaProducto> listaProductos = new ArrayList<VentaProducto>(3);
@@ -224,8 +243,6 @@ public class ProyectoApplication {
 		venta.setIdVenta(1);
 		venta.setListaProducto(listaProductos);
 		ventaRepository.save(venta);
-		
-		
 		
 		// Se crea otra venta, se recrea la instancia
 		listaProductos.clear();
@@ -259,6 +276,7 @@ public class ProyectoApplication {
 		venta2.setIdVenta(2);
 		venta2.setListaProducto(listaProductos);
 		ventaRepository.save(venta2);
-		*/
+    */
+    
 	}
 }

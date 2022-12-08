@@ -341,7 +341,7 @@ public class VentanaRegistrarVenta extends JFrame {
 		tabla.setEnabled(false);
 		scrollPane.setVisible(true);
 		scrollPane.setViewportView(tabla);
-		contentPane.add(scrollPane);
+		panel.add(scrollPane);
 	}
 
 	public void muestra(ControlRegistrarVenta controlRegistrarVenta, List<Cliente> clientes, List<Empleado> empleados,
