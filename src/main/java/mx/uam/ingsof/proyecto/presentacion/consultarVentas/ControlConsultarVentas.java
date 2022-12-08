@@ -41,7 +41,9 @@ public class ControlConsultarVentas {
 		if(empleado.size() != 0) {
 			if(cliente.size() != 0) {
 				if(servicioVenta.sizeVentas() != 0) {
+				
 					vistaConsultarVentas.muestra(this, empleado, cliente);
+				
 				}else
 					vistaConsultarVentas.muestraDialogoConMensaje("No hay ventas registradas, registra una venta para utilizar esta función.");
 			}else
@@ -53,15 +55,7 @@ public class ControlConsultarVentas {
 	
 	
 	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String itemEmpleadoId, String itemClienteId, String montoVenta) throws ParseException {
-		
-		/*
-		// Valida que haya registros
-		if(servicioVenta.sizeVentas() == 0) {
-			vistaConsultarVentas.muestraDialogoConMensaje("No hay ventas registradas");
-			return null;
-		}
-		*/
-		
+				
 		// Valida que la fecha de inicio no sea mayor a la final
 		if(servicioVenta.comparaFechas(fechaDesde, fechaHasta) == false) {
 			vistaConsultarVentas.muestraDialogoConMensaje("La fechaInicio es mayor a la FechaFinal");

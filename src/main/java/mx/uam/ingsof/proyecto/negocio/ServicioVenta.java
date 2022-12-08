@@ -123,34 +123,30 @@ public class ServicioVenta {
 		ventas = ventaRepository.findAll();
 		
 		// Para mostrar todas las ventas
-		if(fechaDesde.equals("") && fechaHasta.equals("") && itemEmpleadoId.equals("0") && itemClienteId.equals("0") && montoVentaIngresada.equals("") )
+		if(fechaDesde.equals("") && fechaHasta.equals("") && itemEmpleadoId.equals("0") && itemClienteId.equals("0") && montoVentaIngresada.equals(""))
 			return llenarDatosString(ventas);	
 		
+		// Si no son vacias algunas de las fechas, aplica el criterio
+		if( !fechaDesde.equals("") || !fechaHasta.equals("") )
+			ventas = criterioFechas(fechaDesde, fechaHasta, ventas);
 		
-		// CORREGIR IF
-		
-		ventas = criterioFechas(fechaDesde, fechaHasta, ventas);
-		
-			if(ventas.size() != 0) {
-		
-				ventas = criterioEmpleado(itemEmpleadoId, ventas);
-					
-				if(ventas.size() != 0) {
-					
-					ventas = criterioCliente(itemClienteId, ventas);
-						
-					if(ventas.size() != 0) {
-						
-						ventas = criterioMonto(montoVentaIngresada, ventas);
-						
-						if(ventas.size() != 0)
-							return llenarDatosString(ventas);	
-					}
-				}
-			}
+		// Si no se selecciono algun empleado, no entra al método ya que no requiere un críterio de empleado
+		if(!itemEmpleadoId.equals("0") && ventas.size() != 0)
+			ventas = criterioEmpleado(itemEmpleadoId, ventas);
 			
-		return null;
-	
+		// Si no se selecciono algun cliente, no entra al método ya que no requiere un críterio de cliente
+		if(!itemClienteId.equals("0") && ventas.size() != 0)
+			ventas = criterioCliente(itemClienteId, ventas);
+		
+		// Si no se ingresó un monto, no entra al método ya que no requiere un críterio
+		if(!montoVentaIngresada.equals("") && ventas.size() != 0)
+			ventas = criterioMonto(montoVentaIngresada, ventas);
+		
+		if(ventas.size() != 0)
+			return llenarDatosString(ventas);
+		else
+			return null;
+		
 	}
 	
 	
@@ -179,37 +175,39 @@ public class ServicioVenta {
 				
 			}
 		
-			return nuevaVenta;
+			return nuevaVenta;	
+		}
+		
+		
+		//Solo tiene fecha de inicio
+		if(!fechaDesde.equals("") && fechaHasta.equals("")) {
+			fechaInicio = fechaFormato.parse(fechaDesde);
 						
-						
-			//Solo tiene fecha de inicio
-			}else if(!fechaDesde.equals("") && fechaHasta.equals("")) {
-				fechaInicio = fechaFormato.parse(fechaDesde);
-						
-				for (i = 0; i < ventas.size(); i++) {
+			for (i = 0; i < ventas.size(); i++) {
 					
-					fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
-					
-					if(fechaVenta.compareTo(fechaInicio) >= 0)
-						nuevaVenta.add(ventas.get(i));
-				}
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
 				
-				return nuevaVenta;
-						
-					
-			// Solo tiene fecha final
-			}else if(fechaDesde.equals("") && !fechaHasta.equals("")) {
-				fechaFinal = fechaFormato.parse(fechaHasta);
-				
-				for (i = 0; i < ventas.size(); i++) {
-					fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
-					
-					if(fechaVenta.compareTo(fechaFinal) <= 0)
-						nuevaVenta.add(ventas.get(i));
-				}
-				
-				return nuevaVenta;
+				if(fechaVenta.compareTo(fechaInicio) >= 0)
+					nuevaVenta.add(ventas.get(i));
 			}
+				
+			return nuevaVenta;						
+		}
+		
+		
+		// Solo tiene fecha final
+		if(fechaDesde.equals("") && !fechaHasta.equals("")) {
+			fechaFinal = fechaFormato.parse(fechaHasta);
+			
+			for (i = 0; i < ventas.size(); i++) {
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+					
+				if(fechaVenta.compareTo(fechaFinal) <= 0)
+					nuevaVenta.add(ventas.get(i));
+			}
+			
+			return nuevaVenta;
+		}
 		
 		return ventas;
 	}
@@ -221,22 +219,16 @@ public class ServicioVenta {
 		List<Venta> nuevaVenta = new ArrayList<>();
 		int i;
 		
-		// Para mostrar de acuerdo con los item del ComboBox Empleado
-		if(!itemEmpleadoId.equals("0")) {
+		idEmpleado = Long.parseLong(itemEmpleadoId);
 						
-			idEmpleado = Long.parseLong(itemEmpleadoId);
-						
-			for (i = 0; i < ventas.size(); i++) {
-				
-				if(idEmpleado == ventas.get(i).getIdEmpleado())
-					nuevaVenta.add(ventas.get(i));
+		for (i = 0; i < ventas.size(); i++) {
 			
-			}
-						
-			return nuevaVenta;
-		}
+			if(idEmpleado == ventas.get(i).getIdEmpleado())
+				nuevaVenta.add(ventas.get(i));
 		
-		return ventas;
+		}
+						
+		return nuevaVenta;
 	}
 	
 	
@@ -245,23 +237,18 @@ public class ServicioVenta {
 		Long idCliente;
 		List<Venta> nuevaVenta = new ArrayList<>();
 		int i;
-		
-		// Para mostrar de acuerdo con los item del ComboBox CLiente
-		if(!itemClienteId.equals("0")) {
 						
-			idCliente = Long.parseLong(itemClienteId);
+		idCliente = Long.parseLong(itemClienteId);
 						
-			for (i = 0; i < ventas.size(); i++) {
+		for (i = 0; i < ventas.size(); i++) {
 				
-				if(idCliente == ventas.get(i).getIdCliente())
-					nuevaVenta.add(ventas.get(i));
+			if(idCliente == ventas.get(i).getIdCliente())
+				nuevaVenta.add(ventas.get(i));
 			
-			}
-						
-			return nuevaVenta;
 		}
-		
-		return ventas;
+						
+		return nuevaVenta;
+
 	}
 	
 	

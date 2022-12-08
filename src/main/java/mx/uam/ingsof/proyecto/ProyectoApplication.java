@@ -202,7 +202,7 @@ public class ProyectoApplication {
 		servicioCliente.registrarCliente("25/11/2022", "Rosa Mela", "Femenino", "Calle 12 Alc. Roma, CDMX, CDMX", "5536963696", "cliente3@correo.com");
 		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 13 Alc. Roma, CDMX, CDMX", "5512547854", "cliente4@correo.com");
 		
-		/*
+		
 		
 		// SE REGISTRAN VENTAS EN AUTOMÁTICO
 		ArrayList<VentaProducto> listaProductos = new ArrayList<VentaProducto>(3);
@@ -259,6 +259,6 @@ public class ProyectoApplication {
 		venta2.setIdVenta(2);
 		venta2.setListaProducto(listaProductos);
 		ventaRepository.save(venta2);
-		*/
+		
 	}
 }

@@ -2,14 +2,12 @@ package mx.uam.ingsof.proyecto.negocio;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +23,8 @@ import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
 import mx.uam.ingsof.proyecto.datos.VentaProductoRepository;
 import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
-import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
-import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
 import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
@@ -66,8 +62,8 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 	
 	
 	private Producto producto;
-	private Cliente cliente2;
-	private Empleado empleado;
+	private Cliente cliente1, cliente2;
+	private Empleado empleado, empleado2;
 	private Venta venta1;
 	private VentaProducto ventaProducto1;
 	private ArrayList<VentaProducto> listaProductos;
@@ -77,27 +73,45 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 		
 
 		producto = new Producto();
+		cliente1 = new Cliente();
 		cliente2 = new Cliente();
 		empleado = new Empleado();
+		empleado2 = new Empleado();
 		venta1 = new Venta();
 		
+		cliente1.setIdCliente(1);
+		cliente1.setNombreCompleto("Cliente 1");
+		cliente1.setTelefono("5535857414");
+		cliente1.setGenero("Masculino");
+		cliente1.setFechaRegistro("03/12/2022");
+		cliente1.setDireccion("Calle 1");
+		cliente1.setCorreoelectronico("c1@com");
 		
-		cliente2.setIdCliente(1);
-		cliente2.setNombreCompleto("Abel Ramirez");
+		
+		cliente2.setIdCliente(2);
+		cliente2.setNombreCompleto("Cliente 2");
 		cliente2.setTelefono("5535857414");
 		cliente2.setGenero("Masculino");
 		cliente2.setFechaRegistro("03/12/2022");
 		cliente2.setDireccion("Calle 1");
-		cliente2.setCorreoelectronico("a@com");
+		cliente2.setCorreoelectronico("c2@com");
 		
 		
 		empleado.setIdEmpleado(1);
-		empleado.setNombreCompleto("David Hernandez");
+		empleado.setNombreCompleto("Empleado 1");
 		empleado.setTelefono("5535857496");
 		empleado.setGenero("Masculino");
 		empleado.setFechaIngreso("02/12/2022");
 		empleado.setDireccionCompleta("Calle 2");
-		empleado.setCorreoElectronico("aasd1@com");
+		empleado.setCorreoElectronico("e1@com");
+		
+		empleado2.setIdEmpleado(2);
+		empleado2.setNombreCompleto("Empleado 2");
+		empleado2.setTelefono("5535857496");
+		empleado2.setGenero("Masculino");
+		empleado2.setFechaIngreso("02/12/2022");
+		empleado2.setDireccionCompleta("Calle 2");
+		empleado2.setCorreoElectronico("e2@com");
 		
 		
 		producto.setNombre("Core i3");
@@ -109,7 +123,7 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 		producto.setTotalComprasProducto(0);
 		
 		
-		listaProductos = new ArrayList<VentaProducto>(3);
+		listaProductos = new ArrayList<VentaProducto>();
 						
 		ventaProducto1 = new VentaProducto();
 					
@@ -150,299 +164,53 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 		ventaProducto2 = servicioVenta.agregaProducto(producto, 1);
 		assertEquals(ventaProducto,ventaProducto2);
 	}
-
-	/*
-	@Test
-	void sizeVentas() {
-		
-		List<Venta> ventas;
-		
-		ventas = ventaRepository.findAll();
-	
-		// Prueba 1: Corroborar que regresa un null cuando no hay ventas registradas
-		
-	}
-	*/
-	
-	@Test
-	void consultarVentas() throws ParseException {
-		
-		List<Venta> ventas = new ArrayList<Venta>();
-		
-		ventas.add(venta1);
-		
-		when(ventaRepository.findAll()).thenReturn(ventas);
-		
-		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente2);
-		
-		when(empleadoRepository.findByIdEmpleado(1)).thenReturn(empleado);
-		
-		String [][] datos = servicioVenta.consultarVentas("", "", "0", "0", "");
-		
-		// Prueba 1: corroborar que regresa una lista si hay ventas
-		assertNotEquals(null, datos);
-		
-		datos = servicioVenta.consultarVentas("", "", "1", "1", "100");
-		
-		// Prueba 2: Corroborar que regresa un null cuando hay ventas de acuerdo con los criterios de busqueda establecido
-		assertEquals(null, datos);
-		
-	}
-	
-	/*
-	
-	@Test	
-	void criterioFechas() throws ParseException {
-		
-		Date fechaInicio;
-		Date fechaFinal;
-		Date fechaVenta;
-		String fechaDesde = "20/11/2022"; 
-		String fechaHasta = "25/11/2022"; 
-		
-		List<Venta> ventas;
-		ventas = ventaRepository.findAll();
-		
-		SimpleDateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
-		List<Venta> nuevaVenta = new ArrayList<>();
-		int i;
-		
-		
-		// Para mostrar de acuerdo con las fechas
-		if(!fechaDesde.equals("") && !fechaHasta.equals("")) {		
-			fechaInicio = fechaFormato.parse(fechaDesde);
-			fechaFinal = fechaFormato.parse(fechaHasta);
-						
-			for (i = 0; i < ventas.size(); i++) {
-				
-				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
-				
-				if(fechaVenta.compareTo(fechaInicio) >= 0 && fechaVenta.compareTo(fechaFinal) <= 0)
-					nuevaVenta.add(ventas.get(i));
-				
-			}
-		
-			
-						
-						
-			//Solo tiene fecha de inicio
-			}else if(!fechaDesde.equals("") && fechaHasta.equals("")) {
-				fechaInicio = fechaFormato.parse(fechaDesde);
-						
-				for (i = 0; i < ventas.size(); i++) {
-					
-					fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
-					
-					if(fechaVenta.compareTo(fechaInicio) >= 0)
-						nuevaVenta.add(ventas.get(i));
-				}
-				
-				
-						
-					
-			// Solo tiene fecha final
-			}else if(fechaDesde.equals("") && !fechaHasta.equals("")) {
-				fechaFinal = fechaFormato.parse(fechaHasta);
-				
-				for (i = 0; i < ventas.size(); i++) {
-					fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
-					
-					if(fechaVenta.compareTo(fechaFinal) <= 0)
-						nuevaVenta.add(ventas.get(i));
-				}
-				
-				
-			}
-		
-		
-	}
-	
-	@Test
-	void criterioEmpleado(){
-		
-		Long idEmpleado;
-		String itemEmpleadoId = "1";
-		
-		List<Venta> ventas = ventaRepository.findAll();
-		
-		List<Venta> nuevaVenta = new ArrayList<>();
-		int i;
-		
-		// Para mostrar de acuerdo con los item del ComboBox Empleado
-		if(!itemEmpleadoId.equals("0")) {
-						
-			idEmpleado = Long.parseLong(itemEmpleadoId);
-						
-			for (i = 0; i < ventas.size(); i++) {
-				
-				if(idEmpleado == ventas.get(i).getIdEmpleado())
-					nuevaVenta.add(ventas.get(i));
-			
-			}
-						
-			
-		}
-		
-		
-	}
 	
 	
-	@Test
-	void criterioCliente(){
-		
-		Long idCliente;
-		String itemClienteId = "1";
-		
-		List<Venta> ventas = ventaRepository.findAll();
-		
-		List<Venta> nuevaVenta = new ArrayList<>();
-		int i;
-		
-		// Para mostrar de acuerdo con los item del ComboBox CLiente
-		if(!itemClienteId.equals("0")) {
-						
-			idCliente = Long.parseLong(itemClienteId);
-						
-			for (i = 0; i < ventas.size(); i++) {
-				
-				if(idCliente == ventas.get(i).getIdCliente())
-					nuevaVenta.add(ventas.get(i));
-			
-			}
-						
-			
-		}
-		
-		
-	}
 	
 	
-	@Test
-	void criterioMonto(){
-		
-		double monto;
-		List<Venta> nuevaVenta = new ArrayList<>();
-		int i;
-		String montoVentaIngresada = "";
-		List<Venta> ventas = ventaRepository.findAll();
-		
-		
-		// Para mostrar de acuerdo con el monto
-		if(!montoVentaIngresada.equals("")) {
-						
-			monto = Double.parseDouble(montoVentaIngresada);
-			double total;		
-			
-			for (i = 0; i < ventas.size(); i++) {
-				
-				//List<VentaProducto> ventaProducto = ventaProductoRepository.findByIdVenta(ventas.get(i).getIdVenta());
-				//total = montoTotalxVenta();
-				
-				//if(monto == total)
-					nuevaVenta.add(ventas.get(i));
-			}
-									
-			
-		}
-		
-		
-	}
 	
-	
-	@Test
-	void cuentaProductosPorVenta () {
-		
-		int i;
-		int cantidadProductosVendidos = 0;
-		List<VentaProducto> ventaProducto =  ventaProductoRepository.findByIdVenta(1);
-		
-		for (i = 0; i < ventaProducto.size(); i++) 
-			cantidadProductosVendidos = cantidadProductosVendidos + ventaProducto.get(i).getCantidad();
-		
-		
-	}
-	
-	
-	@Test
-	void montoTotalxVenta () {
-		
-		int i;
-		double montoVenta = 0;
-		List<VentaProducto> ventaProducto =  ventaProductoRepository.findByIdVenta(1);
-		
-						
-		for (i = 0; i < ventaProducto.size(); i++)
-			montoVenta = montoVenta + (ventaProducto.get(i).getCantidad() * ventaProducto.get(i).getProducto().getPrecio());
-		
-		
-	}
-	
-	
-	@Test
-	void llenarDatosString() {
-		
-		int registrosVentas;
-		int columnasTabla = 6;
-		List<Venta> ventas = ventaRepository.findAll();
-		String[][] datos;
-		Cliente cliente;
-		Empleado empleado;
-		int cantidadProductosVendidos;
-		double montoVenta;
-		
-		int i;
-		
-		registrosVentas = ventas.size();
-		datos = new String[registrosVentas][columnasTabla];
-		
-		//List<VentaProducto> ventaProducto;
-		
-		for (i = 0; i < datos.length; i++) {			
-			// Estos datos ya vienen en la venta
-			datos[i][0] = String.valueOf(ventas.get(i).getIdVenta());
-			datos[i][1] = String.valueOf(ventas.get(i).getFechaVenta());
-			
-			// Buscamos en los repositorios correspondiente el nombre de los empleados
-			cliente = clienteRepository.findByIdCliente(ventas.get(i).getIdCliente());
-			empleado = empleadoRepository.findByIdEmpleado(ventas.get(i).getIdEmpleado());
-			datos[i][2] = String.valueOf(cliente.getNombreCompleto());
-			datos[i][3] = String.valueOf(empleado.getNombreCompleto());
-			
-			// Buscamos en el repositorio de la venta producto, el idVenta
-			//ventaProducto = ventaProductoRepository.findByIdVenta(ventas.get(i).getIdVenta());
-			//cantidadProductosVendidos = cuentaProductosPorVenta();
-			//montoVenta = montoTotalxVenta();
-			//datos[i][4] = String.valueOf(cantidadProductosVendidos);
-			//datos[i][5] = String.format("%.2f", montoVenta);
-		}
-		
-		
-	}
-	
+	/*************************************
+	 * 
+	 * 
+	 * PRUEBAS DE USUARIO DE LA HU-09
+	 * CONSULTAR VENTAS
+	 * MIGUEL GUZMAN
+	 * 
+	 * 
+	 * ********************************
+	 */
 	
 	
 	@Test
 	void comparaFechas(){
 		
-		String fechaDesde = "20/11/2022"; 
-		String fechaHasta = "25/11/2022"; 
+		String fechaDesde; 
+		String fechaHasta; 
+		boolean fechaValida;
 		
-		if(!fechaDesde.equals("") && !fechaHasta.equals("")) {
-			
-			SimpleDateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
-			
-			Date fechaInicio;
-			Date fechaFinal;
-			
-			try {
-				fechaInicio = fechaFormato.parse(fechaDesde);
-				fechaFinal = fechaFormato.parse(fechaHasta);
-				// Significa que la fecha de inicio es mayor a la final
-				//if(fechaInicio.compareTo(fechaFinal) > 0) 
-				
-			} catch (ParseException e) {
-			} 	
-		}
+		// Prueba 1: Si las dos fecha son vacías, devuelve true porque no se utilizan las fechas
+		fechaDesde = ""; 
+		fechaHasta = "";
+		fechaValida = servicioVenta.comparaFechas(fechaDesde, fechaHasta);
+		assertTrue(fechaValida);
+		
+		// Prueba 2: Si fechaDesde es mayor a fechaHasta, devuelve falso
+		fechaDesde = "05/12/2022"; 
+		fechaHasta = "04/12/2022";
+		fechaValida = servicioVenta.comparaFechas(fechaDesde, fechaHasta);
+		assertFalse(fechaValida);
+		
+		// Prueba 3: Si fechaDesde es menor a fechaHasta, devuelve true
+		fechaDesde = "05/12/2022"; 
+		fechaHasta = "06/12/2022";
+		fechaValida = servicioVenta.comparaFechas(fechaDesde, fechaHasta);
+		assertTrue(fechaValida);	
+		
+		// Prueba 3: Si fechaDesde es igual a fechaHasta, devuelve true
+		fechaDesde = "05/12/2022"; 
+		fechaHasta = "05/12/2022";
+		fechaValida = servicioVenta.comparaFechas(fechaDesde, fechaHasta);
+		assertTrue(fechaValida);
 		
 	}
 	
@@ -450,26 +218,190 @@ import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 	@Test
 	void validarMonto() {
 		
-		String montoVenta = "100"; 
+		String montoVenta;
+		boolean montoValido;
 		
-		if(!montoVenta.equals("")) {
-			try
-			 {
-			   Double.parseDouble(montoVenta);
-			 }
-			 catch(NumberFormatException nfe)
-			 {
-			 }	
-		}
+		// Prueba 1: Si el monto es vacío, devuelve true porque no se utiliza el monto
+		montoVenta = ""; 
+		montoValido = servicioVenta.validarMonto(montoVenta);
+		assertTrue(montoValido);
+				
+		// Prueba 2: Si el monto tiene un entero, devuelve true porque es un número valido
+		montoVenta = "100"; 
+		montoValido = servicioVenta.validarMonto(montoVenta);
+		assertTrue(montoValido);
+		
+		// Prueba 3: Si el monto tiene un entero y decimales, devuelve true porque es un número valido
+		montoVenta = "100.105"; 
+		montoValido = servicioVenta.validarMonto(montoVenta);
+		assertTrue(montoValido);
+		
+		// Prueba 4: Si el monto tiene un entero y decimales y cualquier otro caracter que no sea númerico, devuelve false porque es valido
+		montoVenta = "100.105a"; 
+		montoValido = servicioVenta.validarMonto(montoVenta);
+		assertFalse(montoValido);
+						
 	}
 	
 	
 	@Test
 	void sizeVentas() {
-		List<Venta> ventas;
-		ventas = ventaRepository.findAll();
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		int noVentas;
+		
+		// Prueba 1: Si la lista es vacía, indica que no hay ventas y regresa un 0
+		when(ventaRepository.findAll()).thenReturn(ventas);
+		noVentas = servicioVenta.sizeVentas();
+		assertEquals(0, noVentas);
+		
+		// Prueba 2: Corroborar que regresa un numero entero, que es la cantidad de registros, en este caso suponemos que solo hay 1 registro
+		ventas.add(venta1);
+		when(ventaRepository.findAll()).thenReturn(ventas);
+		noVentas = servicioVenta.sizeVentas();
+		assertNotEquals(0, noVentas);
+		
 	}
 	
-	*/
+	@Test
+	void criterioFechas() throws ParseException{
+		String fechaDesde; 
+		String fechaHasta; 
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		ventas.add(venta1);
+		int registrosEncontrados;
+				
+		//Prueba 1: Corroborar que regresa un número entero (son todos los registros) cuando no se usa fechaDesde y fechaHasta
+		fechaDesde = ""; 
+		fechaHasta = "";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+		
+		//Prueba 2: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaDesde y fechaHasta
+		fechaDesde = "20/11/2022"; 
+		fechaHasta = "21/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+		
+		//Prueba 3: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaDesde
+		fechaDesde = "20/11/2022"; 
+		fechaHasta = "";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);	
+		
+		//Prueba 4: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaHasta
+		fechaDesde = ""; 
+		fechaHasta = "20/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+		
+		//Prueba 5: Corroborar que regresa una lista sin registros (no se encontraron registros) cuando se usa fechaDesde y fechaHasta
+		fechaDesde = "21/11/2022"; 
+		fechaHasta = "21/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertEquals(0, registrosEncontrados);
+		
+		// Se vuelve a agregar porque los anteriores modificador a venta, lo quitaron
+		ventas.add(venta1);
+		//Prueba 6: Corroborar que regresa una lista sin registros (no se encontraron registros) cuando se usa fechaDesde
+		fechaDesde = "21/11/2022"; 
+		fechaHasta = "";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertEquals(0, registrosEncontrados);	
+		
+		// Se vuelve a agregar porque los anteriores modificador a venta, lo quitaron
+		ventas.add(venta1);
+		//Prueba 7: Corroborar que regresa una lista sin registros (no se encontraron registros) cuando se usa  fechaHasta
+		fechaDesde = ""; 
+		fechaHasta = "19/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertEquals(0, registrosEncontrados);		
+		
+		// Se vuelve a agregar porque los anteriores modificador a venta, lo quitaron
+		ventas.add(venta1);
+		//Prueba 8: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaDesde y fechaHasta y tienen la misma fecha
+		fechaDesde = "20/11/2022"; 
+		fechaHasta = "20/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
 	
+	}
+	
+	
+	@Test
+	void criterioEmpleado() throws ParseException{
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		String [][] datos;
+		
+		ventas.add(venta1);
+		
+		when(ventaRepository.findAll()).thenReturn(ventas);
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente2);
+		when(empleadoRepository.findByIdEmpleado(1)).thenReturn(empleado);
+		
+		//Prueba 1: Corroborar que regresa un null cuando no hay ventas con el nombre del empleado seleccionado
+		datos = servicioVenta.consultarVentas("", "", "2", "0", "");
+		assertEquals(null, datos);
+				
+		// Prueba 2: Corroborar que regresa un lista cuando hay ventas con el nombre del empleado seleccionado
+		datos = servicioVenta.consultarVentas("", "", "1", "0", "");
+		assertNotEquals(null, datos);
+		
+	}
+	
+	@Test
+	void criterioCliente() throws ParseException{
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		String [][] datos;
+		
+		ventas.add(venta1);
+		
+		when(ventaRepository.findAll()).thenReturn(ventas);
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente1);
+		when(empleadoRepository.findByIdEmpleado(1)).thenReturn(empleado);
+		
+		//Prueba 1: Corroborar que regresa un null cuando no hay ventas con el nombre del cliente seleccionado
+		datos = servicioVenta.consultarVentas("", "", "0", "2", "");
+		assertEquals(null, datos);
+				
+		// Prueba 2: Corroborar que regresa un lista cuando hay ventas con el nombre del cliente seleccionado
+		datos = servicioVenta.consultarVentas("", "", "0", "1", "");
+		assertNotEquals(null, datos);
+		
+	}
+	
+	
+	@Test
+	void consultarVentas() throws ParseException {
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		String [][] datos;
+		
+		ventas.add(venta1);
+		
+		when(ventaRepository.findAll()).thenReturn(ventas);
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente1);
+		when(empleadoRepository.findByIdEmpleado(1)).thenReturn(empleado);
+		
+		// Prueba 1: corroborar que regresa una lista si hay ventas
+		datos = servicioVenta.consultarVentas("", "", "0", "0", "");
+		assertNotEquals(null, datos);
+		
+		// Prueba 2: Corroborar que regresa un null cuando hay ventas de acuerdo con los criterios de busqueda establecido
+		datos = servicioVenta.consultarVentas("", "", "1", "1", "100");
+		assertEquals(null, datos);
+		
+	}
+		
 }
