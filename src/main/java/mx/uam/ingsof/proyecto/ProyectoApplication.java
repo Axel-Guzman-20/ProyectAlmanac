@@ -189,7 +189,7 @@ public class ProyectoApplication {
 		
 		compraRepository.save(compraPrueba);
 		
-		
+		/*
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
 		controladorEmpleado.registraEmpleado("Abigail Morales", "M", "abigail@correo.com", "1234567891", "Calle 1, Col, Roma, Alc Carranza, CDMX, CDMX");
 		controladorEmpleado.registraEmpleado("Miguel Guzman", "H", "miguel@correo.com", "5896479625", "Calle 2, Col, Roma, Alc Carranza, CDMX, CDMX");
@@ -259,6 +259,6 @@ public class ProyectoApplication {
 		venta2.setIdVenta(2);
 		venta2.setListaProducto(listaProductos);
 		ventaRepository.save(venta2);
-		
+		*/
 	}
 }
