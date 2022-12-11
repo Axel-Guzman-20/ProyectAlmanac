@@ -40,7 +40,7 @@ public class ControlRegistrarProveedor {
 		proveedoresRegistrados = servicioProveedor.proveedoresRegistrados();
 		
 		// El metodo de proveedoresRegistrados devuelve true si es menor a 100 (criterio de aceptacion)
-		if(proveedoresRegistrados == true) {
+		if(proveedoresRegistrados) {
 			String fecha;
 			
 			// Le dice a servicios que obtenga la fecha actual del sistema, la devuelve y lo coloca en la caja de textos fecha de la VistaRegistrarProveedor

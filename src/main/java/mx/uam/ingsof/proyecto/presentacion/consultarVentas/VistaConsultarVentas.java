@@ -313,7 +313,8 @@ public class VistaConsultarVentas extends JFrame{
 		// Fuente para los botones
 		fuente = new Font("Tahoma", Font.BOLD, 11);
 		
-		int xBotones = 210, espacioEntreBotones = 160;
+		int xBotones = 210;
+		int espacioEntreBotones = 160;
 		int yBotones = 600;
 		int anchoBotones = 90;
 		int altoBotones = 30;
@@ -352,12 +353,9 @@ public class VistaConsultarVentas extends JFrame{
 		buscarButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				try {
 					recolectaDatosConsultaVenta();
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					
 				}
 			}
 		});		

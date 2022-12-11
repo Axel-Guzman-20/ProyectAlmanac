@@ -57,18 +57,18 @@ public class ControlConsultarVentas {
 	public String[][] consultarVentas(String fechaDesde, String fechaHasta, String itemEmpleadoId, String itemClienteId, String montoVenta) throws ParseException {
 				
 		// Valida que la fecha de inicio no sea mayor a la final
-		if(servicioVenta.comparaFechas(fechaDesde, fechaHasta) == false) {
+		if(!servicioVenta.comparaFechas(fechaDesde, fechaHasta)) {
 			vistaConsultarVentas.muestraDialogoConMensaje("La fechaInicio es mayor a la FechaFinal");
 			return null;
 		}
 		
 		// Valida que el monto sea una cifra correcta
-		if(servicioVenta.validarMonto(montoVenta) == false) {
+		if(!servicioVenta.validarMonto(montoVenta)) {
 			vistaConsultarVentas.muestraDialogoConMensaje("El monto de la venta es incorrecto");
 			return null;
 		}
 		
-		String datos[][] = servicioVenta.consultarVentas(fechaDesde, fechaHasta, itemEmpleadoId, itemClienteId, montoVenta);
+		String[][] datos = servicioVenta.consultarVentas(fechaDesde, fechaHasta, itemEmpleadoId, itemClienteId, montoVenta);
 		
 		if(datos != null)
 			return datos;
