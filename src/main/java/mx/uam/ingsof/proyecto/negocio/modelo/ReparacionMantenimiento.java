@@ -1,9 +1,17 @@
 package mx.uam.ingsof.proyecto.negocio.modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -41,4 +49,8 @@ public class ReparacionMantenimiento {
 	private String piezasRequeridas; 
 	
 	private String observacionesAdicionales; 
+	
+	@OneToMany(targetEntity = DiagnosticoPruebas.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name= "idReparacionMantenimiento")
+	private final List <DiagnosticoPruebas> diagnosticoPruebas = new ArrayList <> ();
 }
