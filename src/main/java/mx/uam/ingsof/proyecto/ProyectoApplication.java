@@ -16,7 +16,7 @@ import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
-import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
+import mx.uam.ingsof.proyecto.negocio.*;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
@@ -74,6 +74,9 @@ public class ProyectoApplication {
 	
 	@Autowired
 	VentaRepository ventaRepository;
+	
+	@Autowired
+	ServicioReparacionMantenimiento servicioReparacionMantenimiento; 
 
 	/**
 	 * 
@@ -209,6 +212,8 @@ public class ProyectoApplication {
 		empleadoPrueba.setDireccionCompleta("Calle Creacion");
 		empleadoPrueba.setCorreoElectronico("Eduardo@gmail.com");
 		empleadoRepository.save(empleadoPrueba);
+		
+		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 1", "Reparación", "---", "---", "---", "Preventivo", "", ""); 
 		
 		/*
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO

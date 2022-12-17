@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ingsof.proyecto.negocio.ServicioCategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.ServicioDiagnosticoPruebas;
 import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
 import mx.uam.ingsof.proyecto.negocio.ServicioReparacionMantenimiento;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
@@ -25,7 +26,7 @@ public class ControlCrearPruebasReparacion {
 	private ServicioEmpleado servicioEmpleado; 
 	
 	@Autowired 
-	private ServicioReparacionMantenimiento servicioReparacionMantenimiento; 
+	private ServicioDiagnosticoPruebas servicioDiagnosticoReparacion;  
 	
 	private String fecha;
 	
@@ -42,7 +43,7 @@ public class ControlCrearPruebasReparacion {
 		
 		List<Empleado> empleados = servicioEmpleado.recuperaEmpleados(); 
 		
-		fecha = servicioReparacionMantenimiento.obtenerFechaActual();
+		fecha = servicioDiagnosticoReparacion.obtenerFechaActual();
 		
 		ventana.muestra(this,categorias, empleados,fecha);
 	}
@@ -62,29 +63,28 @@ public class ControlCrearPruebasReparacion {
 	 * @param observaciones
 	 * @return Dialogo con mensaje 
 	 */
-//	public void crearDiagnostico(String nombreEmpleado,String nombre,String categoria, String marca, String descripcionEquipo,String reparacionMantenimiento, String tipo, String piezas, String observaciones) {
-//		
-//		
-//		try {
-//
-//			if (servicioReparacionMantenimiento.crearDiagnostico(nombreEmpleado,nombre,categoria,marca,descripcionEquipo,reparacionMantenimiento,tipo,piezas,observaciones) == true) {
-//
-//				ventana.muestraDialogoConMensaje("El registro del diagnostico del equipo '" +nombre+"' a sido agregado exitosamente.");
-//				termina();
-//			} else {
-//
-//				ventana.muestraDialogoConMensaje("Se ha llegado al limite maximo de registro de diagnosticos para la categoria " + categoria);
-//				termina();
-//			}
-//
-//
-//		} catch (Exception ex) {
-//			ventana.muestraDialogoConMensaje("Error al registrar el diagnostico: " + ex.getMessage());
-//		}
-//
-//		termina();
-//		
-//	}
+	public void realizarPruebasReparacion(String nombreEmpleado, String categoria, String nombreEquipo, List<String> listaPruebas, String observaciones) {
+		
+		try {
+
+			if (servicioDiagnosticoReparacion.realizarPruebasReparacion(nombreEmpleado, categoria, nombreEquipo, listaPruebas, observaciones) == true) {
+
+				ventana.muestraDialogoConMensaje("Sea ha registro exitosamente el diagnostico de pruebas del equipo " +nombreEquipo+".");
+				termina();
+			} else {
+
+				ventana.muestraDialogoConMensaje("El equipo " + nombreEquipo +" ya tiene un diagnostico de pruebas registrado.");
+				termina();
+			}
+
+
+		} catch (Exception ex) {
+			ventana.muestraDialogoConMensaje("Error al registrar el diagnostico de pruebas: " + ex.getMessage());
+		}
+
+		termina();
+		
+	}
 	
 	public List<ReparacionMantenimiento> buscarDiagnosticos(String categoria) {
 		

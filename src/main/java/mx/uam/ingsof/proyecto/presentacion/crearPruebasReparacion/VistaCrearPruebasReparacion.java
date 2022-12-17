@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -52,8 +53,11 @@ public class VistaCrearPruebasReparacion extends JFrame {
 	private JCheckBox chckbxPrueba3;
 	private JCheckBox chckbxPrueba4;
 	private JCheckBox chckbxPrueba5;
-	private JCheckBox chckbxPrueba6;
 	private JCheckBox chckbxOtras;
+	private List <String> pruebas;
+	private DefaultComboBoxModel <String> comboBoxModelEmpleados; 
+	private DefaultComboBoxModel <String> comboBoxModelCategorias; 
+	private DefaultComboBoxModel<String> comboBoxModelNombreEquipo;
 	private ButtonGroup bg = new ButtonGroup();
 	private ControlCrearPruebasReparacion control;
 
@@ -80,7 +84,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(Color.WHITE);
-		panel.setPreferredSize(new Dimension(0,900));
+		panel.setPreferredSize(new Dimension(0, 850));
 		
 		JScrollPane scroll = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(41, 43, 780, 451);
@@ -153,36 +157,36 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		textFieldOtrasPruebas.setEditable(false);
 		textFieldOtrasPruebas.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textFieldOtrasPruebas.setColumns(10);
-		textFieldOtrasPruebas.setBounds(164, 564, 496, 101);
+		textFieldOtrasPruebas.setBounds(164, 530, 496, 101);
 		panel.add(textFieldOtrasPruebas);
 		
 		JLabel lblObservacionesAdicionales = new JLabel("Observaciones Adicionales");
 		lblObservacionesAdicionales.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblObservacionesAdicionales.setBounds(143, 683, 161, 25);
+		lblObservacionesAdicionales.setBounds(143, 653, 161, 25);
 		panel.add(lblObservacionesAdicionales);
 		
 		textFieldObservacionesAdicionales = new JTextField();
 		textFieldObservacionesAdicionales.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textFieldObservacionesAdicionales.setColumns(10);
-		textFieldObservacionesAdicionales.setBounds(164, 719, 496, 101);
+		textFieldObservacionesAdicionales.setBounds(164, 689, 496, 101);
 		panel.add(textFieldObservacionesAdicionales);
 		
 		JButton btnCrear = new JButton("Crear");
 		btnCrear.setForeground(Color.WHITE);
 		btnCrear.setBackground(new Color(0, 158, 15));
-		btnCrear.setBounds(345, 836, 90, 23);
+		btnCrear.setBounds(345, 806, 90, 23);
 		panel.add(btnCrear);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.setForeground(Color.WHITE);
 		btnLimpiar.setBackground(new Color(89, 126, 170));
-		btnLimpiar.setBounds(470, 836, 90, 23);
+		btnLimpiar.setBounds(470, 806, 90, 23);
 		panel.add(btnLimpiar);
 		
 		JButton btnRegresar = new JButton("Regresar");
 		btnRegresar.setForeground(Color.WHITE);
 		btnRegresar.setBackground(new Color(204, 0, 0));
-		btnRegresar.setBounds(220, 836, 90, 23);
+		btnRegresar.setBounds(220, 806, 90, 23);
 		panel.add(btnRegresar);
 		
 		comboBoxNombreEquipo = new JComboBox<String>();
@@ -190,46 +194,40 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		comboBoxNombreEquipo.setBounds(506, 239, 154, 22);
 		panel.add(comboBoxNombreEquipo);
 		
-		chckbxPrueba1 = new JCheckBox("Prueba 1");
+		chckbxPrueba1 = new JCheckBox("Correcto funcionamiento de tarjetas logicas, poder y alto voltaje.");
 		chckbxPrueba1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxPrueba1.setBackground(Color.WHITE);
-		chckbxPrueba1.setBounds(143, 326, 97, 23);
+		chckbxPrueba1.setBounds(143, 326, 517, 23);
 		panel.add(chckbxPrueba1);
 		
-		chckbxPrueba2 = new JCheckBox("Prueba 2");
+		chckbxPrueba2 = new JCheckBox("Correcto funcionamiento de resistencias.");
 		chckbxPrueba2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxPrueba2.setBackground(Color.WHITE);
-		chckbxPrueba2.setBounds(143, 360, 97, 23);
+		chckbxPrueba2.setBounds(143, 360, 517, 23);
 		panel.add(chckbxPrueba2);
 		
-		chckbxPrueba3 = new JCheckBox("Prueba 3");
+		chckbxPrueba3 = new JCheckBox("Correcto funcionamiento del elemento termino.");
 		chckbxPrueba3.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxPrueba3.setBackground(Color.WHITE);
-		chckbxPrueba3.setBounds(143, 394, 97, 23);
+		chckbxPrueba3.setBounds(143, 394, 517, 23);
 		panel.add(chckbxPrueba3);
 		
-		chckbxPrueba4 = new JCheckBox("Prueba 4");
+		chckbxPrueba4 = new JCheckBox("Correcto funcionamiento de gomas de arrastre.");
 		chckbxPrueba4.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxPrueba4.setBackground(Color.WHITE);
-		chckbxPrueba4.setBounds(143, 428, 97, 23);
+		chckbxPrueba4.setBounds(143, 428, 517, 23);
 		panel.add(chckbxPrueba4);
 		
-		chckbxPrueba5 = new JCheckBox("Prueba 5");
+		chckbxPrueba5 = new JCheckBox("Correcto funcionamiento de sensores.");
 		chckbxPrueba5.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxPrueba5.setBackground(Color.WHITE);
-		chckbxPrueba5.setBounds(143, 462, 97, 23);
+		chckbxPrueba5.setBounds(143, 462, 517, 23);
 		panel.add(chckbxPrueba5);
-		
-		chckbxPrueba6 = new JCheckBox("Prueba 6");
-		chckbxPrueba6.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxPrueba6.setBackground(Color.WHITE);
-		chckbxPrueba6.setBounds(143, 496, 97, 23);
-		panel.add(chckbxPrueba6);
 		
 		chckbxOtras = new JCheckBox("Otras:");
 		chckbxOtras.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		chckbxOtras.setBackground(Color.WHITE);
-		chckbxOtras.setBounds(143, 530, 97, 23);
+		chckbxOtras.setBounds(143, 496, 97, 23);
 		panel.add(chckbxOtras);
 		
 		/***********************************
@@ -259,49 +257,140 @@ public class VistaCrearPruebasReparacion extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción")) {
-					List <ReparacionMantenimiento> diagnosticos = control.buscarDiagnosticos((String) comboBoxCategoria.getSelectedItem()); 
-				
-					if(diagnosticos.size() != 0){DefaultComboBoxModel <String> comboBoxModelNombreEquipo = new DefaultComboBoxModel <>();
-					
-					comboBoxModelNombreEquipo.addElement(" Seleccione una opción");
-					for(ReparacionMantenimiento diagnostico:diagnosticos) {
-						comboBoxModelNombreEquipo.addElement(diagnostico.getNombreEquipo());
+				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción")) {
+					List<ReparacionMantenimiento> diagnosticos = control
+							.buscarDiagnosticos((String) comboBoxCategoria.getSelectedItem());
+
+					if (diagnosticos.size() != 0) {
+						comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
+
+						comboBoxModelNombreEquipo.addElement(" Seleccione una opción");
+						for (ReparacionMantenimiento diagnostico : diagnosticos) {
+							comboBoxModelNombreEquipo.addElement(diagnostico.getNombreEquipo());
+						}
+
+						comboBoxNombreEquipo.setModel(comboBoxModelNombreEquipo);
+
+						comboBoxNombreEquipo.setEnabled(true);
+					} else {
+						
+						comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
+						comboBoxModelNombreEquipo.addElement("");
+						comboBoxNombreEquipo.setModel(comboBoxModelNombreEquipo);
+						muestraDialogoConMensaje("No hay diagnosticos en la seccion " + (String) comboBoxCategoria.getSelectedItem());
+						comboBoxNombreEquipo.setEnabled(false);
 					}
+				} else {
 					
+					chckbxPrueba1.setSelected(false); 
+					chckbxPrueba2.setSelected(false); 
+					chckbxPrueba3.setSelected(false); 
+					chckbxPrueba4.setSelected(false); 
+					chckbxPrueba5.setSelected(false); 
+					chckbxOtras.setSelected(false); 
+					
+					chckbxPrueba1.setEnabled(false); 
+					chckbxPrueba2.setEnabled(false); 
+					chckbxPrueba3.setEnabled(false); 
+					chckbxPrueba4.setEnabled(false); 
+					chckbxPrueba5.setEnabled(false); 
+					chckbxOtras.setEnabled(false);
+					
+					textFieldOtrasPruebas.setEditable(false);
+					
+					comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
+					comboBoxModelNombreEquipo.addElement("");
 					comboBoxNombreEquipo.setModel(comboBoxModelNombreEquipo);
-					
-					comboBoxNombreEquipo.setEnabled(true);
-					}else {
-						muestraDialogoConMensaje("No hay diagnosticos en la seccion "+(String) comboBoxCategoria.getSelectedItem()); 
-					}
-				}else {
 					comboBoxNombreEquipo.setEnabled(false);
 				}
 			}
 		}); 
 		
-//		btnCrear.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//
-//				if (validaCampos()) {
-//
-//					if (rdbtnCorrectivo.isSelected()) {
-//						control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
-//								textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
-//								textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
-//								textFieldReparacionesMantenimientosARealizar.getText(), "Correctivo",
-//								textFieldOtrasPruebas.getText(), textFieldObservacionesAdicionales.getText());
-//					} else {
-//						control.crearDiagnostico((String) comboBoxNombreDelEmpleado.getSelectedItem(),
-//								textFieldNombre.getText(), (String) comboBoxCategoria.getSelectedItem(),
-//								textFieldMarca.getText(), textFieldDescripcionDelEquipo.getText(),
-//								textFieldReparacionesMantenimientosARealizar.getText(), "Preventivo",
-//								textFieldOtrasPruebas.getText(), textFieldObservacionesAdicionales.getText());
-//					}
-//				}
-//			}
-//		});
+		comboBoxNombreEquipo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción") &&
+					!comboBoxNombreDelEmpleado.getSelectedItem().equals("      ----------------------- Seleccione una opción -----------------------") &&
+					!comboBoxNombreEquipo.getSelectedItem().equals(" Seleccione una opción")) {
+					
+					chckbxPrueba1.setEnabled(true); 
+					chckbxPrueba2.setEnabled(true); 
+					chckbxPrueba3.setEnabled(true); 
+					chckbxPrueba4.setEnabled(true); 
+					chckbxPrueba5.setEnabled(true); 
+					chckbxOtras.setEnabled(true);
+				}else {
+					
+					chckbxPrueba1.setSelected(false); 
+					chckbxPrueba2.setSelected(false); 
+					chckbxPrueba3.setSelected(false); 
+					chckbxPrueba4.setSelected(false); 
+					chckbxPrueba5.setSelected(false); 
+					chckbxOtras.setSelected(false); 
+					
+					chckbxPrueba1.setEnabled(false); 
+					chckbxPrueba2.setEnabled(false); 
+					chckbxPrueba3.setEnabled(false); 
+					chckbxPrueba4.setEnabled(false); 
+					chckbxPrueba5.setEnabled(false); 
+					chckbxOtras.setEnabled(false);
+					
+					textFieldOtrasPruebas.setEditable(false);
+				}
+			}
+		}); 
+		
+		comboBoxNombreDelEmpleado.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción") &&
+					!comboBoxNombreDelEmpleado.getSelectedItem().equals("      ----------------------- Seleccione una opción -----------------------") &&
+					!comboBoxNombreEquipo.getSelectedItem().equals(" Seleccione una opción")) {
+					
+					chckbxPrueba1.setEnabled(true); 
+					chckbxPrueba2.setEnabled(true); 
+					chckbxPrueba3.setEnabled(true); 
+					chckbxPrueba4.setEnabled(true); 
+					chckbxPrueba5.setEnabled(true); 
+					chckbxOtras.setEnabled(true);
+				}else {
+					
+					chckbxPrueba1.setSelected(false); 
+					chckbxPrueba2.setSelected(false); 
+					chckbxPrueba3.setSelected(false); 
+					chckbxPrueba4.setSelected(false); 
+					chckbxPrueba5.setSelected(false); 
+					chckbxOtras.setSelected(false); 
+					
+					chckbxPrueba1.setEnabled(false); 
+					chckbxPrueba2.setEnabled(false); 
+					chckbxPrueba3.setEnabled(false); 
+					chckbxPrueba4.setEnabled(false); 
+					chckbxPrueba5.setEnabled(false); 
+					chckbxOtras.setEnabled(false);
+					
+					textFieldOtrasPruebas.setEditable(false);
+				}
+			}
+		});
+		
+		btnCrear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				listaDePruebas();
+
+				if (validaCampos() && pruebas.size()>0) {
+
+					control.realizarPruebasReparacion((String) comboBoxNombreDelEmpleado.getSelectedItem(),
+							(String) comboBoxCategoria.getSelectedItem(),
+							(String) comboBoxNombreEquipo.getSelectedItem(), pruebas,
+							textFieldObservacionesAdicionales.getText());
+
+				}
+			}
+		});
 		
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -326,18 +415,32 @@ public class VistaCrearPruebasReparacion extends JFrame {
 	 ***********************************/
 	public void limpiaCampos() {
 		
-//		textFieldNombre.setText("");
-//		textFieldMarca.setText("");
-//		textFieldDescripcionDelEquipo.setText("");
-//		textFieldReparacionesMantenimientosARealizar.setText("");
-//		textFieldOtrasPruebas.setText("");
-//		textFieldObservacionesAdicionales.setText("");
-//		
-//		comboBoxNombreDelEmpleado.setSelectedItem("      ----------------------- Seleccione una opción -----------------------");
-//		comboBoxCategoria.setSelectedItem(" Seleccione una opción");
-//		
-//		rdbtnPreventivo.setSelected(true);
-//		textFieldOtrasPruebas.setEditable(false);
+		textFieldObservacionesAdicionales.setText("");
+		textFieldOtrasPruebas.setText("");
+		
+		comboBoxNombreDelEmpleado.setSelectedItem("      ----------------------- Seleccione una opción -----------------------");
+		comboBoxCategoria.setSelectedItem(" Seleccione una opción");
+		
+		comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
+		comboBoxModelNombreEquipo.addElement("");
+		comboBoxNombreEquipo.setModel(comboBoxModelNombreEquipo);
+		
+		chckbxPrueba1.setSelected(false); 
+		chckbxPrueba2.setSelected(false); 
+		chckbxPrueba3.setSelected(false); 
+		chckbxPrueba4.setSelected(false); 
+		chckbxPrueba5.setSelected(false); 
+		chckbxOtras.setSelected(false); 
+		
+		chckbxPrueba1.setEnabled(false); 
+		chckbxPrueba2.setEnabled(false); 
+		chckbxPrueba3.setEnabled(false); 
+		chckbxPrueba4.setEnabled(false); 
+		chckbxPrueba5.setEnabled(false); 
+		chckbxOtras.setEnabled(false); 
+		
+		comboBoxNombreEquipo.setEnabled(false);
+		textFieldOtrasPruebas.setEditable(false);
 	}
 
 	/***********************************
@@ -347,35 +450,70 @@ public class VistaCrearPruebasReparacion extends JFrame {
 	 ***********************************/
 	public boolean validaCampos() {
 
-//		if ((comboBoxNombreDelEmpleado.getSelectedItem().equals(null))
-//				|| (comboBoxCategoria.getSelectedItem().equals(null)) || textFieldNombre.getText().equals(null)
-//				|| textFieldMarca.getText().equals(null) || textFieldDescripcionDelEquipo.getText().equals(null)
-//				|| textFieldReparacionesMantenimientosARealizar.getText().equals(null)) {
-//			muestraDialogoConMensaje("Los campos no pueden ser nulos");
-//			return false;
-//		} else {
-//			if (rdbtnCorrectivo.isSelected() && textFieldOtrasPruebas.getText().equals("")) {
-//				muestraDialogoConMensaje("Ingresar las piezas requeridas.");
-//				return false;
-//
-//			} else {
-//				if ((comboBoxNombreDelEmpleado.getSelectedItem()
-//						.equals("      ----------------------- Seleccione una opción -----------------------"))
-//						|| (comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción"))
-//						|| textFieldNombre.getText().equals("") || textFieldMarca.getText().equals("")
-//						|| textFieldDescripcionDelEquipo.getText().equals("")
-//						|| textFieldReparacionesMantenimientosARealizar.getText().equals("")) {
-//					muestraDialogoConMensaje("Campos vacíos, rellena la información marcada con *");
-//					return false;
-//				} else {
-//					return true;
-//				}
-//			}
-//		}
-		return true; 
+		if ((comboBoxNombreDelEmpleado.getSelectedItem().equals(null))
+				|| (comboBoxCategoria.getSelectedItem().equals(null))
+				|| comboBoxNombreEquipo.getSelectedItem().equals(null) || chckbxPrueba1.getText().equals(null)
+				|| chckbxPrueba2.getText().equals(null) || chckbxPrueba3.getText().equals(null)
+				|| chckbxPrueba4.getText().equals(null) || chckbxPrueba5.getText().equals(null)
+				|| chckbxOtras.getText().equals(null) || textFieldOtrasPruebas.getText().equals(null)
+				|| textFieldObservacionesAdicionales.getText().equals(null)) {
+			muestraDialogoConMensaje("Los campos no pueden ser nulos");
+			return false;
+		} else {
+
+			if ((comboBoxNombreDelEmpleado.getSelectedItem()
+					.equals("      ----------------------- Seleccione una opción -----------------------"))
+					|| (comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción"))
+					|| (comboBoxNombreEquipo.getSelectedItem().equals(" Seleccione una opción")) 
+					|| (comboBoxNombreEquipo.getSelectedItem().equals(""))) {
+				muestraDialogoConMensaje("Campos vacíos, rellena la información marcada con *");
+				return false;
+			} else {
+
+				if (!chckbxPrueba1.isSelected() && !chckbxPrueba2.isSelected() && !chckbxPrueba3.isSelected()
+						&& !chckbxPrueba4.isSelected() && !chckbxPrueba5.isSelected() && !chckbxOtras.isSelected()) {
+					muestraDialogoConMensaje(
+							"Selecciona alguna de las pruebas o ingresa alguna prueba de tu preferencia");
+					return false;
+				} else {
+					if (chckbxOtras.isSelected() && textFieldOtrasPruebas.getText().equals("")) {
+						muestraDialogoConMensaje("Ingresa las otras pruebas realizadas a "
+								+ (String) comboBoxNombreEquipo.getSelectedItem());
+						return false;
+
+					} else {
+						return true;
+					}
+
+				}
+			}
+		}
+	}
+	
+	public void listaDePruebas() {
+		
+		if(chckbxPrueba1.isSelected()) {
+			pruebas.add(chckbxPrueba1.getText()); 
+		}
+		if(chckbxPrueba2.isSelected()) {
+			pruebas.add(chckbxPrueba2.getText()); 
+		}
+		if(chckbxPrueba3.isSelected()) {
+			pruebas.add(chckbxPrueba3.getText()); 
+		}
+		if(chckbxPrueba4.isSelected()) {
+			pruebas.add(chckbxPrueba4.getText()); 
+		}
+		if(chckbxPrueba5.isSelected()) {
+			pruebas.add(chckbxPrueba5.getText()); 
+		}
+		if(chckbxOtras.isSelected()) {
+			pruebas.add(textFieldOtrasPruebas.getText()); 
+		}
 	}
 	
 	public void muestra(ControlCrearPruebasReparacion control, List <CategoriaDiagnostico> categorias, List<Empleado> empleados, String fecha) {
+
 		
 		this.control = control; 
 		
@@ -383,7 +521,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		textFieldOtrasPruebas.setText("");
 		textFieldFecha.setText(fecha);
 		
-		DefaultComboBoxModel <String> comboBoxModelEmpleados = new DefaultComboBoxModel <>();
+		comboBoxModelEmpleados = new DefaultComboBoxModel <>();
 		
 		comboBoxModelEmpleados.addElement("      ----------------------- Seleccione una opción -----------------------");
 		for(Empleado empleado:empleados) {
@@ -392,7 +530,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		
 		comboBoxNombreDelEmpleado.setModel(comboBoxModelEmpleados);
 		
-		DefaultComboBoxModel <String> comboBoxModelCategorias = new DefaultComboBoxModel <>();
+		comboBoxModelCategorias = new DefaultComboBoxModel <>();
 		
 		comboBoxModelCategorias.addElement(" Seleccione una opción");
 		for(CategoriaDiagnostico categoria:categorias) {
@@ -401,8 +539,27 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		
 		comboBoxCategoria.setModel(comboBoxModelCategorias);
 		
+		comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
+		comboBoxModelNombreEquipo.addElement("");
+		comboBoxNombreEquipo.setModel(comboBoxModelNombreEquipo);
+		
+		chckbxPrueba1.setEnabled(false); 
+		chckbxPrueba2.setEnabled(false); 
+		chckbxPrueba3.setEnabled(false); 
+		chckbxPrueba4.setEnabled(false); 
+		chckbxPrueba5.setEnabled(false); 
+		chckbxOtras.setEnabled(false);
+		
+		chckbxPrueba1.setSelected(false); 
+		chckbxPrueba2.setSelected(false); 
+		chckbxPrueba3.setSelected(false); 
+		chckbxPrueba4.setSelected(false); 
+		chckbxPrueba5.setSelected(false); 
+		chckbxOtras.setSelected(false); 
+		
 		comboBoxNombreEquipo.setEnabled(false);
-		textFieldOtrasPruebas.setEditable(false);
+		textFieldOtrasPruebas.setEditable(false);		
+		pruebas = new ArrayList<>();
 		
 		setVisible(true);
 		

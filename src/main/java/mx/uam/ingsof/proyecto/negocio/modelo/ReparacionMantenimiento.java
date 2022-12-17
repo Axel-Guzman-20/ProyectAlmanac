@@ -53,4 +53,27 @@ public class ReparacionMantenimiento {
 	@OneToMany(targetEntity = DiagnosticoPruebas.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name= "idReparacionMantenimiento")
 	private final List <DiagnosticoPruebas> diagnosticoPruebas = new ArrayList <> ();
+	
+	/**
+	 * 
+	 * Permite agregar un diagnostico a una categoria disponible
+	 * Nota: un mismo diagnostico no se puede registrar dos veces (Regla del Negocio )
+	 * 
+	 * @param diagnostico, el diagnostico que desea agregar a la categoria
+	 * @return true si el diagnostico se agregó correctamente, false si ya estaba en la CategoriaDiagnostico
+	 * @throws IllegalArgumentException si el diagnostico es nulo
+	 */
+	public boolean addPruebas(DiagnosticoPruebas pruebas) {
+		
+		if(pruebas == null) {
+			throw new IllegalArgumentException("El diagnostico no puede ser null");
+		}
+		
+		if(diagnosticoPruebas.contains(pruebas)) {
+			// Checo si el prueba está en la categoria por que no se puede agregar una prueba dos veces
+			return false;
+		}
+		
+		return diagnosticoPruebas.add(pruebas); 
+	}
 }
