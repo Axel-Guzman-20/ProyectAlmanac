@@ -211,6 +211,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem menuItemHistorial = new JMenuItem("Historial");
 		menuItemHistorial.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			controlPrincipal.HistorialCompra();
 						
 			}
 		});
