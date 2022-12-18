@@ -12,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
+import mx.uam.ingsof.proyecto.datos.VentaProductoRepository;
+import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
+import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 
 /**
  * Esta clase controla el Servicio de los Clientes
@@ -27,6 +31,12 @@ public class ServicioCliente {
 
 	@Autowired
 	ClienteRepository clienteRepository;
+	
+	@Autowired
+	VentaProductoRepository ventaProductoRepository;
+	
+	@Autowired
+	private VentaRepository ventaRepository;
 
 	private static int digitosMaxTelefono = 10;
 
@@ -241,6 +251,86 @@ public class ServicioCliente {
 			listaClientes.add(cliente);
 		}
 		return listaClientes;
+	}
+	
+	
+	//
+	// HU-08
+	//
+
+	
+	
+	public String[][] buscarHistorial(int idCliente, String fechaInicio, String fechaFinal) {
+
+		List<Venta> ventas = ventaRepository.findByIdCliente(idCliente);
+
+		String[][] datos = convertirListaString(ventas);
+
+		return datos;
+
+	}
+
+	public String[][] convertirListaString(List<Venta> ventas) {
+
+		int registrosVentas;
+		int columnasTabla = 5;
+
+		double preciototal;
+		int cantidad;
+		double precio;
+
+		List<VentaProducto> ventasProducto;
+		String[][] datos;
+
+		int i,k=0;
+
+		registrosVentas = cuentaProductosPorVenta(ventas);
+
+		datos = new String[registrosVentas][columnasTabla];
+
+		List<VentaProducto> ventaProducto;
+
+		for (i = 0; i < ventas.size(); i++) {
+			
+			ventasProducto = ventaProductoRepository.findByIdVenta(ventas.get(i).getIdVenta());
+			
+			for (int j = 0; j < ventasProducto.size(); j++) {
+				
+				// Estos datos ya vienen en la venta
+				datos[k][0] = String.valueOf(ventas.get(i).getFechaVenta());
+
+				datos[k][1] = String.valueOf(ventasProducto.get(j).getProducto().getNombre());
+
+				cantidad = ventasProducto.get(j).getCantidad();
+				datos[k][2] = String.valueOf(cantidad);
+
+				precio = ventasProducto.get(j).getProducto().getPrecio();
+				datos[k][3] = String.valueOf(precio);
+
+				preciototal = cantidad * precio;
+				datos[k][4] = String.valueOf(preciototal);
+				k++;	
+			}
+
+		}
+
+		return datos;
+	}
+
+	public int cuentaProductosPorVenta(List<Venta> venta) {
+
+		int i;
+		int cantidadProductosVendidos = 0;
+		List<VentaProducto> ventasProducto;
+
+		for (i = 0; i < venta.size(); i++) {
+			ventasProducto = ventaProductoRepository.findByIdVenta(venta.get(i).getIdVenta());
+
+			cantidadProductosVendidos = cantidadProductosVendidos + ventasProducto.size();
+
+		}
+
+		return cantidadProductosVendidos;
 	}
 
 }
