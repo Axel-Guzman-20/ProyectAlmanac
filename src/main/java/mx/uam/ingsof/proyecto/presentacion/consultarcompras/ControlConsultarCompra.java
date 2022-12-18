@@ -1,5 +1,6 @@
 package mx.uam.ingsof.proyecto.presentacion.consultarcompras;
 
+import java.text.ParseException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,16 +39,17 @@ public class ControlConsultarCompra {
 		
 	}
 
-	public void consultarCompras(String fechaDesde, String fechaHasta, int indexEmpleado, String nombreProveedor, String nombreProducto) {
+	
+	public void consultarCompras(String fechaDesde, String fechaHasta, int indexEmpleado, String nombreProveedor, String nombreProducto) throws ParseException {
 		
 		boolean fechasCongruentes = true;
 		String[][] datos;
 		
 		
 		// En caso de que este fechaInicio y fechaHasta, se comparan en que fechaFinal sea mayor a la de inicio
-		if(!fechaDesde.isEmpty() && !fechaHasta.isEmpty()) 
+		if(!fechaDesde.isEmpty() && !fechaHasta.isEmpty()) {
 			fechasCongruentes = servicioCompra.comparaFechas(fechaDesde, fechaHasta);
-		
+		}
 		
 		if(fechasCongruentes) {
 			datos = servicioCompra.consultarCompras(fechaDesde, fechaHasta, indexEmpleado, nombreProveedor, nombreProducto);

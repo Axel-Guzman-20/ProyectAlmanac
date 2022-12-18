@@ -11,13 +11,13 @@ import mx.uam.ingsof.proyecto.datos.CompraRepository;
 import mx.uam.ingsof.proyecto.datos.EmpleadoRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
-import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 
 /**
  * Servicio relacionado con las compras
  * 
  * @author AxelGuzman
  * @author EduardoCastro
+ * @author MiguelGuzman
  */
 
 @Service
@@ -98,6 +98,10 @@ public class ServicioCompra {
 	
 	
 	
+	
+	
+	
+	
 	/***********************************
 	 * 
 	 * 
@@ -115,116 +119,213 @@ public class ServicioCompra {
 		
 	}
 	
-	public String[][] consultarCompras(String fechaDesde, String fechaHasta, int indexEmpleado, String nombreProveedor, String nombreProducto) {
+	public String[][] consultarCompras(String fechaDesde, String fechaHasta, int indexEmpleado, String nombreMarca, String nombreProducto) throws ParseException {
 		
 		List<Compra> compras = compraRepository.findAll();
 		
 		// Para mostrar todas las ventas
-		if(fechaDesde.equals("") && fechaHasta.equals("") && indexEmpleado == 0 && nombreProveedor.equals("") && nombreProducto.equals("")) {
+		if(fechaDesde.isEmpty() && fechaHasta.isEmpty() && indexEmpleado == 0 && nombreMarca.isEmpty() && nombreProducto.isEmpty()  ) 
 			return comprasToDatos(compras);
 		
-		}else
-			return null;
+		
+		if(!fechaDesde.isEmpty() || !fechaHasta.isEmpty()) 
+			compras = criterioFechas(fechaDesde, fechaHasta, compras);
+		
+		// 0 == Ningun empleado (--Seleccione una opción--
+		if(indexEmpleado != 0 && !compras.isEmpty()) 
+			compras = criterioEmpleado(indexEmpleado, compras);
+		
+		if( !nombreMarca.isEmpty() && !compras.isEmpty())
+			compras = criterioMarca(nombreMarca, compras);
+		
+		if( !nombreProducto.isEmpty() && !compras.isEmpty())
+			compras = criterioProducto(nombreProducto, compras);
+				
+		return comprasToDatos(compras);
 		
 	}
 	
-	// Este metodo sirve para pasar los datos de las compras a un String[][] para la tabla
-	public String[][] comprasToDatos(List<Compra> compras){
-		
-		String[][] datos = new String [compras.size()][7];
-		
-		int cantidad;
-		double precio;
-		double totalCompra;
-		String nombreEmpleado;
-		long idEmpleado;
-		Empleado empleado;
-		
-		for (int i = 0; i < datos.length; i++) {
-			
-			cantidad = compras.get(i).getCantidad();
-			precio = compras.get(i).getPrecio();
-			totalCompra = precio * cantidad;
-			
-			idEmpleado = compras.get(i).getIdEmpleado();
-			empleado = empleadoRepository.findByIdEmpleado(idEmpleado);
-			nombreEmpleado = empleado.getNombreCompleto();
-			
-			
-			datos[i][0] = String.valueOf(compras.get(i).getIdCompra());
-			datos[i][1] = compras.get(i).getFecha();
-			datos[i][2] = nombreEmpleado;
-			datos[i][3] = compras.get(i).getMarca();
-			datos[i][4] = compras.get(i).getNombre();
-			datos[i][5] = String.valueOf(cantidad);
-			datos[i][6] = String.valueOf(totalCompra);
-			
-		}
-		
-		return datos;
-	}
 	
-	
-	public List<Venta> criterioFechas(String fechaDesde, String fechaHasta, List<Venta> ventas) throws ParseException{
+	// Buscas las compras con base a los criterios de fecha
+	public List<Compra> criterioFechas(String fechaDesde, String fechaHasta, List<Compra> compras) throws ParseException{
 		
 		Date fechaInicio;
 		Date fechaFinal;
-		Date fechaVenta;
+		Date fechaCompra;
 		SimpleDateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
-		List<Venta> nuevaVenta = new ArrayList<>();
+		List<Compra> nuevaCompra = new ArrayList<>();
 		int i;
 		
 		
 		// Para mostrar de acuerdo con las fechas
-		if(!fechaDesde.equals("") && !fechaHasta.equals("")) {		
+		if( !fechaDesde.isEmpty() && !fechaHasta.isEmpty() ) {		
 			fechaInicio = fechaFormato.parse(fechaDesde);
 			fechaFinal = fechaFormato.parse(fechaHasta);
 						
-			for (i = 0; i < ventas.size(); i++) {
+			for (i = 0; i < compras.size(); i++) {
 				
-				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+				fechaCompra = fechaFormato.parse(compras.get(i).getFecha());
 				
-				if(fechaVenta.compareTo(fechaInicio) >= 0 && fechaVenta.compareTo(fechaFinal) <= 0)
-					nuevaVenta.add(ventas.get(i));
+				if(fechaCompra.compareTo(fechaInicio) >= 0 && fechaCompra.compareTo(fechaFinal) <= 0)
+					nuevaCompra.add(compras.get(i));
 				
 			}
-		
-			return nuevaVenta;	
-		}
-		
+			
+			return nuevaCompra;	
 		
 		//Solo tiene fecha de inicio
-		if(!fechaDesde.equals("") && fechaHasta.equals("")) {
+		}else if( !fechaDesde.isEmpty() && fechaHasta.isEmpty() ) {
 			fechaInicio = fechaFormato.parse(fechaDesde);
-						
-			for (i = 0; i < ventas.size(); i++) {
 					
-				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+			for (i = 0; i < compras.size(); i++) {
+					
+				fechaCompra = fechaFormato.parse(compras.get(i).getFecha());
 				
-				if(fechaVenta.compareTo(fechaInicio) >= 0)
-					nuevaVenta.add(ventas.get(i));
+				if(fechaCompra.compareTo(fechaInicio) >= 0)
+					nuevaCompra.add(compras.get(i));
 			}
-				
-			return nuevaVenta;						
-		}
-		
-		
+			
+			return nuevaCompra;		
+			
 		// Solo tiene fecha final
-		if(fechaDesde.equals("") && !fechaHasta.equals("")) {
+		}else {
+			
 			fechaFinal = fechaFormato.parse(fechaHasta);
 			
-			for (i = 0; i < ventas.size(); i++) {
-				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+			for (i = 0; i < compras.size(); i++) {
+				fechaCompra = fechaFormato.parse(compras.get(i).getFecha());
 					
-				if(fechaVenta.compareTo(fechaFinal) <= 0)
-					nuevaVenta.add(ventas.get(i));
+				if(fechaCompra.compareTo(fechaFinal) <= 0)
+					nuevaCompra.add(compras.get(i));
 			}
 			
-			return nuevaVenta;
+			return nuevaCompra;
 		}
 		
-		return ventas;
 	}
+	
+	
+	
+	public List<Compra> criterioEmpleado(int indexEmpleado, List<Compra> compras){
+		
+		List<Compra> nuevaCompra = new ArrayList<>();
+		int i;
+						
+		for (i = 0; i < compras.size(); i++) {
+			
+			if(indexEmpleado == compras.get(i).getIdEmpleado())
+				nuevaCompra.add(compras.get(i));
+		
+		}
+						
+		return nuevaCompra;
+	}
+	
+	public List<Compra> criterioMarca(String nombreMarca, List<Compra> compras){
+		
+		List<Compra> nuevaCompra = new ArrayList<>();
+		int i, j;
+		int longitudMarca = nombreMarca.length();
+		String marca;
+		String aux = "";
+		
+		for (i = 0; i < compras.size(); i++) {
+			
+			marca = compras.get(i).getMarca();
+				
+			if(marca.length() >= longitudMarca) {
+				
+				for (j = 0; j <= marca.length() - longitudMarca; j++) {
+					
+					aux = marca.substring(j, j + longitudMarca);
+					
+					if(nombreMarca.equalsIgnoreCase(aux)) 
+						nuevaCompra.add(compras.get(i));
+					
+					aux = "";
+				}
+			}
+			
+		}
+						
+		return nuevaCompra;
+	}
+	
+	
+	public List<Compra> criterioProducto(String nombreProducto, List<Compra> compras){
+		
+		List<Compra> nuevaCompra = new ArrayList<>();
+		int i;
+		int j;
+		int longitudProducto = nombreProducto.length();
+		String producto;
+		String aux = "";
+		
+		for (i = 0; i < compras.size(); i++) {
+			
+			producto = compras.get(i).getNombre();
+				
+			if(producto.length() >= longitudProducto) {
+				
+				for (j = 0; j <= producto.length() - longitudProducto; j++) {
+					
+					aux = producto.substring(j, j + longitudProducto);
+					
+					if(nombreProducto.equalsIgnoreCase(aux))
+						nuevaCompra.add(compras.get(i));
+					
+					aux = "";
+				}
+			}
+			
+		}
+						
+		return nuevaCompra;
+	}
+	
+	
+	/**
+	 * Metodo que combierte los datos de Compras
+	 * a una matriz de string
+	 * 
+	 * @return String[][]
+	 * @throws ParseException 
+	 */
+		public String[][] comprasToDatos(List<Compra> compras){
+			
+			String[][] datos = new String [compras.size()][7];
+			
+			int cantidad;
+			double precio;
+			double totalCompra;
+			String nombreEmpleado;
+			long idEmpleado;
+			Empleado empleado;
+			
+			for (int i = 0; i < datos.length; i++) {
+				
+				cantidad = compras.get(i).getCantidad();
+				precio = compras.get(i).getPrecio();
+				totalCompra = precio * cantidad;
+				
+				// Con base al idEmpleado, busca el nombre de ese empleado
+				idEmpleado = compras.get(i).getIdEmpleado();
+				empleado = empleadoRepository.findByIdEmpleado(idEmpleado);
+				nombreEmpleado = empleado.getNombreCompleto();
+				
+				
+				datos[i][0] = String.valueOf(compras.get(i).getIdCompra());
+				datos[i][1] = compras.get(i).getFecha();
+				datos[i][2] = nombreEmpleado;
+				datos[i][3] = compras.get(i).getMarca();
+				datos[i][4] = compras.get(i).getNombre();
+				datos[i][5] = String.valueOf(cantidad);
+				datos[i][6] = String.valueOf(totalCompra);
+				
+			}
+			
+			return datos;
+		}
 	
 	
 	/**

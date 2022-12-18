@@ -1,12 +1,12 @@
 package mx.uam.ingsof.proyecto.presentacion.consultarcompras;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.text.ParseException;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -23,11 +23,10 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.stereotype.Component;
-
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
-import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
+
 
 @SuppressWarnings("serial")
 @Component
@@ -47,7 +46,6 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 	
 	private JPanel panelPrincipal;
 	private JPanel panelBlanco;
-	private JPanel panelTabla;
 	
 	private JDateChooser fechaDesdeDC;
 	private JTextFieldDateEditor textoFechaDesdeDC;
@@ -72,12 +70,6 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 	
 	private ControlConsultarCompra controlConsultarCompras;
 	 
-	//private String[][] datosTabla = {
-				//					{"1", "10/12/2022", "Empleado11", "Proveedor11", "Producto1", "8", "80"},
-			//						{"2", "11/12/2022", "Empleado22", "Proveedor22", "Producto2", "9", "90"},
-		//							{"2", "12/12/2022", "Empleado33", "Proveedor33", "Producto3", "10", "100"},
-	//								};
-	//private String[][] datosTabla = new String [0][0];
 	
 	public VistaConsultarCompras() throws PrinterException {
 		
@@ -268,11 +260,44 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 	}
 	
 	
+	public void tabla() {
+		
+		panelTablaScroll = new JScrollPane();
+		panelTablaScroll.getViewport().setBackground(Color.WHITE);
+		panelTablaScroll.setBorder(BorderFactory.createEmptyBorder()); 
+		panelTablaScroll.setBounds(51, 266, 745, 251);
+		
+		
+		tablaDatos = new JTable();
+		tablaDatos.setGridColor(colorNegro);
+		
+		tablaDatos.setBackground(SystemColor.inactiveCaption);
+		tablaDatos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panelTablaScroll.setViewportView(tablaDatos);
+			
+		dtm = new DefaultTableModel(); 
+		
+		dtm.setColumnIdentifiers(titulosEncabezado);
+			
+		tablaDatos.setModel(dtm);
+		
+		panelTablaScroll.setVisible(true);
+		
+		panelBlanco.add(panelTablaScroll);
+		
+	}
+	
+	
 	public void muestra(ControlConsultarCompra control, List <Empleado> empleados) {
 		
 		controlConsultarCompras = control;
 		
-		llenaDatosComboBox(empleados);
+		// Vaciamos todos los empleados en el comboBox
+		DefaultComboBoxModel <String> comboBoxModel = new DefaultComboBoxModel <>();
+		comboBoxModel.addElement("--Seleccione una opción--");
+		for(Empleado empleado: empleados)
+			comboBoxModel.addElement(empleado.getNombreCompleto());
+		comboBoxEmpleados.setModel(comboBoxModel);
 		
 		limpiaTodo();
 		
@@ -296,16 +321,6 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 	
 	}
 	
-	
-	public void llenaDatosComboBox(List <Empleado> empleados) {
-		
-		DefaultComboBoxModel <String> comboBoxModel = new DefaultComboBoxModel <>();
-		comboBoxModel.addElement("--Seleccione una opción--");
-		for(Empleado empleado: empleados)
-			comboBoxModel.addElement(empleado.getNombreCompleto());
-		comboBoxEmpleados.setModel(comboBoxModel);
-			
-	}
 	
 	
 	public void limpiaTodo() {
@@ -333,7 +348,7 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 	}
 	
 	
-	public void recolectaDatos() {
+	public void recolectaDatos() throws ParseException {
 		
 		String fechaDesde;
 		String fechaHasta;
@@ -360,7 +375,11 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 		}else if(e.getSource() == cancelarButton){
 			termina();
 		}else if(e.getSource() == buscarButton) {
-			recolectaDatos();
+			try {
+				recolectaDatos();
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 	}
@@ -369,47 +388,22 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 	
 	public void mostrarCompras(String[][] datos) {
 		
+		// Se vuelve a crear si pulsa Buscar más de 1 vez, de lo contrario, duplica la misma compra
 		dtm = new DefaultTableModel(); 
-		
 		dtm.setColumnIdentifiers(titulosEncabezado);
-			
-		tablaDatos.setModel(dtm);
-
-		for (int i = 0; i < datos.length; i++)
-			dtm.addRow(datos[i]);
-			
 		tablaDatos.setModel(dtm);
 		
-		panelTablaScroll.setVisible(true);
+		if(datos.length == 0) {
+			muestraDialogoConMensaje("No se encontró alguna compra con la información proporcionada.");
+		}else {
+		
+			for (int i = 0; i < datos.length; i++)
+				dtm.addRow(datos[i]);
+				
+			tablaDatos.setModel(dtm);
 			
+			panelTablaScroll.setVisible(true);
+		}
 	}
-	
-	
-	
-	public void tabla() {
 		
-		panelTablaScroll = new JScrollPane();
-		panelTablaScroll.getViewport().setBackground(Color.WHITE);
-		panelTablaScroll.setBorder(BorderFactory.createEmptyBorder()); 
-		panelTablaScroll.setBounds(50, 265, 745, 251);
-		
-		
-		tablaDatos = new JTable();
-		
-		tablaDatos.setBackground(SystemColor.inactiveCaption);
-		tablaDatos.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		panelTablaScroll.setViewportView(tablaDatos);
-			
-		dtm = new DefaultTableModel(); 
-		
-		dtm.setColumnIdentifiers(titulosEncabezado);
-			
-		tablaDatos.setModel(dtm);
-		
-		panelTablaScroll.setVisible(true);
-		
-		panelBlanco.add(panelTablaScroll);
-		
-	}
-	
 }

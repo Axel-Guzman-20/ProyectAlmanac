@@ -130,15 +130,15 @@ public class ServicioVenta {
 			ventas = criterioFechas(fechaDesde, fechaHasta, ventas);
 		
 		// Si no se selecciono algun empleado, no entra al método ya que no requiere un críterio de empleado
-		if(!itemEmpleadoId.equals("0") && ventas.size() != 0)
+		if(!itemEmpleadoId.equals("0") && !ventas.isEmpty())
 			ventas = criterioEmpleado(itemEmpleadoId, ventas);
 			
 		// Si no se selecciono algun cliente, no entra al método ya que no requiere un críterio de cliente
-		if(!itemClienteId.equals("0") && ventas.size() != 0)
+		if(!itemClienteId.equals("0") && !ventas.isEmpty())
 			ventas = criterioCliente(itemClienteId, ventas);
 		
 		// Si no se ingresó un monto, no entra al método ya que no requiere un críterio
-		if(!montoVentaIngresada.equals("") && ventas.size() != 0)
+		if(!montoVentaIngresada.equals("") && !ventas.isEmpty())
 			ventas = criterioMonto(montoVentaIngresada, ventas);
 		
 		if(ventas.size() != 0)

@@ -38,8 +38,8 @@ public class ControlConsultarVentas {
 		
 		List <Cliente> cliente = servicioCliente.recuperaClientes();
 				
-		if(empleado.size() != 0) {
-			if(cliente.size() != 0) {
+		if(!empleado.isEmpty()) {
+			if(!cliente.isEmpty()) {
 				if(servicioVenta.sizeVentas() != 0) {
 				
 					vistaConsultarVentas.muestra(this, empleado, cliente);
