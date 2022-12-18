@@ -8,7 +8,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
-
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -20,15 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
 import org.springframework.stereotype.Component;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
-@SuppressWarnings("serial")
-@Component
 
 /**
  * Ventana que mira el usuario para consultar las ventas registradas
@@ -38,6 +34,8 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 */
 
 
+@SuppressWarnings("serial")
+@Component
 public class VistaConsultarVentas extends JFrame{
 	
 	private ControlConsultarVentas controlConsultarVentas;
@@ -171,7 +169,7 @@ public class VistaConsultarVentas extends JFrame{
 		panelBlanco.add(nombreEmpleadoLabel);			
 		
 		// Lo dejamos como caja de texto
-		comboBoxEmpleados = new JComboBox<String>();
+		comboBoxEmpleados = new JComboBox<>();
 		comboBoxEmpleados.setBounds(220, 110, 250, 30);
 		panelBlanco.add(comboBoxEmpleados);
 		
@@ -184,7 +182,7 @@ public class VistaConsultarVentas extends JFrame{
 		panelBlanco.add(nombreClienteLabel);			
 						
 		// Le damos su caja de texto
-		comboBoxClientes = new JComboBox<String>();
+		comboBoxClientes = new JComboBox<>();
 		comboBoxClientes.setBounds(220, 160, 250, 30);
 		panelBlanco.add(comboBoxClientes);
 		

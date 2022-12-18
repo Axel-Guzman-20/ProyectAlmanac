@@ -13,6 +13,8 @@ import mx.uam.ingsof.proyecto.datos.ProductoRepository;
 import mx.uam.ingsof.proyecto.datos.SeccionCatalogoRepository;
 import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
+import mx.uam.ingsof.proyecto.negocio.ServicioCompra;
+import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
 import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
@@ -24,6 +26,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 import mx.uam.ingsof.proyecto.presentacion.principal.ControlPrincipal;
+import mx.uam.ingsof.proyecto.presentacion.registrarCompra.ControlRegistrarCompra;
 
 
 
@@ -41,7 +44,7 @@ import mx.uam.ingsof.proyecto.presentacion.principal.ControlPrincipal;
 
 @SpringBootApplication
 public class ProyectoApplication {
-
+	
 	@Autowired
 	ControlPrincipal controlPrincipal;
 	
@@ -64,7 +67,7 @@ public class ProyectoApplication {
 	CategoriaDiagnosticoRepository categoriaDiagnosticoRepository; 
 	
 	@Autowired
-	ControladorEmpleado controladorEmpleado;
+	ServicioEmpleado servicioEmpleado;
 	
 	@Autowired
 	ServicioCliente servicioCliente;
@@ -74,6 +77,7 @@ public class ProyectoApplication {
 	
 	@Autowired
 	VentaRepository ventaRepository;
+	
 
 	/**
 	 * 
@@ -200,6 +204,14 @@ public class ProyectoApplication {
 		//productoRepository.save(productoPrueba);
 		seccionCatalogoRepository.save(seccionProcesador);
 		
+		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
+		servicioEmpleado.registrarEmpleado("10/12/2022", "Abigail Morales", "M", "abigail@correo.com", "1234567891", "Calle 1, Col, Roma, Alc Carranza, CDMX, CDMX");
+		servicioEmpleado.registrarEmpleado("11/12/2022", "Miguel Guzman", "H", "miguel@correo.com", "5896479625", "Calle 2, Col, Roma, Alc Carranza, CDMX, CDMX");
+		servicioEmpleado.registrarEmpleado("12/12/2022", "Axel Guzman", "H", "axel@correo.com", "2563149563", "Calle 3, Col, Roma, Alc Carranza, CDMX, CDMX");
+		servicioEmpleado.registrarEmpleado("13/12/2022", "Eduardo Castro", "H", "eduardo@correo.com", "9674852893", "Calle 4, Col, Roma, Alc Carranza, CDMX, CDMX");
+		
+		
+		/*
 		var empleadoPrueba = new Empleado();
 		empleadoPrueba.setIdEmpleado(1);
 		empleadoPrueba.setTelefono("55102417178");
@@ -209,13 +221,6 @@ public class ProyectoApplication {
 		empleadoPrueba.setDireccionCompleta("Calle Creacion");
 		empleadoPrueba.setCorreoElectronico("Eduardo@gmail.com");
 		empleadoRepository.save(empleadoPrueba);
-		
-		/*
-		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
-		controladorEmpleado.registraEmpleado("Abigail Morales", "M", "abigail@correo.com", "1234567891", "Calle 1, Col, Roma, Alc Carranza, CDMX, CDMX");
-		controladorEmpleado.registraEmpleado("Miguel Guzman", "H", "miguel@correo.com", "5896479625", "Calle 2, Col, Roma, Alc Carranza, CDMX, CDMX");
-		controladorEmpleado.registraEmpleado("Axel Guzman", "H", "axel@correo.com", "2563149563", "Calle 3, Col, Roma, Alc Carranza, CDMX, CDMX");
-		controladorEmpleado.registraEmpleado("Eduardo Castro", "H", "eduardo@correo.com", "9674852893", "Calle 4, Col, Roma, Alc Carranza, CDMX, CDMX");
 
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
 		servicioCliente.registrarCliente("27/11/2022", "Benito Camelo", "Masculino", "Calle 10 Alc. Roma, CDMX, CDMX", "5536521474", "cliente1@correo.com");

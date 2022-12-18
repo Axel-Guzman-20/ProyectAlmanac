@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import mx.uam.ingsof.proyecto.presentacion.agregarProducto.ControlAgregarProducto;
 import mx.uam.ingsof.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
 import mx.uam.ingsof.proyecto.presentacion.consultarVentas.ControlConsultarVentas;
+import mx.uam.ingsof.proyecto.presentacion.consultarcompras.ControlConsultarCompra;
 import mx.uam.ingsof.proyecto.presentacion.crearDiagnostico.ControlCrearDiagnostico;
 import mx.uam.ingsof.proyecto.presentacion.crearGarantia.ControlCrearGarantia;
 import mx.uam.ingsof.proyecto.presentacion.modificarCliente.ControlModificarCliente;
@@ -13,6 +14,7 @@ import mx.uam.ingsof.proyecto.presentacion.registrarProveedor.ControlRegistrarPr
 import mx.uam.ingsof.proyecto.presentacion.registrarVenta.ControlRegistrarVenta;
 import mx.uam.ingsof.proyecto.presentacion.registrarCliente.ControlRegistrarCliente;
 import mx.uam.ingsof.proyecto.presentacion.registrarCompra.ControlRegistrarCompra;
+
 
 @Component
 public class ControlPrincipal{
@@ -52,6 +54,9 @@ public class ControlPrincipal{
 	
 	@Autowired
 	private ControlRegistrarCompra controlRegistrarCompra;
+	
+	@Autowired
+	private ControlConsultarCompra controlConsultarCompras;
 	
 	
 	
@@ -168,6 +173,16 @@ public class ControlPrincipal{
 	public void mostrarVentas() {
 		
 		controlConsultarVentas.inicia();
+		
+	}
+	
+	/**
+	 * Método que arranca la historia de usuario "Consultar Compras"
+	 * 
+	 */
+	public void mostrarCompras() {
+		
+		controlConsultarCompras.inicia();
 		
 	}
 
