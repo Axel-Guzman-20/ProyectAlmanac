@@ -2,6 +2,7 @@ package mx.uam.ingsof.proyecto.negocio;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import mx.uam.ingsof.proyecto.datos.DiagnosticoPruebasRepository;
 import mx.uam.ingsof.proyecto.datos.ReparacionMantenimientoRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.DiagnosticoPruebas;
+import mx.uam.ingsof.proyecto.negocio.modelo.Pruebas;
 import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
 
 /**
@@ -52,16 +54,30 @@ public class ServicioDiagnosticoPruebas {
 				pruebaReparacion.setFecha(obtenerFechaActual());
 				pruebaReparacion.setNombreEmpleado(nombreEmpleado);
 				pruebaReparacion.setNombreEquipo(nombreEquipo);
-				//pruebaReparacion.setListaPruebas(listaPruebas);
 				pruebaReparacion.setObservacionesAdicionales(observaciones);
 				
 				diagnosticoPruebasRepository.save(pruebaReparacion); 
 				
-				if(reparacionMantenimiento.addPruebas(pruebaReparacion)) {
-					reparacionMantenimientoRepository.save(reparacionMantenimiento); 
-				} else {
-					throw new IllegalArgumentException(
-							"Error: El diagnostico de prueba no se pudo agregar exitosamente con su diagnostico de " + categoria+" del equipo " +nombreEquipo);
+				Pruebas prueba; 
+				
+				List <Pruebas> pruebas = new ArrayList<>(); 
+				
+				for(String p: listaPruebas) {
+					
+					prueba = new Pruebas();
+					prueba.setNombre(p);
+					
+					pruebas.add(prueba); 	
+				}
+				
+				if(pruebaReparacion.addPruebas(pruebas)) {
+					
+					if(reparacionMantenimiento.addPruebas(pruebaReparacion)) {
+						reparacionMantenimientoRepository.save(reparacionMantenimiento); 
+					} else {
+						throw new IllegalArgumentException(
+								"Error: El diagnostico de prueba no se pudo agregar exitosamente con su diagnostico de " + categoria+" del equipo " +nombreEquipo);
+					}
 				}
 				
 				
@@ -101,7 +117,7 @@ public class ServicioDiagnosticoPruebas {
 			return false;
 		} else {
 			if ((nombreEmpleado.equals("")) || (categoria.equals("")) || (nombreEquipo.equals(""))
-					|| (listaPruebas.size() != 0) || (observaciones.equals(""))) {
+					|| (listaPruebas.size() == 0)) {
 
 				return false;
 			} else {
