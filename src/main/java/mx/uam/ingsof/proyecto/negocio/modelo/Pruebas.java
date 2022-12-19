@@ -1,7 +1,5 @@
 package mx.uam.ingsof.proyecto.negocio.modelo;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
