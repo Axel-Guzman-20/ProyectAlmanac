@@ -1,6 +1,5 @@
 package mx.uam.ingsof.proyecto.negocio;
 
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,10 +31,10 @@ public class ServicioCliente {
 
 	@Autowired
 	ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	VentaProductoRepository ventaProductoRepository;
-	
+
 	@Autowired
 	private VentaRepository ventaRepository;
 
@@ -147,7 +146,7 @@ public class ServicioCliente {
 	 * 
 	 * Permite modificar un cliente existente en la base de datos
 	 * 
-
+	 * 
 	 * @param nombreCompleto
 	 * @param genero
 	 * @param direccion
@@ -157,8 +156,8 @@ public class ServicioCliente {
 	 * @throws IllegalArgumentException si existe un error
 	 */
 
-	public Cliente modificarCliente( long id, String nombreCliente, String genero, String direccion,
-			String telefono, String correoElectronico) {
+	public Cliente modificarCliente(long id, String nombreCliente, String genero, String direccion, String telefono,
+			String correoElectronico) {
 
 		Cliente cliente = clienteRepository.findByIdCliente(id);
 
@@ -191,9 +190,6 @@ public class ServicioCliente {
 
 	}
 
-
-
-
 	public Cliente obtenerCliente(long id) {
 
 		Cliente cliente = clienteRepository.findByIdCliente(id);
@@ -222,14 +218,13 @@ public class ServicioCliente {
 
 		return clientes;
 	}
-	
-	
+
 	/**
 	 * 
-	 * Compara el correo electronico registrado con el nuevo correo electronico retorna un
-	 * false si el correo nuevo es igual a un correo de diferentecliente
+	 * Compara el correo electronico registrado con el nuevo correo electronico
+	 * retorna un false si el correo nuevo es igual a un correo de diferentecliente
 	 * true si el nuevo correo es el mismo correo al cliente a modificar
-	 * */
+	 */
 	public boolean comparacorreos(String correo1, String correo2) {
 
 		if (correo1.compareTo(correo2) == 0) {
@@ -240,7 +235,7 @@ public class ServicioCliente {
 	}
 
 	/**
-	 * Recupera todos los clientes existentes 
+	 * Recupera todos los clientes existentes
 	 * 
 	 * @return Una lista con todos los clientes existentes. Una lista vacía
 	 */
@@ -253,7 +248,7 @@ public class ServicioCliente {
 		}
 		return listaClientes;
 	}
-	
+
 	//
 	// HU-08
 	//
@@ -263,15 +258,14 @@ public class ServicioCliente {
 		List<Venta> ventas = ventaRepository.findByIdCliente(idCliente);
 
 		// Para mostrar todas las compras del cliente
-		if (fechaInicio.equals("") && fechaFinal.equals("")) 
+		if (fechaInicio.equals("") && fechaFinal.equals(""))
 			return convertirListaString(ventas);
-		
 
 		// Si no son vacias algunas de las fechas, aplica el criterio
 		if (!fechaInicio.equals("") || !fechaFinal.equals(""))
 			ventas = criterioFechas(fechaInicio, fechaFinal, ventas);
-		
-		if(ventas.size() != 0)
+
+		if (ventas.size() != 0)
 			return convertirListaString(ventas);
 
 		else
@@ -333,7 +327,6 @@ public class ServicioCliente {
 
 			return nuevaVenta;
 		}
-		
 
 		return ventas;
 	}
@@ -400,27 +393,27 @@ public class ServicioCliente {
 
 		return cantidadProductosVendidos;
 	}
-	
-public boolean comparaFechas(String fechaDesde, String fechaHasta){
-		
-		if(!fechaDesde.equals("") && !fechaHasta.equals("")) {
-			
+
+	public boolean comparaFechas(String fechaDesde, String fechaHasta) {
+
+		if (!fechaDesde.equals("") && !fechaHasta.equals("")) {
+
 			SimpleDateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
-			
+
 			Date fechaInicio;
 			Date fechaFinal;
-			
+
 			try {
 				fechaInicio = fechaFormato.parse(fechaDesde);
 				fechaFinal = fechaFormato.parse(fechaHasta);
 				// Significa que la fecha de inicio es mayor a la final
-				if(fechaInicio.compareTo(fechaFinal) > 0) 
+				if (fechaInicio.compareTo(fechaFinal) > 0)
 					return false;
-				
-				return true;			
+
+				return true;
 			} catch (ParseException e) {
 				return false;
-			} 	
+			}
 		}
 		return true;
 	}

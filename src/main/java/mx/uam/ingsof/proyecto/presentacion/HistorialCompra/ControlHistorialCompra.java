@@ -64,15 +64,16 @@ public class ControlHistorialCompra {
 			List<Venta> ventas = servicioVenta.recuperaPorIdCliente(idcliente);
 
 			if (ventas.size() != 0) {
-				
+
 				String[][] datos = servicioCliente.buscarHistorial(idcliente, fechaInicio, fechaFinal);
-								
-				if(datos != null)
+
+				if (datos != null)
 					vistaHistorialCompra.mostrarHistorial(datos);
 
 				else {
-					vistaHistorialCompra.muestraDialogoConMensaje("No hay registro de ventas con la información proporcionada");
-				vistaHistorialCompra.limpiaTabla();
+					vistaHistorialCompra
+							.muestraDialogoConMensaje("No hay registro de ventas con la información proporcionada");
+					vistaHistorialCompra.limpiaTabla();
 				}
 
 			} else
