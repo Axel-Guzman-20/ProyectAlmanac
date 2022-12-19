@@ -5,12 +5,8 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -21,8 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,7 +24,6 @@ import org.springframework.stereotype.Component;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
-import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 
 import javax.swing.JScrollPane;
 
@@ -52,7 +45,6 @@ public class VistaHistorialCompra extends JFrame {
 
 	private JPanel panelPrincipal;
 	private JPanel panelBlanco;
-	private JPanel tablaPanel;
 
 	private Color colorFondo;
 
@@ -190,7 +182,8 @@ public class VistaHistorialCompra extends JFrame {
 		comboBoxClientes.setBounds(220, 70, 250, 30);
 		panelBlanco.add(comboBoxClientes);
 
-		int xBotones = 210, espacioEntreBotones = 160;
+		int xBotones = 210;
+		int espacioEntreBotones = 160;
 		int yBotones = 600;
 		int anchoBotones = 90;
 		int altoBotones = 30;
@@ -239,7 +232,6 @@ public class VistaHistorialCompra extends JFrame {
 					try {
 						controlHistorialCompra.buscarHistorial(idcliente, fechaInicio, fechaFinal);
 					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
@@ -253,7 +245,6 @@ public class VistaHistorialCompra extends JFrame {
 		limpiarButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				limpiaTodo();
 			}
 		});
@@ -355,13 +346,6 @@ public class VistaHistorialCompra extends JFrame {
 		table.setModel(tableModel);
 		for (int i = 0; i < datos.length; i++) {
 			tableModel.addRow(datos[i]);
-			for (int j = 0; j < 5; j++) {
-
-				// System.out.println("\t "+datos[i][j]);
-
-				// System.out.print("");
-
-			}
 
 		}
 
