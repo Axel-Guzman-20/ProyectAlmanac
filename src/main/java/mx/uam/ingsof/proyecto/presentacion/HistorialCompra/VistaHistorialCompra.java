@@ -10,6 +10,8 @@ import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.text.ParseException;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -240,19 +242,33 @@ public class VistaHistorialCompra extends JFrame{
 		//Acciones de los botones 
 		
 		//boton buscar
+		
 		buscarButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (comboBoxClientes.getSelectedIndex() != 0) {
-					int idcliente =comboBoxClientes.getSelectedIndex();
-					String fechaInicio = textoFechaDesdeDC.getText();
-					String fechaFinal = textoFechaHastaDC.getText();
-					controlHistorialCompra.buscarHistorial(idcliente,fechaInicio,fechaFinal);
 					
-				}
-				else
-					muestraDialogoConMensaje("Seleccione a un cliente");
-			}
+					if (comboBoxClientes.getSelectedIndex() != 0) {
+						
+							int idcliente =comboBoxClientes.getSelectedIndex();
+							String fechaInicio = textoFechaDesdeDC.getText();
+							String fechaFinal = textoFechaHastaDC.getText();
+							try {
+								controlHistorialCompra.buscarHistorial(idcliente,fechaInicio,fechaFinal);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						
+					
+					}else
+						muestraDialogoConMensaje("Seleccione a un cliente");
+				
+					
+					
+					}
+
+				
+			
 		});		
 				
 				
@@ -268,7 +284,11 @@ public class VistaHistorialCompra extends JFrame{
 		cancelarButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				
+				for (int i = 0; i < table.getRowCount(); i++) {
+					tableModel.removeRow(i);
+					i-=1;
+					}
 				controlHistorialCompra.cierraVentana();
 			}
 		});
@@ -339,20 +359,39 @@ public class VistaHistorialCompra extends JFrame{
 		textoFechaDesdeDC.setText("");
 		textoFechaHastaDC.setText("");
 		comboBoxClientes.setSelectedIndex(0);
+		for (int i = 0; i < table.getRowCount(); i++) {
+			tableModel.removeRow(i);
+			i-=1;
+			}
 		
+	}
+	
+	public void limpiaTabla() {
+
+		for (int i = 0; i < table.getRowCount(); i++) {
+			tableModel.removeRow(i);
+			i-=1;
+			}
 	}
 
 
 
 
+
 	public void mostrarHistorial(String[][] datos) {
-		int k=0;
+		
+		// Se vuelve a crear si pulsa Buscar más de 1 vez, de lo contrario, duplica la misma compra
+		tableModel = new DefaultTableModel(); 
+		tableModel.addColumn("FECHA");
+		tableModel.addColumn("NOMBRE PRODUCTO");
+		tableModel.addColumn("CANTIDAD");
+		tableModel.addColumn("PRECIO");
+		tableModel.addColumn("PRECIO TOTAL");
+		
+		table.setModel(tableModel);		
 		for (int i = 0; i < datos.length; i++) {
 			tableModel.addRow(datos[i]);
 			for (int j = 0; j <5; j++) {
-				
-				
-				k++;
 				
 			//	System.out.println("\t "+datos[i][j]);
 				
@@ -360,7 +399,10 @@ public class VistaHistorialCompra extends JFrame{
 				
 			}
 			
-		}	
+		}
+	
+	
+		
 		
 		
 	}

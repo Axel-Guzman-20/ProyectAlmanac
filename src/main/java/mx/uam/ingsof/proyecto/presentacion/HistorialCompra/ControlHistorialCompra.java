@@ -20,62 +20,66 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 
 @Component
 public class ControlHistorialCompra {
-	
+
 	@Autowired
 	private VistaHistorialCompra vistaHistorialCompra;
-	
+
 	@Autowired
 	private ServicioCliente servicioCliente;
-	
 
-	
 	@Autowired
 	private ServicioVenta servicioVenta;
-	
+
 	public void inicia() {
-		
-		
-		List <Cliente> cliente = servicioCliente.recuperaClientes();
-				
-			if(cliente.size() != 0) {				
-					vistaHistorialCompra.muestra(this, cliente);
-				
-			}else
-				vistaHistorialCompra.muestraDialogoConMensaje("No hay clientes registrados, por favor registra un cliente para consultar esta ventana.");
-		}
-	
-	
 
+		List<Cliente> cliente = servicioCliente.recuperaClientes();
 
-	
-	
+		if (cliente.size() != 0) {
+			vistaHistorialCompra.muestra(this, cliente);
+
+		} else
+			vistaHistorialCompra.muestraDialogoConMensaje(
+					"No hay clientes registrados, por favor registra un cliente para consultar esta ventana.");
+	}
+
 	/**
 	 * 
-	 * Permite terminar la historia de usuario   
+	 * Permite terminar la historia de usuario
 	 * 
 	 */
 	public void cierraVentana() {
-	
+
 		vistaHistorialCompra.termina();
-	
+
 	}
 
+	public void buscarHistorial(int idcliente, String fechaInicio, String fechaFinal) throws ParseException {
 
+		// Valida que la fecha de inicio no sea mayor a la final
+		if (servicioVenta.comparaFechas(fechaInicio, fechaFinal) == false) {
+			vistaHistorialCompra.muestraDialogoConMensaje("La fechaInicio es mayor a la FechaFinal");
 
-	public void buscarHistorial(int idcliente, String fechaInicio, String fechaFinal) {
-		
-		List <Venta> ventas = servicioVenta.recuperaPorIdCliente(idcliente);
-		
-		if (ventas.size() !=0 ) {
-			
-			String [][]datos = servicioCliente.buscarHistorial(idcliente,fechaInicio,fechaFinal);
-			
-			vistaHistorialCompra.mostrarHistorial(datos);
-			
-			
-		}else
-			vistaHistorialCompra.muestraDialogoConMensaje("El cliente no tiene compras registradas");
+		} else {
+
+			List<Venta> ventas = servicioVenta.recuperaPorIdCliente(idcliente);
+
+			if (ventas.size() != 0) {
 				
+				String[][] datos = servicioCliente.buscarHistorial(idcliente, fechaInicio, fechaFinal);
+								
+				if(datos != null)
+					vistaHistorialCompra.mostrarHistorial(datos);
+
+				else {
+					vistaHistorialCompra.muestraDialogoConMensaje("No hay registro de ventas con la información proporcionada");
+				vistaHistorialCompra.limpiaTabla();
+				}
+
+			} else
+				vistaHistorialCompra.muestraDialogoConMensaje("El cliente no tiene compras registradas");
+
+		}
+
 	}
-	
+
 }
