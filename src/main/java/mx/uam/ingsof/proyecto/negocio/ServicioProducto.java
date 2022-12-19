@@ -145,6 +145,7 @@ public class ServicioProducto {
 		Producto producto = productoRepository.findByNombre(nombre);
 		
 		if (producto == null) {
+			
 			throw new IllegalArgumentException("El producto no existe");
 		}else
 			return producto; 
