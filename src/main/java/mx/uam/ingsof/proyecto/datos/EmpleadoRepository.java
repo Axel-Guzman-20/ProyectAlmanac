@@ -11,7 +11,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
  */
 
 public interface EmpleadoRepository extends CrudRepository<Empleado, Long>{
-
+	
 	public Empleado findByIdEmpleado(long idEmpleado);
 	
 }

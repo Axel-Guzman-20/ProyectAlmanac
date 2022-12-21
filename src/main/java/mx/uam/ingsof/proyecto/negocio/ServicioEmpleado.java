@@ -1,5 +1,6 @@
 package mx.uam.ingsof.proyecto.negocio;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,13 +21,16 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
 @Slf4j
 @Service
-public class ServicioEmpleado {
+public class ServicioEmpleado implements Serializable {
+	
+	/**
+	 * Nos indica la versión del controlador de la HU 10
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	
 	@Autowired
 	EmpleadoRepository empleadoRepository;
-	
-	
 	
 	public String obtenerFechaActual() {
 		

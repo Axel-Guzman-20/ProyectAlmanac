@@ -1,5 +1,6 @@
 package mx.uam.ingsof.proyecto.negocio;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +22,14 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
  */
 
 @Service
-public class ServicioCompra {
+public class ServicioCompra implements Serializable{
+	
+	
+	/**
+	 * Nos indica la versión del servicio de la entidad Compras
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	
 	@Autowired
 	private CompraRepository compraRepository;

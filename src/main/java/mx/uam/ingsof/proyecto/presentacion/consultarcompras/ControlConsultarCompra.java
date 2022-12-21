@@ -1,5 +1,6 @@
 package mx.uam.ingsof.proyecto.presentacion.consultarcompras;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,14 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
 @Component
-public class ControlConsultarCompra {
+public class ControlConsultarCompra implements Serializable{
 
+	/**
+	 * Nos indica la versión del controlador de la HU 10
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	@Autowired
 	private ServicioEmpleado servicioEmpleado;
 	

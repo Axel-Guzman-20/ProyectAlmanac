@@ -6,8 +6,12 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -21,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.stereotype.Component;
 import com.toedter.calendar.JDateChooser;
@@ -28,9 +33,14 @@ import com.toedter.calendar.JTextFieldDateEditor;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
 
-@SuppressWarnings("serial")
 @Component
-public class VistaConsultarCompras extends JFrame implements ActionListener{
+public class VistaConsultarCompras extends JFrame implements ActionListener, Serializable {
+	
+	
+	/**
+	 * Me indica la versión de la interfaz de usuario de la HU-10
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private int anchoVentana = 940;
 	private int altoVentana = 740;
@@ -281,12 +291,36 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 			
 		tablaDatos.setModel(dtm);
 		
+		detallesTabla();
+		
 		panelTablaScroll.setVisible(true);
 		
 		panelBlanco.add(panelTablaScroll);
 		
 	}
 	
+	
+	public void detallesTabla() {
+		
+		// Me permite modificar el ancho de las columnas
+		tablaDatos.getColumnModel().getColumn(0).setPreferredWidth(70);
+		tablaDatos.getColumnModel().getColumn(1).setPreferredWidth(80);
+		tablaDatos.getColumnModel().getColumn(2).setPreferredWidth(115);
+		tablaDatos.getColumnModel().getColumn(3).setPreferredWidth(115);
+		tablaDatos.getColumnModel().getColumn(4).setPreferredWidth(145);
+		tablaDatos.getColumnModel().getColumn(5).setPreferredWidth(85);
+		tablaDatos.getColumnModel().getColumn(6).setPreferredWidth(100);
+								
+		// Me permite centrar los datos
+		DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
+		tableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+							
+		tablaDatos.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
+		tablaDatos.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
+		tablaDatos.getColumnModel().getColumn(5).setCellRenderer(tableCellRenderer);
+		tablaDatos.getColumnModel().getColumn(6).setCellRenderer(tableCellRenderer);
+		
+	}
 	
 	public void muestra(ControlConsultarCompra control, List <Empleado> empleados) {
 		
@@ -330,6 +364,9 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 		dtm.setColumnIdentifiers(titulosEncabezado);
 			
 		tablaDatos.setModel(dtm);
+		
+		detallesTabla();
+		
 		
 		textoFechaDesdeDC.setText("");
 		textoFechaHastaDC.setText("");
@@ -391,19 +428,43 @@ public class VistaConsultarCompras extends JFrame implements ActionListener{
 		// Se vuelve a crear si pulsa Buscar más de 1 vez, de lo contrario, duplica la misma compra
 		dtm = new DefaultTableModel(); 
 		dtm.setColumnIdentifiers(titulosEncabezado);
+		
 		tablaDatos.setModel(dtm);
 		
 		if(datos.length == 0) {
+			
+			detallesTabla();
+			totalGeneralComprasText.setText("");
 			muestraDialogoConMensaje("No se encontró alguna compra con la información proporcionada.");
 		}else {
 		
-			for (int i = 0; i < datos.length; i++)
-				dtm.addRow(datos[i]);
+			// Aqui empieza para poner la cifra de monto y venta total en formato de pesos con 2 decimales
+			Locale formatoLocal = new Locale ("en", "UK");			
+			NumberFormat formatoDecimal = NumberFormat.getInstance (formatoLocal);
+			        
+			double montoCaja;
+			double totalCompra = 0;
+			
+			for (int i = 0; i < datos.length; i++) {
+				// Se hace la suma del total
+				montoCaja = Double.parseDouble(datos[i][6]);
+				totalCompra = totalCompra + montoCaja;
+				datos[i][6] = "$ " + formatoDecimal.format(montoCaja);
 				
+				// La información se agrega al modelo de la tabla
+				dtm.addRow(datos[i]);
+			}			
+			
+			detallesTabla();
+			
 			tablaDatos.setModel(dtm);
 			
+			totalGeneralComprasText.setText(String.valueOf("$ " + formatoDecimal.format(totalCompra)));
+					
 			panelTablaScroll.setVisible(true);
 		}
 	}
+	
+	
 		
 }
