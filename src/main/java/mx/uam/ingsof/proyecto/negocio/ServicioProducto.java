@@ -52,11 +52,12 @@ public class ServicioProducto {
 	
 	public boolean agregaProducto(String nombre, String marca, String descripcion, String precio, String descuento,
 			String existencia, String seccion) {
-
-		// Regla de negocio: No se permite agregar dos productos con el mismo nombre
-
-		if (validarMaximoProductos(seccion)) {
+		
+		
+		//Se verifica que no se sobrepase el maximo de productos 
+		if (seccionCatalogoRepository.findByNombre(seccion).getProductos().size()<2) {
 			
+			// Regla de negocio: No se permite agregar dos productos con el mismo nombre
 			Producto producto = productoRepository.findByNombre(nombre);
 			
 			if (producto != null) {
@@ -93,22 +94,6 @@ public class ServicioProducto {
 			return false;
 		}
 
-	}
-	
-	/**
-	 * 
-	 * Valida que no se sobrepase el valor máximo asignado para agregar productos en la sección correspondiente 
-	 * 
-	 * @param seccion
-	 * @return true si aun no execede el valor maximo asignado de registros en la sección correspondiente 
-	 * @return false si ya se execede el valor maximo asignado de registros en la sección correspondiente
-	 */
-	
-	boolean validarMaximoProductos(String seccion) {
-		 if(seccionCatalogoRepository.findByNombre(seccion).getProductos().size()<2)
-			 return true;
-		 else 
-			 return true; 
 	}
 	
 	
@@ -262,7 +247,9 @@ public class ServicioProducto {
 		if(idProducto.equals("") && nombre.equals("") && marca.equals("") && precioMaximo.equals("") && precioMinimo.equals("") )
 		{
 			List <Producto> listaProductos = new ArrayList <>();
-			 for(Producto producto: seccionCatalogoRepository.findByNombre(seccion).getProductos()) {
+			List <Producto> listaProductos2 = seccionCatalogoRepository.findByNombre(seccion).getProductos();
+			
+			 for(Producto producto:listaProductos2 ) {
 				 listaProductos.add(producto);
 			 }
 			 

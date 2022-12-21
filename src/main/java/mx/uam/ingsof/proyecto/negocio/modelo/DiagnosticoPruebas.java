@@ -43,9 +43,9 @@ public class DiagnosticoPruebas {
 	@JoinColumn(name= "idDiagnosticoPruebas")
 	private final List <Pruebas> listaPruebas = new ArrayList <> ();
 	
-	public boolean addPruebas(List<Pruebas> pruebas) {
+	public List<Pruebas> addPruebas(List<Pruebas> pruebas) {
 		
-		if(pruebas == null || pruebas.size()==0) {
+		if(pruebas == null || pruebas.isEmpty()) {
 			throw new IllegalArgumentException("La lista de pruebas no puede ser null y/o vacia");
 		}
 		
@@ -53,11 +53,8 @@ public class DiagnosticoPruebas {
 			listaPruebas.add(prueba); 
 		}
 		
-		if(listaPruebas.size() == pruebas.size()) {
-			return true; 
-		}else {
-			return false; 
-		}
+		return listaPruebas; 
+		
 	}
 	
 }

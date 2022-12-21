@@ -19,8 +19,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -55,10 +52,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 	private JCheckBox chckbxPrueba5;
 	private JCheckBox chckbxOtras;
 	private List <String> pruebas;
-	private DefaultComboBoxModel <String> comboBoxModelEmpleados; 
-	private DefaultComboBoxModel <String> comboBoxModelCategorias; 
 	private DefaultComboBoxModel<String> comboBoxModelNombreEquipo;
-	private ButtonGroup bg = new ButtonGroup();
 	private ControlCrearPruebasReparacion control;
 
 	/**
@@ -189,7 +183,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		btnRegresar.setBounds(220, 806, 90, 23);
 		panel.add(btnRegresar);
 		
-		comboBoxNombreEquipo = new JComboBox<String>();
+		comboBoxNombreEquipo = new JComboBox<>();
 		comboBoxNombreEquipo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBoxNombreEquipo.setBounds(506, 239, 154, 22);
 		panel.add(comboBoxNombreEquipo);
@@ -257,11 +251,11 @@ public class VistaCrearPruebasReparacion extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción")) {
+				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción") && comboBoxModelNombreEquipo.getSelectedItem().equals("")) {
 					List<ReparacionMantenimiento> diagnosticos = control
 							.buscarDiagnosticos((String) comboBoxCategoria.getSelectedItem());
 
-					if (diagnosticos.size() != 0) {
+					if (!diagnosticos.isEmpty()) {
 						comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
 
 						comboBoxModelNombreEquipo.addElement(" Seleccione una opción");
@@ -381,7 +375,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 
 				listaDePruebas();
 
-				if (validaCampos() && pruebas.size()>0) {
+				if (validaCampos() && !pruebas.isEmpty()) {
 
 					control.realizarPruebasReparacion((String) comboBoxNombreDelEmpleado.getSelectedItem(),
 							(String) comboBoxCategoria.getSelectedItem(),
@@ -450,13 +444,13 @@ public class VistaCrearPruebasReparacion extends JFrame {
 	 ***********************************/
 	public boolean validaCampos() {
 
-		if ((comboBoxNombreDelEmpleado.getSelectedItem().equals(null))
-				|| (comboBoxCategoria.getSelectedItem().equals(null))
-				|| comboBoxNombreEquipo.getSelectedItem().equals(null) || chckbxPrueba1.getText().equals(null)
-				|| chckbxPrueba2.getText().equals(null) || chckbxPrueba3.getText().equals(null)
-				|| chckbxPrueba4.getText().equals(null) || chckbxPrueba5.getText().equals(null)
-				|| chckbxOtras.getText().equals(null) || textFieldOtrasPruebas.getText().equals(null)
-				|| textFieldObservacionesAdicionales.getText().equals(null)) {
+		if ((comboBoxNombreDelEmpleado.getSelectedItem()==(null))
+				|| (comboBoxCategoria.getSelectedItem()==(null))
+				|| comboBoxNombreEquipo.getSelectedItem()==(null) || chckbxPrueba1.getText()==(null)
+				|| chckbxPrueba2.getText()==(null) || chckbxPrueba3.getText()==(null)
+				|| chckbxPrueba4.getText()==(null) || chckbxPrueba5.getText()==(null)
+				|| chckbxOtras.getText()==(null) || textFieldOtrasPruebas.getText()==(null)
+				|| textFieldObservacionesAdicionales.getText()==(null)) {
 			muestraDialogoConMensaje("Los campos no pueden ser nulos");
 			return false;
 		} else {
@@ -521,7 +515,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		textFieldOtrasPruebas.setText("");
 		textFieldFecha.setText(fecha);
 		
-		comboBoxModelEmpleados = new DefaultComboBoxModel <>();
+		DefaultComboBoxModel <String> comboBoxModelEmpleados = new DefaultComboBoxModel <>();
 		
 		comboBoxModelEmpleados.addElement("      ----------------------- Seleccione una opción -----------------------");
 		for(Empleado empleado:empleados) {
@@ -530,7 +524,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		
 		comboBoxNombreDelEmpleado.setModel(comboBoxModelEmpleados);
 		
-		comboBoxModelCategorias = new DefaultComboBoxModel <>();
+		DefaultComboBoxModel <String> comboBoxModelCategorias = new DefaultComboBoxModel <>();
 		
 		comboBoxModelCategorias.addElement(" Seleccione una opción");
 		for(CategoriaDiagnostico categoria:categorias) {

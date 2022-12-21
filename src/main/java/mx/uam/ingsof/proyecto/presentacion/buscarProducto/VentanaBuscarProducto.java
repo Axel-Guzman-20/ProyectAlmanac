@@ -32,7 +32,7 @@ public class VentanaBuscarProducto extends JFrame {
 	
 	private JPanel contentPane;
 	private JComboBox <String> comboBoxSeccionCatalogo; 
-	public JTextField fechaText;
+	private JTextField fechaText;
 	private JTextField textFieldIdProducto;
 	private JTextField textFieldPrecioMaximo;
 	private JTextField textFieldMarca;
@@ -241,7 +241,7 @@ public class VentanaBuscarProducto extends JFrame {
 		
 	}
 	
-	public void muestraProductosObtenidos(ControlBuscarProducto control, List <Producto> productos) {
+	public void muestraProductosObtenidos( List <Producto> productos) {
 		
 		DefaultTableModel tableModel = new DefaultTableModel(); 
 		tableModel.addColumn("ID PRODUCTO");

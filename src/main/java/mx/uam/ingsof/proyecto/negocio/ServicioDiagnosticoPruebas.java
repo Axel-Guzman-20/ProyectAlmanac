@@ -35,7 +35,9 @@ public class ServicioDiagnosticoPruebas {
 		
 		if (validarCampos(nombreEmpleado, categoria, nombreEquipo, listaPruebas, observaciones)) {
 			
-			if(validaDiagnosticoSinPruebas(nombreEquipo)) {
+			
+			//Se valida que el diagnostico de Reparacion/Mantenimiento todavia no tenga su diagnostico de pruebas 
+			if(reparacionMantenimientoRepository.findByNombreEquipo(nombreEquipo).getDiagnosticoPruebas().isEmpty()) {
 				
 				DiagnosticoPruebas pruebaReparacion = diagnosticoPruebasRepository.findByNombreEquipo(nombreEquipo) ;
 				
@@ -70,7 +72,7 @@ public class ServicioDiagnosticoPruebas {
 					pruebas.add(prueba); 	
 				}
 				
-				if(pruebaReparacion.addPruebas(pruebas)) {
+				if(!pruebaReparacion.addPruebas(pruebas).isEmpty()) {
 					
 					if(reparacionMantenimiento.addPruebas(pruebaReparacion)) {
 						reparacionMantenimientoRepository.save(reparacionMantenimiento); 
@@ -117,24 +119,16 @@ public class ServicioDiagnosticoPruebas {
 			return false;
 		} else {
 			if ((nombreEmpleado.equals("")) || (categoria.equals("")) || (nombreEquipo.equals(""))
-					|| (listaPruebas.size() == 0)) {
+					|| (listaPruebas.isEmpty())) {
 
 				return false;
-			} else {
-				return true;
 			}
 		}
+		
+		return true; 
 
 	}
 	
-	public boolean validaDiagnosticoSinPruebas(String nombreEquipo) {
-		
-		if (reparacionMantenimientoRepository.findByNombreEquipo(nombreEquipo).getDiagnosticoPruebas().size() == 0)
-			return true;
-		else
-			return false;
-		
-	}
 	
 	/**
 	 * 

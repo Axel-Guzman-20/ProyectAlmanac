@@ -42,15 +42,6 @@ public class ServicioCategoriaDiagnostico {
 	
 	public List<ReparacionMantenimiento> buscarDiagnosticos(String categoria){
 		
-		//CategoriaDiagnostico categoria = categoriaDiagnosticoRepository.findByNombre(nombreCategoria);
-		
-//		List <ReparacionMantenimiento> diagnosticos  = new ArrayList<>();
-//		
-//		for(ReparacionMantenimiento diagnostico:categoriaDiagnosticoRepository.findByNombre(categoria).getDiagnosticos()) {
-//			diagnosticos.add(diagnostico);
-//		}
-		//System.out.println(categoria.getDiagnosticos().toString());
-		
 		return categoriaDiagnosticoRepository.findByNombre(categoria).getDiagnosticos(); 
 	}
 }

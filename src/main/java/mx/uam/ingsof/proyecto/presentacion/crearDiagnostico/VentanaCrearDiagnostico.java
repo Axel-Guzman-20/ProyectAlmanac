@@ -333,10 +333,10 @@ public class VentanaCrearDiagnostico extends JFrame {
 	 ***********************************/
 	public boolean validaCampos() {
 
-		if ((comboBoxNombreDelEmpleado.getSelectedItem().equals(null))
-				|| (comboBoxCategoria.getSelectedItem().equals(null)) || textFieldNombre.getText().equals(null)
-				|| textFieldMarca.getText().equals(null) || textFieldDescripcionDelEquipo.getText().equals(null)
-				|| textFieldReparacionesMantenimientosARealizar.getText().equals(null)) {
+		if ((comboBoxNombreDelEmpleado.getSelectedItem()==(null))
+				|| (comboBoxCategoria.getSelectedItem()==(null)) || textFieldNombre.getText()==(null)
+				|| textFieldMarca.getText()==(null) || textFieldDescripcionDelEquipo.getText()==(null)
+				|| textFieldReparacionesMantenimientosARealizar.getText()==(null)) {
 			muestraDialogoConMensaje("Los campos no pueden ser nulos");
 			return false;
 		} else {

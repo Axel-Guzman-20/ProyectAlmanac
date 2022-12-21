@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import mx.uam.ingsof.proyecto.negocio.ServicioCategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.ServicioDiagnosticoPruebas;
 import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
-import mx.uam.ingsof.proyecto.negocio.ServicioReparacionMantenimiento;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
@@ -28,8 +27,6 @@ public class ControlCrearPruebasReparacion {
 	@Autowired 
 	private ServicioDiagnosticoPruebas servicioDiagnosticoReparacion;  
 	
-	private String fecha;
-	
 	/**
 	 * 
 	 * Permite dar inicio al módulo ControlCrearDiagnostico y a sus respectivos métodos de dicho módulo  
@@ -38,6 +35,7 @@ public class ControlCrearPruebasReparacion {
 	
 	public void inicia() {
 		
+		String fecha;
 		
 		List <CategoriaDiagnostico> categorias = servicioCategoriaDiagnostico.consultarCategoriasDisponibles(); 
 		
@@ -67,14 +65,13 @@ public class ControlCrearPruebasReparacion {
 		
 		try {
 
-			if (servicioDiagnosticoReparacion.realizarPruebasReparacion(nombreEmpleado, categoria, nombreEquipo, listaPruebas, observaciones) == true) {
+			if (servicioDiagnosticoReparacion.realizarPruebasReparacion(nombreEmpleado, categoria, nombreEquipo, listaPruebas, observaciones)) {
 
 				ventana.muestraDialogoConMensaje("Sea ha registro exitosamente el diagnostico de pruebas del equipo " +nombreEquipo+".");
 				termina();
 			} else {
 
-				ventana.muestraDialogoConMensaje("El equipo " + nombreEquipo +" ya tiene un diagnostico de pruebas registrado.");
-				termina();
+				ventana.muestraDialogoConMensaje("El equipo " + nombreEquipo +" ya tiene un diagnostico de pruebas registrado. Elige otro equipo");
 			}
 
 
@@ -88,9 +85,7 @@ public class ControlCrearPruebasReparacion {
 	
 	public List<ReparacionMantenimiento> buscarDiagnosticos(String categoria) {
 		
-		List <ReparacionMantenimiento> diagnosticos = servicioCategoriaDiagnostico.buscarDiagnosticos(categoria); 
-		
-		return diagnosticos; 
+		return servicioCategoriaDiagnostico.buscarDiagnosticos(categoria); 
 		
 	}
 	
