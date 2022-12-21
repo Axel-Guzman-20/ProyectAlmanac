@@ -39,12 +39,13 @@ public class ServicioCliente {
 	private VentaRepository ventaRepository;
 
 	private static int digitosMaxTelefono = 10;
+	String date = "dd/MM/yyyy";
 
 	public String obtenerFechaActual() {
 
 		String fecha;
-
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		DateFormat dateFormat = new SimpleDateFormat(date);
 
 		fecha = dateFormat.format(new Date());
 
@@ -76,7 +77,7 @@ public class ServicioCliente {
 	public boolean verificarTelefono(String telefono) {
 
 		int i;
-		char tel[];
+		char []tel;
 
 		tel = telefono.toCharArray();
 
@@ -265,7 +266,7 @@ public class ServicioCliente {
 		if (!fechaInicio.equals("") || !fechaFinal.equals(""))
 			ventas = criterioFechas(fechaInicio, fechaFinal, ventas);
 
-		if (ventas.size() != 0)
+		if (!ventas.isEmpty())
 			return convertirListaString(ventas);
 
 		else
@@ -278,7 +279,7 @@ public class ServicioCliente {
 		Date fechaInicio;
 		Date fechaFinal;
 		Date fechaVenta;
-		SimpleDateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat fechaFormato = new SimpleDateFormat(date);
 		List<Venta> nuevaVenta = new ArrayList<>();
 		int i;
 
@@ -343,13 +344,14 @@ public class ServicioCliente {
 		List<VentaProducto> ventasProducto;
 		String[][] datos;
 
-		int i, k = 0;
+		int i;
+		int k = 0;
 
 		registrosVentas = cuentaProductosPorVenta(ventas);
 
 		datos = new String[registrosVentas][columnasTabla];
 
-		List<VentaProducto> ventaProducto;
+	
 
 		for (i = 0; i < ventas.size(); i++) {
 
@@ -398,7 +400,7 @@ public class ServicioCliente {
 
 		if (!fechaDesde.equals("") && !fechaHasta.equals("")) {
 
-			SimpleDateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fechaFormato = new SimpleDateFormat(date);
 
 			Date fechaInicio;
 			Date fechaFinal;

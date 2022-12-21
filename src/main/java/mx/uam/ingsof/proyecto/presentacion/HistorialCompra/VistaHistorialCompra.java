@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -61,6 +62,7 @@ public class VistaHistorialCompra extends JFrame {
 
 	private int anchoVentana = 940;
 	private int altoVentana = 740;
+	String letra = "Tahoma";
 
 	private DefaultTableModel tableModel;
 
@@ -79,7 +81,8 @@ public class VistaHistorialCompra extends JFrame {
 		setLocationRelativeTo(null);
 
 		// Para el titulo
-		fuente = new Font("Tahoma", Font.BOLD, 22);
+		
+		fuente = new Font(letra, Font.BOLD, 22);
 
 		// Color para el fondo azul
 		colorFondo = new Color(89, 126, 170);
@@ -109,7 +112,7 @@ public class VistaHistorialCompra extends JFrame {
 		panelBlanco.add(tituloLabel);
 
 		// Para las label y las cajas de texto
-		fuente = new Font("Tahoma", 0, 14);
+		fuente = new Font(letra, 0, 14);
 
 		// Creamos los label y lo agregamos al panel blanco
 
@@ -153,7 +156,7 @@ public class VistaHistorialCompra extends JFrame {
 		// creacion de la tabla
 		table = new JTable();
 		table.setBackground(SystemColor.inactiveCaption);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		table.setFont(new Font(letra, Font.PLAIN, 14));
 
 		tableModel = new DefaultTableModel();
 
@@ -166,8 +169,7 @@ public class VistaHistorialCompra extends JFrame {
 		table.setModel(tableModel);
 
 		// creamos un scrollpane y le añadimos la tabla creada
-		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scroll = new JScrollPane(table);
 		scroll.setBounds(41, 250, 750, 301);
 		panelBlanco.add(scroll);
 
@@ -178,7 +180,7 @@ public class VistaHistorialCompra extends JFrame {
 		panelBlanco.add(nombreClienteLabel);
 
 		// Le damos su caja de texto
-		comboBoxClientes = new JComboBox<String>();
+		comboBoxClientes = new JComboBox<>();
 		comboBoxClientes.setBounds(220, 70, 250, 30);
 		panelBlanco.add(comboBoxClientes);
 
@@ -255,7 +257,7 @@ public class VistaHistorialCompra extends JFrame {
 
 				for (int i = 0; i < table.getRowCount(); i++) {
 					tableModel.removeRow(i);
-					i -= 1;
+					
 				}
 				controlHistorialCompra.cierraVentana();
 			}
@@ -289,10 +291,10 @@ public class VistaHistorialCompra extends JFrame {
 		UIManager.put("Panel.background", new Color(184, 199, 218));
 		UIManager.put("Button.background", new Color(255, 255, 255));
 		UIManager.put("Button.foreground", new Color(89, 126, 170));
-		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+		UIManager.put("Button.font", new Font(letra, Font.BOLD, 13));
 
-		JLabel etiqueta = new JLabel(mensaje, JLabel.CENTER);
-		etiqueta.setFont(new Font("Tahoma", Font.BOLD, 15));
+		JLabel etiqueta = new JLabel(mensaje, SwingConstants.CENTER);
+		etiqueta.setFont(new Font(letra, Font.BOLD, 15));
 		etiqueta.setForeground(new Color(255, 255, 255));
 
 		JOptionPane.showMessageDialog(this, etiqueta, "AVISO", JOptionPane.INFORMATION_MESSAGE);
@@ -319,7 +321,7 @@ public class VistaHistorialCompra extends JFrame {
 		comboBoxClientes.setSelectedIndex(0);
 		for (int i = 0; i < table.getRowCount(); i++) {
 			tableModel.removeRow(i);
-			i -= 1;
+			i-=1;
 		}
 
 	}
@@ -328,7 +330,7 @@ public class VistaHistorialCompra extends JFrame {
 
 		for (int i = 0; i < table.getRowCount(); i++) {
 			tableModel.removeRow(i);
-			i -= 1;
+			i-=1;
 		}
 	}
 

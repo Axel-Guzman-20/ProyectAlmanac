@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
-import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
 import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
-import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 
 /**
@@ -34,7 +32,7 @@ public class ControlHistorialCompra {
 
 		List<Cliente> cliente = servicioCliente.recuperaClientes();
 
-		if (cliente.size() != 0) {
+		if (!cliente.isEmpty()) {
 			vistaHistorialCompra.muestra(this, cliente);
 
 		} else
@@ -56,14 +54,14 @@ public class ControlHistorialCompra {
 	public void buscarHistorial(int idcliente, String fechaInicio, String fechaFinal) throws ParseException {
 
 		// Valida que la fecha de inicio no sea mayor a la final
-		if (servicioVenta.comparaFechas(fechaInicio, fechaFinal) == false) {
+		if (!servicioVenta.comparaFechas(fechaInicio, fechaFinal)) {
 			vistaHistorialCompra.muestraDialogoConMensaje("La fechaInicio es mayor a la FechaFinal");
 
 		} else {
 
 			List<Venta> ventas = servicioVenta.recuperaPorIdCliente(idcliente);
 
-			if (ventas.size() != 0) {
+			if (!ventas.isEmpty()) {
 
 				String[][] datos = servicioCliente.buscarHistorial(idcliente, fechaInicio, fechaFinal);
 
@@ -71,8 +69,7 @@ public class ControlHistorialCompra {
 					vistaHistorialCompra.mostrarHistorial(datos);
 
 				else {
-					vistaHistorialCompra
-							.muestraDialogoConMensaje("No hay registro de ventas con la información proporcionada");
+					vistaHistorialCompra.muestraDialogoConMensaje("No hay registro de ventas con la información proporcionada");
 					vistaHistorialCompra.limpiaTabla();
 				}
 
