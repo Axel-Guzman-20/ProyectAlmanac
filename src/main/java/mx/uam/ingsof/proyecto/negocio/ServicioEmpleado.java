@@ -24,7 +24,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 public class ServicioEmpleado implements Serializable {
 	
 	/**
-	 * Nos indica la versión del controlador de la HU 10
+	 * Nos indica la versión del Servicio de la entidad Empleado
 	 */
 	private static final long serialVersionUID = 1L;
 	
