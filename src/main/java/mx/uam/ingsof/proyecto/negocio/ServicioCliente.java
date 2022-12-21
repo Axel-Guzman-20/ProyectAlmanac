@@ -1,6 +1,5 @@
 package mx.uam.ingsof.proyecto.negocio;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
  * Esta clase controla el Servicio de los Clientes
  * 
  * @author AxelGuzman
+ * @author EduardoCastro
  *
  */
 
@@ -136,7 +136,7 @@ public class ServicioCliente {
 	 * 
 	 * Permite modificar un cliente existente en la base de datos
 	 * 
-
+	 * 
 	 * @param nombreCompleto
 	 * @param genero
 	 * @param direccion
@@ -146,8 +146,8 @@ public class ServicioCliente {
 	 * @throws IllegalArgumentException si existe un error
 	 */
 
-	public Cliente modificarCliente( long id, String nombreCliente, String genero, String direccion,
-			String telefono, String correoElectronico) {
+	public Cliente modificarCliente(long id, String nombreCliente, String genero, String direccion, String telefono,
+			String correoElectronico) {
 
 		Cliente cliente = clienteRepository.findByIdCliente(id);
 
@@ -180,9 +180,6 @@ public class ServicioCliente {
 
 	}
 
-
-
-
 	public Cliente obtenerCliente(long id) {
 
 		Cliente cliente = clienteRepository.findByIdCliente(id);
@@ -211,14 +208,13 @@ public class ServicioCliente {
 
 		return clientes;
 	}
-	
-	
+
 	/**
 	 * 
-	 * Compara el correo electronico registrado con el nuevo correo electronico retorna un
-	 * false si el correo nuevo es igual a un correo de diferentecliente
+	 * Compara el correo electronico registrado con el nuevo correo electronico
+	 * retorna un false si el correo nuevo es igual a un correo de diferentecliente
 	 * true si el nuevo correo es el mismo correo al cliente a modificar
-	 * */
+	 */
 	public boolean comparacorreos(String correo1, String correo2) {
 
 		if (correo1.compareTo(correo2) == 0) {
@@ -229,8 +225,9 @@ public class ServicioCliente {
 	}
 
 	/**
-	 * Recupera todos los clientes existentes 
+	 * Recupera todos los clientes existentes
 	 * 
+	 * @param 
 	 * @return Una lista con todos los clientes existentes. Una lista vacía
 	 */
 	public List<Cliente> recuperaClientes() {
@@ -241,6 +238,67 @@ public class ServicioCliente {
 			listaClientes.add(cliente);
 		}
 		return listaClientes;
+	}
+	/**
+	 * Recupera un Cliente
+	 * 
+	 * @param id
+	 * @return Un objeto de tipo Cliente. Null si el Cliente no existe
+	 */
+	public Cliente buscaClienteById(String id) {
+		Cliente cliente = null;
+		long idCliente;
+		if(id == null)
+			throw new NullPointerException("No se permiten parametros nulos");
+		
+		if(!id.equals("")) {
+			idCliente = Long.parseLong(id);
+			cliente = clienteRepository.findByIdCliente(idCliente);
+			if(cliente != null)
+				return cliente;
+		}else
+			throw new IllegalArgumentException("La cadena no puede estar vacia");
+		return cliente;
+		
+	}
+	/**
+	 * Recupera todos los clientes existentes
+	 * 
+	 * @param nombre
+	 * @return Una lista con los clientes existentes por el nombre. Una lista vacía
+	 */
+	public List<Cliente> buscaClientebyName(String nombre){
+		List<Cliente> listaClientes = new ArrayList<>();
+		List<Cliente> listaName = new ArrayList<>();
+		int i = 0;
+		int numLetras =0;
+		String name;
+		char [] nameOnChar = nombre.toCharArray();
+		char [] nameOnChar1;
+		for (Cliente cliente : clienteRepository.findAll()) {
+			listaClientes.add(cliente);
+		}
+		while(i<listaClientes.size()) {
+			name = listaClientes.get(i).getNombreCompleto();
+			nameOnChar1 = name.toCharArray();
+			for(int j = 0; j< nombre.length(); j++) {
+				if(Character.compare(nameOnChar[j], nameOnChar1[j]) == 0 && j <= nombre.length())
+					numLetras++;
+				else
+					break;
+			}
+			if(nombre.length() != numLetras)
+				listaClientes.remove(i);
+			else {
+				listaName.add(listaClientes.remove(i));
+			}
+				
+			numLetras = 0;
+			i++;
+			if(i%2 == 0)
+				i = 0;
+		}	
+		return listaName;
 	}
 
 }

@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
@@ -140,20 +141,21 @@ public class VentanaRegistrarVenta extends JFrame {
 					String cantidad = textoCantidad.getText();
 					int indiceCliente = comboBoxCliente.getSelectedIndex();
 					cliente = listaClientes.get(indiceCliente);
-					
+
 					int indiceEmpleado = comboBoxEmpleado.getSelectedIndex();
 					empleado = listaEmpleados.get(indiceEmpleado);
-					
+
 					int indiceProducto = comboBoxProducto.getSelectedIndex();
 					productoSeleccionado = listaProdutos.get(indiceProducto);
-					
+
 					if (esNumero(cantidad)) {
 						cantidadProductos = Integer.parseInt(cantidad);
 					}
 					if (!esNumero(cantidad)) {
 						muestraDialogoConMensaje("Por favor ingresa un numero valido");
 					} else {
-						if (cliente == null || empleado == null || productoSeleccionado == null || cantidadProductos <= 0) {
+						if (cliente == null || empleado == null || productoSeleccionado == null
+								|| cantidadProductos <= 0) {
 							muestraDialogoConMensaje(
 									"Debes seleccionar los ID de cliente, empleado o producto, la cantidad debe ser mayor a cero");
 						} else {
@@ -203,7 +205,7 @@ public class VentanaRegistrarVenta extends JFrame {
 				if (e.getSource() == botonAgregarVenta) {
 					comboBoxCliente.setEnabled(true);
 					comboBoxEmpleado.setEnabled(true);
-					
+
 					int n = 0, m = 0;
 					while (m < i) {
 						while (n < 5) {
@@ -266,14 +268,14 @@ public class VentanaRegistrarVenta extends JFrame {
 					}
 					i = 0;
 					beanVenta = null;
-					if(cliente != null)
+					if (cliente != null)
 						cliente = null;
-					if(empleado != null)
+					if (empleado != null)
 						empleado = null;
-					if(productoSeleccionado != null)
+					if (productoSeleccionado != null)
 						productoSeleccionado = null;
 					cantidadProductos = 0;
-					if(ventaProducto.size() > 0)
+					if (ventaProducto.size() > 0)
 						ventaProducto.clear();
 					setVisible(false);
 				}
@@ -297,7 +299,7 @@ public class VentanaRegistrarVenta extends JFrame {
 
 		panel.add(cuadroFecha);
 		cuadroFecha.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Registro de ventas");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblNewLabel.setBounds(259, 11, 226, 32);
@@ -316,7 +318,7 @@ public class VentanaRegistrarVenta extends JFrame {
 		tabla = new JTable(model) {
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings( { "unchecked", "rawtypes" } )
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column) {
 				switch (column) {
 				case 0:
@@ -370,7 +372,19 @@ public class VentanaRegistrarVenta extends JFrame {
 	}
 
 	public void muestraDialogoConMensaje(String mensaje) {
-		JOptionPane.showMessageDialog(this, mensaje);
+
+		UIManager.put("OptionPane.background", new Color(184, 199, 218));
+		UIManager.put("Panel.background", new Color(184, 199, 218));
+		UIManager.put("Button.background", new Color(255, 255, 255));
+		UIManager.put("Button.foreground", new Color(89, 126, 170));
+		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+
+		JLabel etiqueta = new JLabel(mensaje, JLabel.CENTER);
+		etiqueta.setFont(new Font("Tahoma", Font.BOLD, 15));
+		etiqueta.setForeground(new Color(255, 255, 255));
+
+		JOptionPane.showMessageDialog(this, etiqueta, "AVISO", JOptionPane.INFORMATION_MESSAGE);
+
 	}
 
 	public String fechaActual() {
