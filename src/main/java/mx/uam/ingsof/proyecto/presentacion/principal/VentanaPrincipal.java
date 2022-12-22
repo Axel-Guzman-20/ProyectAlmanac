@@ -293,9 +293,9 @@ public class VentanaPrincipal extends JFrame {
 		// (menuItem = Submenu)
 		JMenuItem menuItemMostrarInversiones = new JMenuItem("Mostrar Inversiones");
 		menuItemMostrarInversiones.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-			}
+        public void actionPerformed(ActionEvent e) {
+				    controlPrincipal.mostrarCompras();
+        }
 		});
 		// Se le pone a menuItemNuevaCompra tipo de letra y diseño y se agrega a
 		// menuVentas

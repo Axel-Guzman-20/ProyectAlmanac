@@ -8,7 +8,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
-
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -20,15 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
 import org.springframework.stereotype.Component;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 
-@SuppressWarnings("serial")
-@Component
 
 /**
  * Ventana que mira el usuario para consultar las ventas registradas
@@ -38,6 +34,8 @@ import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 */
 
 
+@SuppressWarnings("serial")
+@Component
 public class VistaConsultarVentas extends JFrame{
 	
 	private ControlConsultarVentas controlConsultarVentas;
@@ -171,7 +169,7 @@ public class VistaConsultarVentas extends JFrame{
 		panelBlanco.add(nombreEmpleadoLabel);			
 		
 		// Lo dejamos como caja de texto
-		comboBoxEmpleados = new JComboBox<String>();
+		comboBoxEmpleados = new JComboBox<>();
 		comboBoxEmpleados.setBounds(220, 110, 250, 30);
 		panelBlanco.add(comboBoxEmpleados);
 		
@@ -184,7 +182,7 @@ public class VistaConsultarVentas extends JFrame{
 		panelBlanco.add(nombreClienteLabel);			
 						
 		// Le damos su caja de texto
-		comboBoxClientes = new JComboBox<String>();
+		comboBoxClientes = new JComboBox<>();
 		comboBoxClientes.setBounds(220, 160, 250, 30);
 		panelBlanco.add(comboBoxClientes);
 		
@@ -313,7 +311,8 @@ public class VistaConsultarVentas extends JFrame{
 		// Fuente para los botones
 		fuente = new Font("Tahoma", Font.BOLD, 11);
 		
-		int xBotones = 210, espacioEntreBotones = 160;
+		int xBotones = 210;
+		int espacioEntreBotones = 160;
 		int yBotones = 600;
 		int anchoBotones = 90;
 		int altoBotones = 30;
@@ -352,12 +351,9 @@ public class VistaConsultarVentas extends JFrame{
 		buscarButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				try {
 					recolectaDatosConsultaVenta();
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					
 				}
 			}
 		});		

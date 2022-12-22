@@ -27,6 +27,6 @@ public interface CompraRepository extends CrudRepository<Compra, Long> {
 
 	public void save(Venta venta);
 	
-	//public List <Compra> findByIdCliente(Cliente idCliente); //el Repository recupera las compras del cliente
+	
 
 }
