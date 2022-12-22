@@ -1,6 +1,7 @@
 package mx.uam.ingsof.proyecto.negocio;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
+import mx.uam.ingsof.proyecto.datos.VentaProductoRepository;
+import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
+import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 
 /**
  * Esta clase controla el Servicio de los Clientes
@@ -28,13 +33,20 @@ public class ServicioCliente {
 	@Autowired
 	ClienteRepository clienteRepository;
 
+	@Autowired
+	VentaProductoRepository ventaProductoRepository;
+
+	@Autowired
+	private VentaRepository ventaRepository;
+
 	private static int digitosMaxTelefono = 10;
+	String date = "dd/MM/yyyy";
 
 	public String obtenerFechaActual() {
 
 		String fecha;
-
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		DateFormat dateFormat = new SimpleDateFormat(date);
 
 		fecha = dateFormat.format(new Date());
 
@@ -66,7 +78,7 @@ public class ServicioCliente {
 	public boolean verificarTelefono(String telefono) {
 
 		int i;
-		char tel[];
+		char []tel;
 
 		tel = telefono.toCharArray();
 
@@ -215,7 +227,8 @@ public class ServicioCliente {
 	 * retorna un false si el correo nuevo es igual a un correo de diferentecliente
 	 * true si el nuevo correo es el mismo correo al cliente a modificar
 	 */
-	public boolean comparacorreos(String correo1, String correo2) {
+
+	public boolean comparaCorreos(String correo1, String correo2) {
 
 		if (correo1.compareTo(correo2) == 0) {
 			return true;
@@ -299,6 +312,181 @@ public class ServicioCliente {
 				i = 0;
 		}	
 		return listaName;
+	}
+
+	//
+	// HU-08
+	//
+
+	// Recupera todos las compras de los clientes segun flitros
+	// @param nombreCompleto
+	// @param genero
+	// @param direccion
+	
+	public String[][] buscarHistorial(int idCliente, String fechaInicio, String fechaFinal) throws ParseException {
+
+		List<Venta> ventas = ventaRepository.findByIdCliente(idCliente);
+
+		// Para mostrar todas las compras del cliente
+		if (fechaInicio.equals("") && fechaFinal.equals(""))
+			return convertirListaString(ventas);
+
+		// Si no son vacias algunas de las fechas, aplica el criterio
+		if (!fechaInicio.equals("") || !fechaFinal.equals(""))
+			ventas = criterioFechas(fechaInicio, fechaFinal, ventas);
+
+		if (!ventas.isEmpty())
+			return convertirListaString(ventas);
+
+		else
+			return null;
+
+	}
+
+	public List<Venta> criterioFechas(String fechaDesde, String fechaHasta, List<Venta> ventas) throws ParseException {
+
+		Date fechaInicio;
+		Date fechaFinal;
+		Date fechaVenta;
+		SimpleDateFormat fechaFormato = new SimpleDateFormat(date);
+		List<Venta> nuevaVenta = new ArrayList<>();
+		int i;
+
+		// Para mostrar de acuerdo con las fechas
+		if (!fechaDesde.equals("") && !fechaHasta.equals("")) {
+			fechaInicio = fechaFormato.parse(fechaDesde);
+			fechaFinal = fechaFormato.parse(fechaHasta);
+
+			for (i = 0; i < ventas.size(); i++) {
+
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+
+				if (fechaVenta.compareTo(fechaInicio) >= 0 && fechaVenta.compareTo(fechaFinal) <= 0)
+					nuevaVenta.add(ventas.get(i));
+
+			}
+
+			return nuevaVenta;
+		}
+
+		// Solo tiene fecha de inicio
+		if (!fechaDesde.equals("") && fechaHasta.equals("")) {
+			fechaInicio = fechaFormato.parse(fechaDesde);
+
+			for (i = 0; i < ventas.size(); i++) {
+
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+
+				if (fechaVenta.compareTo(fechaInicio) >= 0)
+					nuevaVenta.add(ventas.get(i));
+			}
+
+			return nuevaVenta;
+		}
+
+		// Solo tiene fecha final
+		if (fechaDesde.equals("") && !fechaHasta.equals("")) {
+			fechaFinal = fechaFormato.parse(fechaHasta);
+
+			for (i = 0; i < ventas.size(); i++) {
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+
+				if (fechaVenta.compareTo(fechaFinal) <= 0)
+					nuevaVenta.add(ventas.get(i));
+			}
+
+			return nuevaVenta;
+		}
+
+		return ventas;
+	}
+
+	public String[][] convertirListaString(List<Venta> ventas) {
+
+		int registrosVentas;
+		int columnasTabla = 5;
+
+		double precioTotal;
+		int cantidad;
+		double precio;
+
+		List<VentaProducto> ventasProducto;
+		String[][] datos;
+
+		int i;
+		int k = 0;
+
+		registrosVentas = cuentaProductosPorVenta(ventas);
+
+		datos = new String[registrosVentas][columnasTabla];
+
+	
+
+		for (i = 0; i < ventas.size(); i++) {
+
+			ventasProducto = ventaProductoRepository.findByIdVenta(ventas.get(i).getIdVenta());
+
+			for (int j = 0; j < ventasProducto.size(); j++) {
+
+				// Estos datos ya vienen en la venta
+				datos[k][0] = String.valueOf(ventas.get(i).getFechaVenta());
+
+				datos[k][1] = String.valueOf(ventasProducto.get(j).getProducto().getNombre());
+
+				cantidad = ventasProducto.get(j).getCantidad();
+				datos[k][2] = String.valueOf(cantidad);
+
+				precio = ventasProducto.get(j).getProducto().getPrecio();
+				datos[k][3] = String.valueOf(precio);
+
+				precioTotal = cantidad * precio;
+				datos[k][4] = String.valueOf(precioTotal);
+				k++;
+			}
+
+		}
+
+		return datos;
+	}
+
+	public int cuentaProductosPorVenta(List<Venta> venta) {
+
+		int i;
+		int cantidadProductosVendidos = 0;
+		List<VentaProducto> ventasProducto;
+
+		for (i = 0; i < venta.size(); i++) {
+			ventasProducto = ventaProductoRepository.findByIdVenta(venta.get(i).getIdVenta());
+
+			cantidadProductosVendidos = cantidadProductosVendidos + ventasProducto.size();
+
+		}
+
+		return cantidadProductosVendidos;
+	}
+
+	public boolean comparaFechas(String fechaDesde, String fechaHasta) {
+
+		if (!fechaDesde.equals("") && !fechaHasta.equals("")) {
+
+			SimpleDateFormat fechaFormato = new SimpleDateFormat(date);
+
+			Date fechaInicio;
+			Date fechaFinal;
+
+			try {
+				fechaInicio = fechaFormato.parse(fechaDesde);
+				fechaFinal = fechaFormato.parse(fechaHasta);
+				// Significa que la fecha de inicio es mayor a la final
+				if (fechaInicio.compareTo(fechaFinal) > 0)
+					return false;
+
+				return true;
+			} catch (ParseException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

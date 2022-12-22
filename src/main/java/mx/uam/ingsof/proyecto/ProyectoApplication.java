@@ -1,6 +1,5 @@
 package mx.uam.ingsof.proyecto;
 
-import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,12 +15,9 @@ import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
 import mx.uam.ingsof.proyecto.negocio.ServicioVenta;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
-import mx.uam.ingsof.proyecto.negocio.ServicioCliente;
-import mx.uam.ingsof.proyecto.negocio.modelo.Compra;
+import mx.uam.ingsof.proyecto.negocio.*;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.SeccionCatalogo;
-import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
-import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 import mx.uam.ingsof.proyecto.presentacion.empleado.ControladorEmpleado;
 import mx.uam.ingsof.proyecto.presentacion.principal.ControlPrincipal;
 
@@ -74,6 +70,9 @@ public class ProyectoApplication {
 	
 	@Autowired
 	VentaRepository ventaRepository;
+	
+	@Autowired
+	ServicioReparacionMantenimiento servicioReparacionMantenimiento; 
 
 	/**
 	 * 
@@ -197,7 +196,6 @@ public class ProyectoApplication {
 		
 		seccionProcesador.addProducto(productoPrueba4);
 		
-		//productoRepository.save(productoPrueba);
 		seccionCatalogoRepository.save(seccionProcesador);
 		
 		var empleadoPrueba = new Empleado();
@@ -210,6 +208,7 @@ public class ProyectoApplication {
 		empleadoPrueba.setCorreoElectronico("Eduardo@gmail.com");
 		empleadoRepository.save(empleadoPrueba);
 		
+
 		
 		/*
 		// SE REGISTRAN EMPLEADOS EN AUTOMÁTICO
@@ -282,6 +281,10 @@ public class ProyectoApplication {
 		servicioCliente.registrarCliente("26/11/2022", "Elver Gonzales", "Masculino", "Calle 11 Alc. Roma, CDMX, CDMX", "5585967414", "cliente2@correo.com");
 		servicioCliente.registrarCliente("25/11/2022", "Rosa Mela", "Femenino", "Calle 12 Alc. Roma, CDMX, CDMX", "5536963696", "cliente3@correo.com");
 		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 13 Alc. Roma, CDMX, CDMX", "5512547854", "cliente4@correo.com");
+		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 1", "Reparación", "---", "---", "---", "Preventivo", "", ""); 
+		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 2", "Reparación", "---", "---", "---", "Preventivo", "", "");
+		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 3", "Mantenimiento", "---", "---", "---", "Preventivo", "", "");
 		
+    
 	}
 }

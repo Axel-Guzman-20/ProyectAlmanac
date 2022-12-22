@@ -52,11 +52,12 @@ public class ServicioProducto {
 	
 	public boolean agregaProducto(String nombre, String marca, String descripcion, String precio, String descuento,
 			String existencia, String seccion) {
-
-		// Regla de negocio: No se permite agregar dos productos con el mismo nombre
-
-		if (validarMaximoProductos(seccion)) {
+		
+		
+		//Se verifica que no se sobrepase el maximo de productos 
+		if (seccionCatalogoRepository.findByNombre(seccion).getProductos().size()<2) {
 			
+			// Regla de negocio: No se permite agregar dos productos con el mismo nombre
 			Producto producto = productoRepository.findByNombre(nombre);
 			
 			if (producto != null) {
@@ -95,22 +96,6 @@ public class ServicioProducto {
 
 	}
 	
-	/**
-	 * 
-	 * Valida que no se sobrepase el valor máximo asignado para agregar productos en la sección correspondiente 
-	 * 
-	 * @param seccion
-	 * @return true si aun no execede el valor maximo asignado de registros en la sección correspondiente 
-	 * @return false si ya se execede el valor maximo asignado de registros en la sección correspondiente
-	 */
-	
-	boolean validarMaximoProductos(String seccion) {
-		 if(seccionCatalogoRepository.findByNombre(seccion).getProductos().size()>2)
-			 return false;
-		 else 
-			 return true; 
-	}
-	
 	
 	/**
 	 * 
@@ -145,6 +130,7 @@ public class ServicioProducto {
 		Producto producto = productoRepository.findByNombre(nombre);
 		
 		if (producto == null) {
+			
 			throw new IllegalArgumentException("El producto no existe");
 		}else
 			return producto; 
@@ -254,14 +240,16 @@ public class ServicioProducto {
 	
 	public List<Producto> buscarProducto(String seccion,String idProducto, String nombre, String marca,String precioMaximo, String precioMinimo) {
 		
-		if (idProducto.equals(null) || nombre.equals(null) || marca.equals(null) || precioMaximo.equals(null) || precioMinimo.equals(null)) {
-			throw new NullPointerException("No se permiten parametros nulos");
+		if ((idProducto==null) || (nombre==null) || (marca==null) || (precioMaximo==null) || (precioMinimo==null)) {
+			throw new NullPointerException(null);
 		}
 		
 		if(idProducto.equals("") && nombre.equals("") && marca.equals("") && precioMaximo.equals("") && precioMinimo.equals("") )
 		{
 			List <Producto> listaProductos = new ArrayList <>();
-			 for(Producto producto: seccionCatalogoRepository.findByNombre(seccion).getProductos()) {
+			List <Producto> listaProductos2 = seccionCatalogoRepository.findByNombre(seccion).getProductos();
+			
+			 for(Producto producto:listaProductos2 ) {
 				 listaProductos.add(producto);
 			 }
 			 
@@ -316,8 +304,8 @@ public class ServicioProducto {
 	 */
 	public List<Producto> validaRangoPrecio(String precioMaximo, String precioMinimo, List<Producto> listaProductos){
 		
-		if (precioMaximo.equals(null) || precioMinimo.equals(null)|| listaProductos.equals(null)) {
-			throw new NullPointerException("No se permiten parametros nulos");
+		if ((precioMaximo==null) || (precioMinimo==null)|| (listaProductos==null)) {
+			throw new NullPointerException(null);
 		}
 		
 		List <Producto> nuevaListaProductos = new ArrayList <>();
@@ -380,8 +368,8 @@ public class ServicioProducto {
 	 */
 	public List<Producto> validaID(String idProducto, List<Producto> listaProductos){
 		
-		if (idProducto.equals(null)|| listaProductos.equals(null)) {
-			throw new NullPointerException("No se permiten parametros nulos");
+		if ((idProducto == null) || ( listaProductos == null)) {
+			throw new NullPointerException(null);
 		}
 		
 		List <Producto> nuevaListaProductos = new ArrayList <>();
@@ -408,7 +396,7 @@ public class ServicioProducto {
 	 */
 	public List<Producto> validaNombre(String nombre, List<Producto> listaProductos){
 		
-		if (nombre.equals(null)|| listaProductos.equals(null)) {
+		if ((nombre == null)|| (listaProductos == null)) {
 			throw new NullPointerException("No se permiten parametros nulos");
 		}
 		
@@ -436,7 +424,7 @@ public class ServicioProducto {
 	 */
 	public List<Producto> validaMarca(String marca, List<Producto> listaProductos){
 		
-		if (marca.equals(null)|| listaProductos.equals(null)) {
+		if ((marca == null)|| (listaProductos == null)) {
 			throw new NullPointerException("No se permiten parametros nulos");
 		}
 		

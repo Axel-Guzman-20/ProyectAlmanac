@@ -32,7 +32,7 @@ public class VentanaBuscarProducto extends JFrame {
 	
 	private JPanel contentPane;
 	private JComboBox <String> comboBoxSeccionCatalogo; 
-	public JTextField fechaText;
+	private JTextField fechaText;
 	private JTextField textFieldIdProducto;
 	private JTextField textFieldPrecioMaximo;
 	private JTextField textFieldMarca;
@@ -57,12 +57,13 @@ public class VentanaBuscarProducto extends JFrame {
 		contentPane.setBackground(new Color(89, 126, 170));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
+		setContentPane(contentPane); 
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(38, 44, 765, 525);
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -241,7 +242,7 @@ public class VentanaBuscarProducto extends JFrame {
 		
 	}
 	
-	public void muestraProductosObtenidos(ControlBuscarProducto control, List <Producto> productos) {
+	public void muestraProductosObtenidos( List <Producto> productos) {
 		
 		DefaultTableModel tableModel = new DefaultTableModel(); 
 		tableModel.addColumn("ID PRODUCTO");

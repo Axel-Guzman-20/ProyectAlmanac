@@ -1,22 +1,22 @@
-package mx.uam.ingsof.proyecto.presentacion.crearDiagnostico;
+package mx.uam.ingsof.proyecto.presentacion.crearPruebasReparacion;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import mx.uam.ingsof.proyecto.negocio.ServicioCategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.ServicioDiagnosticoPruebas;
 import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
-import mx.uam.ingsof.proyecto.negocio.ServicioReparacionMantenimiento;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.modelo.Empleado;
+import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
 
 @Component
-public class ControlCrearDiagnostico {
+public class ControlCrearPruebasReparacion {
 	
 	@Autowired 
-	private VentanaCrearDiagnostico ventana; 
+	private VistaCrearPruebasReparacion ventana; 
 	
 	@Autowired 
 	private ServicioCategoriaDiagnostico servicioCategoriaDiagnostico; 
@@ -25,7 +25,7 @@ public class ControlCrearDiagnostico {
 	private ServicioEmpleado servicioEmpleado; 
 	
 	@Autowired 
-	private ServicioReparacionMantenimiento servicioReparacionMantenimiento; 
+	private ServicioDiagnosticoPruebas servicioDiagnosticoReparacion;  
 	
 	/**
 	 * 
@@ -35,13 +35,13 @@ public class ControlCrearDiagnostico {
 	
 	public void inicia() {
 		
-		String fecha; 
+		String fecha;
 		
 		List <CategoriaDiagnostico> categorias = servicioCategoriaDiagnostico.consultarCategoriasDisponibles(); 
 		
 		List<Empleado> empleados = servicioEmpleado.recuperaEmpleados(); 
 		
-		fecha = servicioReparacionMantenimiento.obtenerFechaActual();
+		fecha = servicioDiagnosticoReparacion.obtenerFechaActual();
 		
 		ventana.muestra(this,categorias, empleados,fecha);
 	}
@@ -61,29 +61,31 @@ public class ControlCrearDiagnostico {
 	 * @param observaciones
 	 * @return Dialogo con mensaje 
 	 */
-	
-	@RequestMapping 
-	public void crearDiagnostico(String nombreEmpleado,String nombre,String categoria, String marca, String descripcionEquipo,String reparacionMantenimiento, String tipo, String piezas, String observaciones) {
-		
+	public void realizarPruebasReparacion(String nombreEmpleado, String categoria, String nombreEquipo, List<String> listaPruebas, String observaciones) {
 		
 		try {
 
-			if (servicioReparacionMantenimiento.crearDiagnostico(nombreEmpleado,nombre,categoria,marca,descripcionEquipo,reparacionMantenimiento,tipo,piezas,observaciones)) {
+			if (servicioDiagnosticoReparacion.realizarPruebasReparacion(nombreEmpleado, categoria, nombreEquipo, listaPruebas, observaciones)) {
 
-				ventana.muestraDialogoConMensaje("El registro del diagnostico del equipo '" +nombre+"' a sido agregado exitosamente.");
+				ventana.muestraDialogoConMensaje("Sea ha registro exitosamente el diagnostico de pruebas del equipo " +nombreEquipo+".");
 				termina();
 			} else {
 
-				ventana.muestraDialogoConMensaje("Se ha llegado al limite maximo de registro de diagnosticos para la categoria " + categoria);
-				termina();
+				ventana.muestraDialogoConMensaje("El equipo " + nombreEquipo +" ya tiene un diagnostico de pruebas registrado. Elige otro equipo");
 			}
 
 
 		} catch (Exception ex) {
-			ventana.muestraDialogoConMensaje("Error al registrar el diagnostico: " + ex.getMessage());
+			ventana.muestraDialogoConMensaje("Error al registrar el diagnostico de pruebas: " + ex.getMessage());
 		}
 
 		termina();
+		
+	}
+	
+	public List<ReparacionMantenimiento> buscarDiagnosticos(String categoria) {
+		
+		return servicioCategoriaDiagnostico.buscarDiagnosticos(categoria); 
 		
 	}
 	

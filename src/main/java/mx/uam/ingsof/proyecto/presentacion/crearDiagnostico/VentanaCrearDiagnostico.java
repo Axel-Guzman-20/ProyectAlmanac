@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JRadioButton;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -79,6 +80,7 @@ public class VentanaCrearDiagnostico extends JFrame {
 		
 		JScrollPane scroll = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(41, 43, 780, 451);
+		scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		contentPane.add(scroll);
 		
 		JLabel lblDiagnostico = new JLabel("Diagnostico de reparación/mantenimiento de equipos");
@@ -333,10 +335,10 @@ public class VentanaCrearDiagnostico extends JFrame {
 	 ***********************************/
 	public boolean validaCampos() {
 
-		if ((comboBoxNombreDelEmpleado.getSelectedItem().equals(null))
-				|| (comboBoxCategoria.getSelectedItem().equals(null)) || textFieldNombre.getText().equals(null)
-				|| textFieldMarca.getText().equals(null) || textFieldDescripcionDelEquipo.getText().equals(null)
-				|| textFieldReparacionesMantenimientosARealizar.getText().equals(null)) {
+		if ((comboBoxNombreDelEmpleado.getSelectedItem()==(null))
+				|| (comboBoxCategoria.getSelectedItem()==(null)) || textFieldNombre.getText()==(null)
+				|| textFieldMarca.getText()==(null) || textFieldDescripcionDelEquipo.getText()==(null)
+				|| textFieldReparacionesMantenimientosARealizar.getText()==(null)) {
 			muestraDialogoConMensaje("Los campos no pueden ser nulos");
 			return false;
 		} else {

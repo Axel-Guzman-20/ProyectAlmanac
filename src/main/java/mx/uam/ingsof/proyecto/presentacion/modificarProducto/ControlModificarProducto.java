@@ -78,8 +78,7 @@ public class ControlModificarProducto {
 	 */
 	
 	public Producto obtenerProducto(String nombre) {
-		Producto producto=servicioProducto.obtenerProducto(nombre);
-		return producto; 
+		return servicioProducto.obtenerProducto(nombre);
 	}
 	
 	/**
@@ -91,8 +90,7 @@ public class ControlModificarProducto {
 	 */
 	
 	public SeccionCatalogo obtenerSeccionCatalogoDelProducto(Producto producto) {
-		SeccionCatalogo seccion=servicioProducto.obtenerSeccionCatalogoDelProducto(producto);
-		return seccion; 
+		return servicioProducto.obtenerSeccionCatalogoDelProducto(producto);
 	}
 	
 	/**

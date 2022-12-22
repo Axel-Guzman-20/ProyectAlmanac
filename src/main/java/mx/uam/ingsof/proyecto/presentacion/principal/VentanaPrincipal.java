@@ -198,7 +198,9 @@ public class VentanaPrincipal extends JFrame {
 		// Submenu)
 		JMenuItem menuItemHistorial = new JMenuItem("Historial");
 		menuItemHistorial.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
+			controlPrincipal.HistorialCompra();
+						
 
 			}
 		});
@@ -326,7 +328,11 @@ public class VentanaPrincipal extends JFrame {
 		// (menuItem = Submenu)
 		JMenuItem menuItemPruebasReparacion = new JMenuItem("Pruebas de Reparación");
 		menuItemPruebasReparacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+
+		public void actionPerformed(ActionEvent e) {
+			
+			controlPrincipal.realizarPruebasReparacion(); 
+				
 
 			}
 		});

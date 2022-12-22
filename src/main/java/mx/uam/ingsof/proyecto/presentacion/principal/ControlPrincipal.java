@@ -2,12 +2,15 @@ package mx.uam.ingsof.proyecto.presentacion.principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import mx.uam.ingsof.proyecto.presentacion.HistorialCompra.ControlHistorialCompra;
 import mx.uam.ingsof.proyecto.presentacion.agregarProducto.ControlAgregarProducto;
 import mx.uam.ingsof.proyecto.presentacion.buscarClientes.ControlBuscarClientes;
 import mx.uam.ingsof.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
 import mx.uam.ingsof.proyecto.presentacion.consultarVentas.ControlConsultarVentas;
 import mx.uam.ingsof.proyecto.presentacion.crearDiagnostico.ControlCrearDiagnostico;
 import mx.uam.ingsof.proyecto.presentacion.crearGarantia.ControlCrearGarantia;
+import mx.uam.ingsof.proyecto.presentacion.crearPruebasReparacion.ControlCrearPruebasReparacion;
 import mx.uam.ingsof.proyecto.presentacion.modificarCliente.ControlModificarCliente;
 import mx.uam.ingsof.proyecto.presentacion.modificarProducto.ControlModificarProducto;
 import mx.uam.ingsof.proyecto.presentacion.registrarProveedor.ControlRegistrarProveedor;
@@ -40,6 +43,9 @@ public class ControlPrincipal{
 	private ControlModificarCliente controlModificarCliente;
 	
 	@Autowired
+	private ControlHistorialCompra controlHistorialCompra;
+		
+	@Autowired
 	private ControlBuscarProducto controlBuscarProducto;
 	
 	@Autowired
@@ -55,7 +61,10 @@ public class ControlPrincipal{
 	private ControlRegistrarCompra controlRegistrarCompra;
 	
 	@Autowired
+
 	private ControlBuscarClientes controlBuscarClientes;
+
+	private ControlCrearPruebasReparacion controlCrearPruebasReparacion; 
 	
 	
 	/**
@@ -127,6 +136,15 @@ public class ControlPrincipal{
 	}
 	
 	/**
+	 * Método que arranca la historia de usuario "Historial Compra Cliente"
+	 * 
+	 */
+	public void HistorialCompra() {
+		controlHistorialCompra.inicia();
+	
+	}
+	
+	/**
 	 * Método que arranca la historia de usuario "Buscar Productos en Catalogo"
 	 * 
 	 */
@@ -173,6 +191,7 @@ public class ControlPrincipal{
 		controlConsultarVentas.inicia();
 		
 	}
+
 	/**
 	 * Método que arranca la historia de usuario "Buscar Clientes"
 	 * 
@@ -180,7 +199,7 @@ public class ControlPrincipal{
 	public void buscarClientes() {
 		
 		controlBuscarClientes.inicia();
-		
+
 	}
 
 }
