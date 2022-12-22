@@ -29,7 +29,6 @@ public class ControlBuscarProducto {
 	@Autowired 
 	private VentanaBuscarProducto ventana;
 	
-	private String fecha;
 	
 	/**
 	 * 
@@ -38,6 +37,8 @@ public class ControlBuscarProducto {
 	 */
 	
 	public void inicia() {
+		
+		String fecha;
 		
 		List <SeccionCatalogo> secciones= servicioSeccionCatalogo.consultarSeccionesDisponibles(); 
 		
@@ -68,8 +69,8 @@ public class ControlBuscarProducto {
 
 			List <Producto> productos =servicioProducto.buscarProducto(seccion,idProducto, nombre, marca, precioMaximo, precioMinimo); 
 			
-			if(productos.size()>0)
-				ventana.muestraProductosObtenidos(this, productos);
+			if(!productos.isEmpty())
+				ventana.muestraProductosObtenidos(productos);
 			else
 				ventana.muestraDialogoConMensaje("Por el momento no contamos con productos con las caracteristicas proporcionadas por el usuario.");
 

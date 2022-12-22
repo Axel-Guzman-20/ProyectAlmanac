@@ -58,8 +58,8 @@ public class ControlAgregarProducto {
 		
 		try {
 
-			if (servicioProducto.agregaProducto(nombre, marca, descripcion, precio, descuento, existencia,
-					seccion) != false) {
+			if (!servicioProducto.agregaProducto(nombre, marca, descripcion, precio, descuento, existencia,
+					seccion)) {
 
 				ventana.muestraDialogoConMensaje("Producto agregado exitosamente");
 				termina();

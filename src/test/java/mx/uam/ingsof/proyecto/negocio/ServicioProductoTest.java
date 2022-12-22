@@ -111,30 +111,6 @@ class ServicioProductoTest {
 	}
 
 	@Test
-	void testValidarMaximoProductos() {
-		
-		//Prueba 1: Verificar que el metodo validarMaximoProductos() funcione correctamente si aun no se ha llegado al limite maximo de registros de productos por seccion
-		
-		when(seccionCatalogoRepository.findByNombre("Procesador")).thenReturn(seccionCatalogoPrueba);
-		boolean resultado = servicioProducto.validarMaximoProductos("Procesador");
-		
-		assertEquals(true, resultado); 
-		
-		// Prueba 2: Verificar que el metodo validarMaximoProductos() funcione correctamente si ya se ha llegado al limite maximo de registros de productos por seccion
-		
-		servicioProducto.agregaProducto("Core i3", "Intel", "10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T",
-				 "1499.90", "15", "7", "Procesador"); 
-		servicioProducto.agregaProducto("Core i5", "Intel", "10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T",
-				 "1499.90", "15", "7", "Procesador");
-		servicioProducto.agregaProducto("Core i7", "Intel", "10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T",
-				 "1499.90", "15", "7", "Procesador");
-		
-		resultado = servicioProducto.validarMaximoProductos("Procesador");
-		
-		assertEquals(false, resultado); 
-	}
-
-	@Test
 	void testConsultarProductosDisponibles() {
 		
 		// Prueba 1: corroborar que regresa una lista vacía si no hay usuarios en la BD

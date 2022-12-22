@@ -345,6 +345,8 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem menuItemPruebasReparacion = new JMenuItem("Pruebas de Reparación");
 		menuItemPruebasReparacion.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			
+			controlPrincipal.realizarPruebasReparacion(); 
 				
 			}
 		});

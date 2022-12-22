@@ -7,6 +7,7 @@ import mx.uam.ingsof.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
 import mx.uam.ingsof.proyecto.presentacion.consultarVentas.ControlConsultarVentas;
 import mx.uam.ingsof.proyecto.presentacion.crearDiagnostico.ControlCrearDiagnostico;
 import mx.uam.ingsof.proyecto.presentacion.crearGarantia.ControlCrearGarantia;
+import mx.uam.ingsof.proyecto.presentacion.crearPruebasReparacion.ControlCrearPruebasReparacion;
 import mx.uam.ingsof.proyecto.presentacion.modificarCliente.ControlModificarCliente;
 import mx.uam.ingsof.proyecto.presentacion.modificarProducto.ControlModificarProducto;
 import mx.uam.ingsof.proyecto.presentacion.registrarProveedor.ControlRegistrarProveedor;
@@ -52,6 +53,9 @@ public class ControlPrincipal{
 	
 	@Autowired
 	private ControlRegistrarCompra controlRegistrarCompra;
+	
+	@Autowired
+	private ControlCrearPruebasReparacion controlCrearPruebasReparacion; 
 	
 	
 	
@@ -168,6 +172,16 @@ public class ControlPrincipal{
 	public void mostrarVentas() {
 		
 		controlConsultarVentas.inicia();
+		
+	}
+	
+	/**
+	 * Método que arranca la historia de usuario "Consultar Ventas"
+	 * 
+	 */
+	public void realizarPruebasReparacion() {
+		
+		controlCrearPruebasReparacion.inicia();
 		
 	}
 
