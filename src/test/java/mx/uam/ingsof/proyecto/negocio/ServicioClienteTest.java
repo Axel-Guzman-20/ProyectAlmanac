@@ -46,10 +46,6 @@ class ServicioClienteTest {
 	private ClienteRepository clienteRepository;
 
 
-	@InjectMocks
-	private ServicioCliente servicioCliente;
-
-	private Cliente cliente;
 	@Mock
 	private VentaRepository ventaRepository;
 	
@@ -268,22 +264,7 @@ class ServicioClienteTest {
 		assertEquals(1, clientes.size());
 	}
 
-	@Test
-	void comparacorreos() {
 
-		boolean resultado7;
-
-		// prueba1 corroborar que regresa un true si hay un correo registrado con el
-		// mismo que se intenta registrar
-
-		resultado7 = servicioCliente.comparacorreos("YaelG0@hotmail.com", "YaelG0@hotmail.com");
-		assertEquals(true, resultado7);
-
-		// prueba2 corroborar que regresa un false si hay un correo registrado con el
-		// que se intenta registrar
-
-		resultado7 = servicioCliente.comparacorreos("YaelG0@hotmail.com", "Yael@hotmail.com");
-		assertEquals(false, resultado7);
 
 	void comparaCorreos(){
 		
