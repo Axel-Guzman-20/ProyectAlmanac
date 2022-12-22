@@ -226,7 +226,7 @@ public class ServicioCliente {
 	 * retorna un false si el correo nuevo es igual a un correo de diferentecliente
 	 * true si el nuevo correo es el mismo correo al cliente a modificar
 	 */
-	public boolean comparacorreos(String correo1, String correo2) {
+	public boolean comparaCorreos(String correo1, String correo2) {
 
 		if (correo1.compareTo(correo2) == 0) {
 			return true;
@@ -254,6 +254,11 @@ public class ServicioCliente {
 	// HU-08
 	//
 
+	// Recupera todos las compras de los clientes segun flitros
+	// @param nombreCompleto
+	// @param genero
+	// @param direccion
+	
 	public String[][] buscarHistorial(int idCliente, String fechaInicio, String fechaFinal) throws ParseException {
 
 		List<Venta> ventas = ventaRepository.findByIdCliente(idCliente);
@@ -337,7 +342,7 @@ public class ServicioCliente {
 		int registrosVentas;
 		int columnasTabla = 5;
 
-		double preciototal;
+		double precioTotal;
 		int cantidad;
 		double precio;
 
@@ -370,8 +375,8 @@ public class ServicioCliente {
 				precio = ventasProducto.get(j).getProducto().getPrecio();
 				datos[k][3] = String.valueOf(precio);
 
-				preciototal = cantidad * precio;
-				datos[k][4] = String.valueOf(preciototal);
+				precioTotal = cantidad * precio;
+				datos[k][4] = String.valueOf(precioTotal);
 				k++;
 			}
 

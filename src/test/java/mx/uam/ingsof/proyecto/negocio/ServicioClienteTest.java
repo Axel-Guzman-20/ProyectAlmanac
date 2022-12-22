@@ -1,10 +1,12 @@
 package mx.uam.ingsof.proyecto.negocio;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +20,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
+import mx.uam.ingsof.proyecto.datos.VentaProductoRepository;
+import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
+import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 
 /**
  * Implementacion de las pruebas unitarias del ServicioCliente
@@ -35,11 +41,27 @@ class ServicioClienteTest {
 	@Mock
 	private ClienteRepository clienteRepository;
 	
+	@Mock
+	private VentaRepository ventaRepository;
+	
+	@Mock
+	private VentaProductoRepository ventaProductoRepository;
+	
 	@InjectMocks
 	private ServicioCliente servicioCliente;
 	
+	@InjectMocks
+	private ServicioVenta servicioVenta;
+	
+	private Venta venta1;
+
 	private Cliente cliente;
 	
+	private ArrayList<VentaProducto> listaProductos;
+	
+	private Producto producto;
+	
+	private VentaProducto ventaProducto1;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -53,6 +75,35 @@ class ServicioClienteTest {
 		cliente.setTelefono("5520204585");
 		cliente.setCorreoelectronico("YaelG0@gmail.com");
 		
+		producto = new Producto();
+		producto.setNombre("Core i3");
+		producto.setMarca("Intel");
+		producto.setDescripcion("10100F Comet Lake Quad - Procesador de sobremesa, Core 3,6 GHz, 6 MB, LGA 1200, 65W, 4C / 8T");
+		producto.setPrecio(1499.90);
+		producto.setDescuento(15);
+		producto.setExistencia(7);
+		producto.setTotalComprasProducto(0);
+		
+		listaProductos = new ArrayList<VentaProducto>();
+		
+		ventaProducto1 = new VentaProducto();
+					
+		ventaProducto1.setIdVentaProducto(1);
+		ventaProducto1.setCantidad(3);
+		ventaProducto1.setProducto(producto);
+						
+		listaProductos.add(ventaProducto1);
+		
+		venta1 = new Venta();
+		venta1.setFechaVenta("20/11/2022");
+		venta1.setGarantia(null);
+		venta1.setIdCliente(1);
+		venta1.setIdEmpleado(1);
+		venta1.setIdVenta(1);
+		venta1.setListaProducto(listaProductos);
+		
+		
+		
 	}
 	
 	@AfterEach
@@ -62,6 +113,10 @@ class ServicioClienteTest {
 		// dejar todo como estaba antes de la prueba
 	}
 	
+	
+	//
+	//Pruebas unitarias de la HU-03
+	//
 		
 	@Test
 	void testVerificarCorreoElectronico(){
@@ -129,6 +184,10 @@ class ServicioClienteTest {
 		
 	}
 	
+	//
+	//Pruebas unitarias de la HU-04
+	//
+	
 	@Test
 	void modificarCliente() {
 		// Prueba 1: Corroborar que el metodo modificarCliente funciona correctamente si el cliente no existe en la BD
@@ -195,19 +254,19 @@ class ServicioClienteTest {
 	
 	
 	@Test
-	void comparacorreos(){
+	void comparaCorreos(){
 		
 		boolean resultado7; 
 		
 		
 		//prueba1 corroborar que regresa un true si hay un correo registrado con el mismo que se intenta registrar
 	
-		resultado7 =  servicioCliente.comparacorreos("YaelG0@hotmail.com","YaelG0@hotmail.com");
+		resultado7 =  servicioCliente.comparaCorreos("YaelG0@hotmail.com","YaelG0@hotmail.com");
 		assertEquals(true,resultado7);
 		
 		//prueba2 corroborar que regresa un false si hay un correo registrado con el que se intenta registrar
 		
-			resultado7 =  servicioCliente.comparacorreos("YaelG0@hotmail.com","Yael@hotmail.com");
+			resultado7 =  servicioCliente.comparaCorreos("YaelG0@hotmail.com","Yael@hotmail.com");
 			assertEquals(false,resultado7);
 
 	}
@@ -249,6 +308,141 @@ class ServicioClienteTest {
 		clientes = servicioCliente.recuperaClientes();
 		assertEquals(2, lista.size());
 		
+		
+	}
+	
+	
+	//
+	//Pruebas unitarias de la HU-08
+	//
+	
+	@Test
+	void buscarHistorial() throws ParseException {
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		String [][] datos;
+		
+		ventas.add(venta1);
+		long id = 1;
+		
+		when(ventaRepository.findByIdCliente(id)).thenReturn(ventas);
+		
+		// Prueba 1: corroborar que regresa una lista si hay compras
+		datos = servicioCliente.buscarHistorial(1, "", "");
+		assertNotEquals(null, datos);
+		
+		// Prueba 2: Corroborar que regresa un null cuando hay compras de acuerdo con los criterios de busqueda establecido
+		datos = servicioCliente.buscarHistorial(1, "22/12/2022", "");
+		assertEquals(null, datos);
+		
+	}
+	
+	
+	
+	@Test
+	void criterioFechas() throws ParseException{
+		String fechaDesde; 
+		String fechaHasta; 
+		
+		List<Venta> ventas = new ArrayList<Venta>();
+		ventas.add(venta1);
+		int registrosEncontrados;
+				
+		//Prueba 1: Corroborar que regresa un número entero (son todos los registros) cuando no se usa fechaDesde y fechaHasta
+		fechaDesde = ""; 
+		fechaHasta = "";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+		
+		//Prueba 2: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaDesde y fechaHasta
+		fechaDesde = "20/11/2022"; 
+		fechaHasta = "21/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+		
+		//Prueba 3: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaDesde
+		fechaDesde = "20/11/2022"; 
+		fechaHasta = "";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);	
+		
+		//Prueba 4: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaHasta
+		fechaDesde = ""; 
+		fechaHasta = "20/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+		
+		//Prueba 5: Corroborar que regresa una lista sin registros (no se encontraron registros) cuando se usa fechaDesde y fechaHasta
+		fechaDesde = "21/11/2022"; 
+		fechaHasta = "21/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertEquals(0, registrosEncontrados);
+		
+		// Se vuelve a agregar porque los anteriores modificador a venta, lo quitaron
+		ventas.add(venta1);
+		//Prueba 6: Corroborar que regresa una lista sin registros (no se encontraron registros) cuando se usa fechaDesde
+		fechaDesde = "21/11/2022"; 
+		fechaHasta = "";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertEquals(0, registrosEncontrados);	
+		
+		// Se vuelve a agregar porque los anteriores modificador a venta, lo quitaron
+		ventas.add(venta1);
+		//Prueba 7: Corroborar que regresa una lista sin registros (no se encontraron registros) cuando se usa  fechaHasta
+		fechaDesde = ""; 
+		fechaHasta = "19/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertEquals(0, registrosEncontrados);		
+		
+		// Se vuelve a agregar porque los anteriores modificador a venta, lo quitaron
+		ventas.add(venta1);
+		//Prueba 8: Corroborar que regresa un número entero (son los registros encontrados) cuando se usa fechaDesde y fechaHasta y tienen la misma fecha
+		fechaDesde = "20/11/2022"; 
+		fechaHasta = "20/11/2022";
+		ventas = servicioVenta.criterioFechas(fechaDesde, fechaHasta, ventas);
+		registrosEncontrados = ventas.size();
+		assertNotEquals(0, registrosEncontrados);
+	
+	}
+	
+	
+	@Test
+	void comparaFechas(){
+		
+		String fechaDesde; 
+		String fechaHasta; 
+		boolean fechaValida;
+		
+		// Prueba 1: Si las dos fecha son vacías, devuelve true porque no se utilizan las fechas
+		fechaDesde = ""; 
+		fechaHasta = "";
+		fechaValida = servicioCliente.comparaFechas(fechaDesde, fechaHasta);
+		assertTrue(fechaValida);
+		
+		// Prueba 2: Si fechaDesde es mayor a fechaHasta, devuelve falso
+		fechaDesde = "05/12/2022"; 
+		fechaHasta = "04/12/2022";
+		fechaValida = servicioCliente.comparaFechas(fechaDesde, fechaHasta);
+		assertFalse(fechaValida);
+		
+		// Prueba 3: Si fechaDesde es menor a fechaHasta, devuelve true
+		fechaDesde = "05/12/2022"; 
+		fechaHasta = "06/12/2022";
+		fechaValida = servicioCliente.comparaFechas(fechaDesde, fechaHasta);
+		assertTrue(fechaValida);	
+		
+		// Prueba 3: Si fechaDesde es igual a fechaHasta, devuelve true
+		fechaDesde = "05/12/2022"; 
+		fechaHasta = "05/12/2022";
+		fechaValida = servicioCliente.comparaFechas(fechaDesde, fechaHasta);
+		assertTrue(fechaValida);
 		
 	}
 
