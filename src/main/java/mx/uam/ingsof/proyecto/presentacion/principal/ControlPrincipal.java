@@ -65,9 +65,11 @@ public class ControlPrincipal{
 	@Autowired
 
 	private ControlConsultarCompra controlConsultarCompras;
-
+	
+	@Autowired
 	private ControlBuscarClientes controlBuscarClientes;
-
+	
+	@Autowired
 	private ControlCrearPruebasReparacion controlCrearPruebasReparacion; 
 	
 	
@@ -213,6 +215,16 @@ public class ControlPrincipal{
 	public void buscarClientes() {
 		
 		controlBuscarClientes.inicia();
+
+	}
+	
+	/**
+	 * Método que arranca la historia de usuario "CrearPruebasReparacion"
+	 * 
+	 */
+	public void realizarPruebasReparacion() {
+		
+		controlCrearPruebasReparacion.inicia();
 
 	}
 
