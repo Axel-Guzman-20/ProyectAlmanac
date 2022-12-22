@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import mx.uam.ingsof.proyecto.presentacion.HistorialCompra.ControlHistorialCompra;
 import mx.uam.ingsof.proyecto.presentacion.agregarProducto.ControlAgregarProducto;
+import mx.uam.ingsof.proyecto.presentacion.buscarClientes.ControlBuscarClientes;
 import mx.uam.ingsof.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
 import mx.uam.ingsof.proyecto.presentacion.consultarVentas.ControlConsultarVentas;
 import mx.uam.ingsof.proyecto.presentacion.crearDiagnostico.ControlCrearDiagnostico;
@@ -60,8 +61,10 @@ public class ControlPrincipal{
 	private ControlRegistrarCompra controlRegistrarCompra;
 	
 	@Autowired
+
+	private ControlBuscarClientes controlBuscarClientes;
+
 	private ControlCrearPruebasReparacion controlCrearPruebasReparacion; 
-	
 	
 	
 	/**
@@ -188,15 +191,15 @@ public class ControlPrincipal{
 		controlConsultarVentas.inicia();
 		
 	}
-	
+
 	/**
-	 * Método que arranca la historia de usuario "Consultar Ventas"
+	 * Método que arranca la historia de usuario "Buscar Clientes"
 	 * 
 	 */
-	public void realizarPruebasReparacion() {
+	public void buscarClientes() {
 		
-		controlCrearPruebasReparacion.inicia();
-		
+		controlBuscarClientes.inicia();
+
 	}
 
 }

@@ -1,8 +1,11 @@
 package mx.uam.ingsof.proyecto.negocio;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -23,9 +26,11 @@ import mx.uam.ingsof.proyecto.datos.ClienteRepository;
 import mx.uam.ingsof.proyecto.datos.VentaProductoRepository;
 import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
+
 import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
 import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
+
 
 /**
  * Implementacion de las pruebas unitarias del ServicioCliente
@@ -34,13 +39,17 @@ import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
  *
  */
 
-
 @ExtendWith(MockitoExtension.class)
 class ServicioClienteTest {
-	
+
 	@Mock
 	private ClienteRepository clienteRepository;
-	
+
+
+	@InjectMocks
+	private ServicioCliente servicioCliente;
+
+	private Cliente cliente;
 	@Mock
 	private VentaRepository ventaRepository;
 	
@@ -63,18 +72,19 @@ class ServicioClienteTest {
 	
 	private VentaProducto ventaProducto1;
 	
+
 	@BeforeEach
 	void setUp() throws Exception {
-		
+
 		cliente = new Cliente();
-		
+
 		cliente.setFechaRegistro("22/11/2022");
 		cliente.setIdCliente(1);
 		cliente.setNombreCompleto("Yael Ortega");
 		cliente.setDireccion("Ciudad de México");
 		cliente.setTelefono("5520204585");
 		cliente.setCorreoelectronico("YaelG0@gmail.com");
-		
+
 		producto = new Producto();
 		producto.setNombre("Core i3");
 		producto.setMarca("Intel");
@@ -104,156 +114,177 @@ class ServicioClienteTest {
 		
 		
 		
+
 	}
-	
+
 	@AfterEach
 	void tearDown() throws Exception {
 		// Este método se ejecuta después de la ejecución
 		// de cada método de prueba, es útil para
 		// dejar todo como estaba antes de la prueba
 	}
-	
+
 	
 	//
 	//Pruebas unitarias de la HU-03
 	//
 		
-	@Test
-	void testVerificarCorreoElectronico(){
-		
-		// Prueba 1: corroborar que regresa un false si no hay un correo registrado con el que se intenta registrar
-		
-		when(clienteRepository.findBycorreoelectronico("YaelG0@hotmail.com")).thenReturn(null); 
 
-		boolean resultado2 =  servicioCliente.verificarCorreoElectronico("YaelG0@hotmail.com");
-		
-		assertEquals(false, resultado2); 
-		
-		//prueba2 corroborar que regresa un true si hay un correo registrado con el que se intenta registrar
-		when(clienteRepository.findBycorreoelectronico("YaelG0@hotmail.com")).thenReturn(cliente); 
-		resultado2 =  servicioCliente.verificarCorreoElectronico("YaelG0@hotmail.com");
-		assertEquals(true,resultado2);
+	@Test
+	void testVerificarCorreoElectronico() {
+
+		// Prueba 1: corroborar que regresa un false si no hay un correo registrado con
+		// el que se intenta registrar
+
+		when(clienteRepository.findBycorreoelectronico("YaelG0@hotmail.com")).thenReturn(null);
+
+		boolean resultado2 = servicioCliente.verificarCorreoElectronico("YaelG0@hotmail.com");
+
+		assertEquals(false, resultado2);
+
+		// prueba2 corroborar que regresa un true si hay un correo registrado con el que
+		// se intenta registrar
+		when(clienteRepository.findBycorreoelectronico("YaelG0@hotmail.com")).thenReturn(cliente);
+		resultado2 = servicioCliente.verificarCorreoElectronico("YaelG0@hotmail.com");
+		assertEquals(true, resultado2);
 
 	}
-	
-	
+
 	@Test
-	void testcorreoValido(){
-		
-		//prueba 1 verifica si la sintaxis del correo este correcto
-		
-		boolean resultado5= servicioCliente.correoValido("holaxd@gmail.com");
-		assertEquals(true,resultado5);
-		
-		//prueba 2 verifica si la sintaxis del correo es incorrecto
-		resultado5= servicioCliente.correoValido("holaxd@gmail");
-		assertEquals(false,resultado5);
+	void testcorreoValido() {
+
+		// prueba 1 verifica si la sintaxis del correo este correcto
+
+		boolean resultado5 = servicioCliente.correoValido("holaxd@gmail.com");
+		assertEquals(true, resultado5);
+
+		// prueba 2 verifica si la sintaxis del correo es incorrecto
+		resultado5 = servicioCliente.correoValido("holaxd@gmail");
+		assertEquals(false, resultado5);
 	}
-		
-	
-	
+
 	@Test
-	void testVerificarTelefono(){
-		//prueba1  revisa si la cantidad de numeros del telefono sean 10.
-		
-		boolean resultado3= servicioCliente.verificarTelefono("1234567890");
-		
-		assertEquals(true,resultado3);
-		
-		//prueba2 al enviar el telefono sea menor a 10 digitos mande error
-		
-		resultado3= servicioCliente.verificarTelefono("123456789");
-		
-		assertEquals(false,resultado3);
-		
-		//prueba 3 detecta si en los digitos encuentra un digito que no es numero
-		resultado3= servicioCliente.verificarTelefono("123456789a");
-		
-		assertEquals(false,resultado3);
-			
+	void testVerificarTelefono() {
+		// prueba1 revisa si la cantidad de numeros del telefono sean 10.
+
+		boolean resultado3 = servicioCliente.verificarTelefono("1234567890");
+
+		assertEquals(true, resultado3);
+
+		// prueba2 al enviar el telefono sea menor a 10 digitos mande error
+
+		resultado3 = servicioCliente.verificarTelefono("123456789");
+
+		assertEquals(false, resultado3);
+
+		// prueba 3 detecta si en los digitos encuentra un digito que no es numero
+		resultado3 = servicioCliente.verificarTelefono("123456789a");
+
+		assertEquals(false, resultado3);
+
 	}
-	
-	
+
 	@Test
 	void registrarClienter() {
-		//prueba 1 registra a un cliente
-		boolean resultado4 = servicioCliente.registrarCliente("22/11/2022", "Yael Ortega", "Masculino", "Picacho Ajusco",  "5520201234", "YaelO@gmail.com"); 
-		
-		assertEquals(true, resultado4); 
-		
-		
+		// prueba 1 registra a un cliente
+		boolean resultado4 = servicioCliente.registrarCliente("22/11/2022", "Yael Ortega", "Masculino",
+				"Picacho Ajusco", "5520201234", "YaelO@gmail.com");
+
+		assertEquals(true, resultado4);
+
 	}
+
 	
 	//
 	//Pruebas unitarias de la HU-04
 	//
 	
+
 	@Test
 	void modificarCliente() {
-		// Prueba 1: Corroborar que el metodo modificarCliente funciona correctamente si el cliente no existe en la BD
+		// Prueba 1: Corroborar que el metodo modificarCliente funciona correctamente si
+		// el cliente no existe en la BD
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 
-			servicioCliente.modificarCliente(1,"Axel", "Masculino", "nose", "1234567890", "hola@gma.com");
+			servicioCliente.modificarCliente(1, "Axel", "Masculino", "nose", "1234567890", "hola@gma.com");
 
 		});
-		
-		// Prueba 2: Corroborar que el metodo modificarCliente funciona correctamente si el cliente existe en la BD
 
-				long id = 1;
-				
-				when(clienteRepository.findByIdCliente(id)).thenReturn(cliente);
-				when(clienteRepository.save(cliente)).thenReturn(cliente);
-				
-				Cliente cliente = servicioCliente.modificarCliente(id,"Yael","Masculino","nosexd","1234567898","YaelG0@gmail.com");
-			
-				assertNotEquals(null, cliente);		
-		
+		// Prueba 2: Corroborar que el metodo modificarCliente funciona correctamente si
+		// el cliente existe en la BD
+
+		long id = 1;
+
+		when(clienteRepository.findByIdCliente(id)).thenReturn(cliente);
+		when(clienteRepository.save(cliente)).thenReturn(cliente);
+
+		Cliente cliente = servicioCliente.modificarCliente(id, "Yael", "Masculino", "nosexd", "1234567898",
+				"YaelG0@gmail.com");
+
+		assertNotEquals(null, cliente);
+
 	}
-	
+
 	@Test
 	void obtenerCliente() {
-		// Prueba 1: Corroborar que el metodo obtenerCliente se comporta adecuadamente cuando el cliente no existe en la BD
-		
-				when(clienteRepository.findByIdCliente(2)).thenReturn(null);
-				
-				Assertions.assertThrows(IllegalArgumentException.class, () -> {
+		// Prueba 1: Corroborar que el metodo obtenerCliente se comporta adecuadamente
+		// cuando el cliente no existe en la BD
 
-					servicioCliente.obtenerCliente(2);
+		when(clienteRepository.findByIdCliente(2)).thenReturn(null);
 
-				});	
-				
-				// Prueba 2: Corroborar que el metodo obtenerCliente se comporta adecuadamente cuando el cliente si existe en la BD
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 
-				when(clienteRepository.findByIdCliente(1)).thenReturn(cliente);
-				
-				Cliente cliente = servicioCliente.obtenerCliente(1);
-				
-				assertNotEquals(null, cliente); 
-			
-			}
-	
+			servicioCliente.obtenerCliente(2);
+
+		});
+
+		// Prueba 2: Corroborar que el metodo obtenerCliente se comporta adecuadamente
+		// cuando el cliente si existe en la BD
+
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente);
+
+		Cliente cliente = servicioCliente.obtenerCliente(1);
+
+		assertNotEquals(null, cliente);
+
+	}
+
 	@Test
 	void consultarClientesDisponibles() {
 		// Prueba 1: corroborar que regresa una lista vacía si no hay usuarios en la BD
-		
-				List <Cliente> clientes =  servicioCliente.consultarClientesDisponibles();
-				assertTrue(clientes.isEmpty());
-				
-				// Prueba 2: corroborar que regresa una lista con los clientes
-				
-				LinkedList <Cliente> lista = new LinkedList <> ();
-				
-				lista.add(cliente); 
-				
-				when(clienteRepository.findAll()).thenReturn(lista);
-				
-				clientes = servicioCliente.consultarClientesDisponibles(); 
-				assertEquals(1, clientes.size());
+
+		List<Cliente> clientes = servicioCliente.consultarClientesDisponibles();
+		assertTrue(clientes.isEmpty());
+
+		// Prueba 2: corroborar que regresa una lista con los clientes
+
+		LinkedList<Cliente> lista = new LinkedList<>();
+
+		lista.add(cliente);
+
+		when(clienteRepository.findAll()).thenReturn(lista);
+
+		clientes = servicioCliente.consultarClientesDisponibles();
+		assertEquals(1, clientes.size());
 	}
-		
-	
-	
+
 	@Test
+	void comparacorreos() {
+
+		boolean resultado7;
+
+		// prueba1 corroborar que regresa un true si hay un correo registrado con el
+		// mismo que se intenta registrar
+
+		resultado7 = servicioCliente.comparacorreos("YaelG0@hotmail.com", "YaelG0@hotmail.com");
+		assertEquals(true, resultado7);
+
+		// prueba2 corroborar que regresa un false si hay un correo registrado con el
+		// que se intenta registrar
+
+		resultado7 = servicioCliente.comparacorreos("YaelG0@hotmail.com", "Yael@hotmail.com");
+		assertEquals(false, resultado7);
+
 	void comparaCorreos(){
 		
 		boolean resultado7; 
@@ -269,19 +300,20 @@ class ServicioClienteTest {
 			resultado7 =  servicioCliente.comparaCorreos("YaelG0@hotmail.com","Yael@hotmail.com");
 			assertEquals(false,resultado7);
 
+
 	}
-	
+
 	@Test
 	void testrecuperaClientes() {
-		
-		//Caso 1: No hay clientess registrados
-		List <Cliente> clientes = servicioCliente.recuperaClientes();
+
+		// Caso 1: No hay clientess registrados
+		List<Cliente> clientes = servicioCliente.recuperaClientes();
 		assertEquals(0, clientes.size());
-		
-		//Caso 2: Hay clientes registrados en la base de datos 
-		
-		ArrayList <Cliente> lista = new ArrayList <>();
-		
+
+		// Caso 2: Hay clientes registrados en la base de datos
+
+		ArrayList<Cliente> lista = new ArrayList<>();
+
 		Cliente cliente = new Cliente();
 		cliente.setIdCliente(1);
 		cliente.setNombreCompleto("Yo");
@@ -289,7 +321,7 @@ class ServicioClienteTest {
 		cliente.setDireccion("CDMX");
 		cliente.setTelefono("1234567890");
 		cliente.setCorreoelectronico("UAMI@gmai.com");
-		
+
 		Cliente cliente2 = new Cliente();
 		cliente2.setIdCliente(2);
 		cliente2.setNombreCompleto("Yoxd");
@@ -297,18 +329,50 @@ class ServicioClienteTest {
 		cliente2.setDireccion("CDMXa");
 		cliente2.setTelefono("1234567893");
 		cliente2.setCorreoelectronico("UAM@gmai.com");
-		
+
 		lista.add(cliente);
 		lista.add(cliente2);
-		
+
 		List<Cliente> listaIterable = lista;
-		
-		
+
 		when(clienteRepository.findAll()).thenReturn(listaIterable);
 		clientes = servicioCliente.recuperaClientes();
 		assertEquals(2, lista.size());
+
+	}
+
+	@Test
+	void testBuscaClienteById() {
+		// Caso 1: El parametro recibido es null
 		
+		Assertions.assertThrows(NullPointerException.class, () -> {
+
+			servicioCliente.buscaClienteById(null); 
+			
+		});	
+		// Caso 2: El parametro recibido  es una cadena vacia
 		
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+
+			servicioCliente.buscaClienteById(""); 
+			
+		});	
+
+		String id = "1";
+		// Caso 3: El cliente no se encuentra registrado en la base de dato
+		
+		when(clienteRepository.findByIdCliente(1)).thenReturn(null);
+		
+		Cliente cliente = servicioCliente.buscaClienteById(id); 
+		assertEquals(null, cliente);
+
+		// Caso 4: El cliente se encuentra en la base de datos
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente);
+
+		Cliente cliente2 = new Cliente();
+		cliente2 = servicioCliente.buscaClienteById(id);
+		assertSame(cliente, cliente2);
+
 	}
 	
 	
@@ -445,5 +509,38 @@ class ServicioClienteTest {
 		assertTrue(fechaValida);
 		
 	}
-
+  //pruebas HU-07
+	@Test
+	void testBuscaClienteByName() {
+		// Caso 1:La lista recuperada de todos los clientes esta vacia
+		List<Cliente> listaClientes = new ArrayList<>();
+		List<Cliente> listaClientes2 = new ArrayList<>();
+		
+		when(clienteRepository.findAll()).thenReturn(listaClientes);
+		
+		listaClientes2 =servicioCliente.buscaClientebyName("Lalo");
+		
+		assertEquals(0, listaClientes2.size());
+		
+		// Caso 2:Si hay clientes registrados pero ninguno cumple con el parametro pasado 
+		
+		listaClientes.add(cliente); 
+				
+		when(clienteRepository.findAll()).thenReturn(listaClientes);
+		
+		listaClientes2 =servicioCliente.buscaClientebyName("Lalo");
+				
+		assertEquals(0, listaClientes2.size()); 
+		
+		// Caso 3:Si hay clientes registrados y alguno cumple con el parametro pasado 
+		
+		listaClientes.add(cliente); 
+						
+		when(clienteRepository.findAll()).thenReturn(listaClientes);
+				
+		listaClientes2 =servicioCliente.buscaClientebyName("Yael");
+						
+		assertNotEquals(0, listaClientes2.size());
+		
+	}
 }
