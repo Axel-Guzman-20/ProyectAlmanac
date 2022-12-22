@@ -254,66 +254,68 @@ class ServicioClienteTest {
 	@Test
 	void testBuscaClienteById() {
 		// Caso 1: El parametro recibido es null
-		String id = null;
-		assertEquals(null, id);
-		// Caso 2: El parametro recibido no es una cadena vacia
-		id = "1";
-		assertNotEquals("", id);
-		// Caso 3: El cliente no se encuentra registrado en la base de datos
-		Cliente cliente1 = null;
-		assertEquals(null, cliente1);
+		
+		Assertions.assertThrows(NullPointerException.class, () -> {
+
+			servicioCliente.buscaClienteById(null); 
+			
+		});	
+		// Caso 2: El parametro recibido  es una cadena vacia
+		
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+
+			servicioCliente.buscaClienteById(""); 
+			
+		});	
+
+		String id = "1";
+		// Caso 3: El cliente no se encuentra registrado en la base de dato
+		
+		when(clienteRepository.findByIdCliente(1)).thenReturn(null);
+		
+		Cliente cliente = servicioCliente.buscaClienteById(id); 
+		assertEquals(null, cliente);
 
 		// Caso 4: El cliente se encuentra en la base de datos
-		cliente1 = new Cliente();
-		cliente1.setIdCliente(1);
-		cliente1.setNombreCompleto("Yo");
-		cliente1.setGenero("Masculino");
-		cliente1.setDireccion("CDMX");
-		cliente1.setTelefono("1234567890");
-		cliente1.setCorreoelectronico("UAMI@gmai.com");
-		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente1);
+		when(clienteRepository.findByIdCliente(1)).thenReturn(cliente);
 
 		Cliente cliente2 = new Cliente();
 		cliente2 = servicioCliente.buscaClienteById(id);
-		assertSame(cliente1, cliente2);
+		assertSame(cliente, cliente2);
 
 	}
 
 	@Test
 	void testBuscaClienteByName() {
-		// Caso 1:La lista recuperada de los clientes esta vacia
+		// Caso 1:La lista recuperada de todos los clientes esta vacia
 		List<Cliente> listaClientes = new ArrayList<>();
-		assertEquals(0, listaClientes.size());
-		// Caso 2:Hay clientes
-		ArrayList<Cliente> lista = new ArrayList<>();
-
-		Cliente cliente = new Cliente();
-		cliente.setIdCliente(1);
-		cliente.setNombreCompleto("Yo");
-		cliente.setGenero("Masculino");
-		cliente.setDireccion("CDMX");
-		cliente.setTelefono("1234567890");
-		cliente.setCorreoelectronico("UAMI@gmai.com");
-
-		Cliente cliente2 = new Cliente();
-		cliente2.setIdCliente(2);
-		cliente2.setNombreCompleto("Yoxd");
-		cliente2.setGenero("Masculino");
-		cliente2.setDireccion("CDMXa");
-		cliente2.setTelefono("1234567893");
-		cliente2.setCorreoelectronico("UAM@gmai.com");
-
-		lista.add(cliente);
-		lista.add(cliente2);
-		List<Cliente> listaIterable = lista;
-
-		when(clienteRepository.findAll()).thenReturn(listaIterable);
-		listaClientes = servicioCliente.recuperaClientes();
-		assertEquals(2, lista.size());
-		//Caso 3: El Cliente si exite en la base de datos y las listas van a ser diferentes
-		List <Cliente> name = new ArrayList<Cliente>();
-		name.add(cliente);
-		assertNotSame(listaIterable, name);
+		List<Cliente> listaClientes2 = new ArrayList<>();
+		
+		when(clienteRepository.findAll()).thenReturn(listaClientes);
+		
+		listaClientes2 =servicioCliente.buscaClientebyName("Lalo");
+		
+		assertEquals(0, listaClientes2.size());
+		
+		// Caso 2:Si hay clientes registrados pero ninguno cumple con el parametro pasado 
+		
+		listaClientes.add(cliente); 
+				
+		when(clienteRepository.findAll()).thenReturn(listaClientes);
+		
+		listaClientes2 =servicioCliente.buscaClientebyName("Lalo");
+				
+		assertEquals(0, listaClientes2.size()); 
+		
+		// Caso 3:Si hay clientes registrados y alguno cumple con el parametro pasado 
+		
+		listaClientes.add(cliente); 
+						
+		when(clienteRepository.findAll()).thenReturn(listaClientes);
+				
+		listaClientes2 =servicioCliente.buscaClientebyName("Yael");
+						
+		assertNotEquals(0, listaClientes2.size());
+		
 	}
-
 }

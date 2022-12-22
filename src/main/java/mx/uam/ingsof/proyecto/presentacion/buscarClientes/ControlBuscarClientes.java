@@ -101,8 +101,7 @@ public class ControlBuscarClientes implements Serializable {
 			if(cliente != null && cliente.getNombreCompleto().equals(nombre))
 				vistaBuscarClientes.muestra(cliente);
 			else {
-				vistaBuscarClientes.muestra(cliente);
-				vistaBuscarClientes.muestraDialogoConMensaje("Se encontro un cliente pero los nombres no concinciden, asegurate de ingresar un nombre deacuerdo al Id");
+				vistaBuscarClientes.muestraDialogoConMensaje("¡Debes ingresar el nombre completo e ingresar un ID existente!");
 			}
 				
 		} catch (Exception e) {e.printStackTrace();}

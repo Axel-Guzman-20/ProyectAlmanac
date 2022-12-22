@@ -277,6 +277,11 @@ public class ProyectoApplication {
 		venta2.setListaProducto(listaProductos);
 		ventaRepository.save(venta2);
     */
-    
+		servicioCliente.registrarCliente("27/11/2022", "Benito Camelo", "Masculino", "Calle 10 Alc. Roma, CDMX, CDMX", "5536521474", "cliente1@correo.com");
+		servicioCliente.registrarCliente("27/11/2022", "Benito Ramos", "Masculino", "Calle 10 Alc. Roma, CDMX, CDMX", "5536521474", "cliente1@correo.com");
+		servicioCliente.registrarCliente("26/11/2022", "Elver Gonzales", "Masculino", "Calle 11 Alc. Roma, CDMX, CDMX", "5585967414", "cliente2@correo.com");
+		servicioCliente.registrarCliente("25/11/2022", "Rosa Mela", "Femenino", "Calle 12 Alc. Roma, CDMX, CDMX", "5536963696", "cliente3@correo.com");
+		servicioCliente.registrarCliente("24/11/2022", "Elva Ginon", "Femenino", "Calle 13 Alc. Roma, CDMX, CDMX", "5512547854", "cliente4@correo.com");
+		
 	}
 }

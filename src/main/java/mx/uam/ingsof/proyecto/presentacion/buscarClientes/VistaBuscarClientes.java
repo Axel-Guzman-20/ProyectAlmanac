@@ -222,7 +222,7 @@ public class VistaBuscarClientes extends JFrame implements Serializable {
 
 			}
 		});
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
 	}
 
 	public void muestra(ControlBuscarClientes control) {
