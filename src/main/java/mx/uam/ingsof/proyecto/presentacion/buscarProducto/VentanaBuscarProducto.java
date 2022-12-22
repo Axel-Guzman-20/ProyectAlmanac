@@ -57,12 +57,13 @@ public class VentanaBuscarProducto extends JFrame {
 		contentPane.setBackground(new Color(89, 126, 170));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
+		setContentPane(contentPane); 
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(38, 44, 765, 525);
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		contentPane.add(panel);
 		panel.setLayout(null);
 		

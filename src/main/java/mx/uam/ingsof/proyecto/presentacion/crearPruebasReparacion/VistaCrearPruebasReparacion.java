@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-import javax.swing.ButtonGroup;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -82,6 +82,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 		
 		JScrollPane scroll = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(41, 43, 780, 451);
+		scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		contentPane.add(scroll);
 		
 		JLabel lblPruebas = new JLabel("Pruebas de reparación/mantenimiento de equipos");
@@ -251,7 +252,7 @@ public class VistaCrearPruebasReparacion extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción") && comboBoxModelNombreEquipo.getSelectedItem().equals("")) {
+				if (!comboBoxCategoria.getSelectedItem().equals(" Seleccione una opción")) {
 					List<ReparacionMantenimiento> diagnosticos = control
 							.buscarDiagnosticos((String) comboBoxCategoria.getSelectedItem());
 
@@ -267,6 +268,22 @@ public class VistaCrearPruebasReparacion extends JFrame {
 
 						comboBoxNombreEquipo.setEnabled(true);
 					} else {
+						
+						chckbxPrueba1.setSelected(false); 
+						chckbxPrueba2.setSelected(false); 
+						chckbxPrueba3.setSelected(false); 
+						chckbxPrueba4.setSelected(false); 
+						chckbxPrueba5.setSelected(false); 
+						chckbxOtras.setSelected(false); 
+						
+						chckbxPrueba1.setEnabled(false); 
+						chckbxPrueba2.setEnabled(false); 
+						chckbxPrueba3.setEnabled(false); 
+						chckbxPrueba4.setEnabled(false); 
+						chckbxPrueba5.setEnabled(false); 
+						chckbxOtras.setEnabled(false);
+						
+						textFieldOtrasPruebas.setEditable(false);
 						
 						comboBoxModelNombreEquipo = new DefaultComboBoxModel<>();
 						comboBoxModelNombreEquipo.addElement("");

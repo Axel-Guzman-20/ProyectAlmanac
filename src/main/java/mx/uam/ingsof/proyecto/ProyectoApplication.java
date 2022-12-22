@@ -209,6 +209,8 @@ public class ProyectoApplication {
 		empleadoRepository.save(empleadoPrueba);
 		
 		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 1", "Reparación", "---", "---", "---", "Preventivo", "", ""); 
+		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 2", "Reparación", "---", "---", "---", "Preventivo", "", "");
+		servicioReparacionMantenimiento.crearDiagnostico("Ricardo", "Producto de prueba 3", "Mantenimiento", "---", "---", "---", "Preventivo", "", "");
 		
     
 	}
