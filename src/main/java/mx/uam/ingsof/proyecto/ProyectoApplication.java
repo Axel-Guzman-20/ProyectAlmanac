@@ -212,6 +212,30 @@ public class ProyectoApplication {
 		
 		
 		/*
+		// Son compras que se registran en automático al iniciar la aplicación
+		Compra compra1 = new Compra();
+		Compra compra2 = new Compra();
+		
+		compra1.setIdCompra(1);
+		compra1.setFecha("20/12/2022");
+		compra1.setIdEmpleado(2);
+		compra1.setMarca("Asus S.A.");
+		compra1.setNombre("Laptop S120");
+		compra1.setCantidad(5);
+		compra1.setPrecio(15699.45);
+		
+		compra2.setIdCompra(2);
+		compra2.setFecha("20/11/2022");
+		compra2.setIdEmpleado(3);
+		compra2.setMarca("MSI");
+		compra2.setNombre("Laptop MSI330");
+		compra2.setCantidad(3);
+		compra2.setPrecio(11199.95);
+		
+		compraRepository.save(compra1);
+		compraRepository.save(compra2);
+		
+		
 		var empleadoPrueba = new Empleado();
 		empleadoPrueba.setIdEmpleado(1);
 		empleadoPrueba.setTelefono("55102417178");

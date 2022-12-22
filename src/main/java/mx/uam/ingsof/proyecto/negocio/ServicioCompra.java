@@ -232,10 +232,11 @@ public class ServicioCompra implements Serializable{
 	public List<Compra> criterioMarca(String nombreMarca, List<Compra> compras){
 		
 		List<Compra> nuevaCompra = new ArrayList<>();
-		int i, j;
+		int i; 
+		int j;
 		int longitudMarca = nombreMarca.length();
 		String marca;
-		String aux = "";
+		String aux;
 		
 		for (i = 0; i < compras.size(); i++) {
 			
@@ -250,7 +251,6 @@ public class ServicioCompra implements Serializable{
 					if(nombreMarca.equalsIgnoreCase(aux)) 
 						nuevaCompra.add(compras.get(i));
 					
-					aux = "";
 				}
 			}
 			
@@ -267,7 +267,7 @@ public class ServicioCompra implements Serializable{
 		int j;
 		int longitudProducto = nombreProducto.length();
 		String producto;
-		String aux = "";
+		String aux;
 		
 		for (i = 0; i < compras.size(); i++) {
 			
@@ -281,11 +281,8 @@ public class ServicioCompra implements Serializable{
 					
 					if(nombreProducto.equalsIgnoreCase(aux))
 						nuevaCompra.add(compras.get(i));
-					
-					aux = "";
 				}
 			}
-			
 		}
 						
 		return nuevaCompra;
@@ -365,5 +362,5 @@ public class ServicioCompra implements Serializable{
 			return false;
 		} 	
 	}
-	
+
 }

@@ -367,7 +367,6 @@ public class VistaConsultarCompras extends JFrame implements ActionListener, Ser
 		
 		detallesTabla();
 		
-		
 		textoFechaDesdeDC.setText("");
 		textoFechaHastaDC.setText("");
 		comboBoxEmpleados.setSelectedIndex(0);
@@ -436,6 +435,7 @@ public class VistaConsultarCompras extends JFrame implements ActionListener, Ser
 			detallesTabla();
 			totalGeneralComprasText.setText("");
 			muestraDialogoConMensaje("No se encontró alguna compra con la información proporcionada.");
+		
 		}else {
 		
 			// Aqui empieza para poner la cifra de monto y venta total en formato de pesos con 2 decimales
@@ -464,7 +464,5 @@ public class VistaConsultarCompras extends JFrame implements ActionListener, Ser
 			panelTablaScroll.setVisible(true);
 		}
 	}
-	
-	
 		
 }
