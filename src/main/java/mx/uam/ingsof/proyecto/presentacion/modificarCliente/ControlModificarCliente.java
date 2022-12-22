@@ -77,7 +77,7 @@ public class ControlModificarCliente {
 					ventana.muestraDialogoConMensaje("Ingrese un número de 10 digítos y no use separadores ni otro simbolo que no sea númerico.");
 			
 				}else {
-					correo2 = servicioCliente.comparacorreos(correoelectronico,correoelectronico2);
+					correo2 = servicioCliente.comparaCorreos(correoelectronico,correoelectronico2);
 					if(correo2 == true)
 					{
 						boolean telefonos;

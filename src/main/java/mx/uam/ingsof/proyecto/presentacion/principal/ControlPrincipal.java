@@ -2,6 +2,8 @@ package mx.uam.ingsof.proyecto.presentacion.principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import mx.uam.ingsof.proyecto.presentacion.HistorialCompra.ControlHistorialCompra;
 import mx.uam.ingsof.proyecto.presentacion.agregarProducto.ControlAgregarProducto;
 import mx.uam.ingsof.proyecto.presentacion.buscarProducto.ControlBuscarProducto;
 import mx.uam.ingsof.proyecto.presentacion.consultarVentas.ControlConsultarVentas;
@@ -39,6 +41,9 @@ public class ControlPrincipal{
 	@Autowired
 	private ControlModificarCliente controlModificarCliente;
 	
+	@Autowired
+	private ControlHistorialCompra controlHistorialCompra;
+		
 	@Autowired
 	private ControlBuscarProducto controlBuscarProducto;
 	
@@ -125,6 +130,15 @@ public class ControlPrincipal{
 		
 		controlModificarCliente.inicia();
 		
+	}
+	
+	/**
+	 * Método que arranca la historia de usuario "Historial Compra Cliente"
+	 * 
+	 */
+	public void HistorialCompra() {
+		controlHistorialCompra.inicia();
+	
 	}
 	
 	/**

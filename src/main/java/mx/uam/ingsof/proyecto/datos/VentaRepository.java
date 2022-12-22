@@ -25,5 +25,8 @@ public interface VentaRepository extends CrudRepository<Venta, Long> {
 
 	public List <Venta> findAll();
 	
+	public List <Venta> findByIdCliente(long idCliente);
+
+	
 
 }
