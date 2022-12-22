@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import mx.uam.ingsof.proyecto.datos.CategoriaDiagnosticoRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
+import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
 
 /**
  * Servicio relacionado con las categorias para los Diagnosticos
@@ -37,5 +38,10 @@ public class ServicioCategoriaDiagnostico {
 		}
 				
 		return categorias;
+	}
+	
+	public List<ReparacionMantenimiento> buscarDiagnosticos(String categoria){
+		
+		return categoriaDiagnosticoRepository.findByNombre(categoria).getDiagnosticos(); 
 	}
 }

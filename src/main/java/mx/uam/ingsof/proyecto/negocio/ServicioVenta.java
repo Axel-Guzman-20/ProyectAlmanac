@@ -401,4 +401,24 @@ public class ServicioVenta {
 		return ventas.size();
 	}
 	
+	/***********************************
+	 * 
+	 * 
+	 * MÉTODOS NECESARIOS PARA LA 
+	 * HU-08 HistorialCompras
+	 *
+	 * 
+	 * 
+	 * 
+	 ***********************************/
+	
+	public List<Venta> recuperaPorIdCliente(int idCliente){
+		
+		
+		List<Venta> ventasRecuperadas = ventaRepository.findByIdCliente(idCliente);
+		
+		return ventasRecuperadas;
+		
+	}
+	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import mx.uam.ingsof.proyecto.negocio.ServicioCategoriaDiagnostico;
 import mx.uam.ingsof.proyecto.negocio.ServicioEmpleado;
@@ -26,8 +27,6 @@ public class ControlCrearDiagnostico {
 	@Autowired 
 	private ServicioReparacionMantenimiento servicioReparacionMantenimiento; 
 	
-	private String fecha;
-	
 	/**
 	 * 
 	 * Permite dar inicio al módulo ControlCrearDiagnostico y a sus respectivos métodos de dicho módulo  
@@ -36,6 +35,7 @@ public class ControlCrearDiagnostico {
 	
 	public void inicia() {
 		
+		String fecha; 
 		
 		List <CategoriaDiagnostico> categorias = servicioCategoriaDiagnostico.consultarCategoriasDisponibles(); 
 		
@@ -61,12 +61,14 @@ public class ControlCrearDiagnostico {
 	 * @param observaciones
 	 * @return Dialogo con mensaje 
 	 */
+	
+	@RequestMapping 
 	public void crearDiagnostico(String nombreEmpleado,String nombre,String categoria, String marca, String descripcionEquipo,String reparacionMantenimiento, String tipo, String piezas, String observaciones) {
 		
 		
 		try {
 
-			if (servicioReparacionMantenimiento.crearDiagnostico(nombreEmpleado,nombre,categoria,marca,descripcionEquipo,reparacionMantenimiento,tipo,piezas,observaciones) == true) {
+			if (servicioReparacionMantenimiento.crearDiagnostico(nombreEmpleado,nombre,categoria,marca,descripcionEquipo,reparacionMantenimiento,tipo,piezas,observaciones)) {
 
 				ventana.muestraDialogoConMensaje("El registro del diagnostico del equipo '" +nombre+"' a sido agregado exitosamente.");
 				termina();

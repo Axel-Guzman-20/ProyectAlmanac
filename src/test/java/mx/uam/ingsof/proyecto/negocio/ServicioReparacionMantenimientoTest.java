@@ -3,9 +3,6 @@ package mx.uam.ingsof.proyecto.negocio;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import mx.uam.ingsof.proyecto.datos.CategoriaDiagnosticoRepository;
 import mx.uam.ingsof.proyecto.datos.ReparacionMantenimientoRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.CategoriaDiagnostico;
-import mx.uam.ingsof.proyecto.negocio.modelo.Producto;
 import mx.uam.ingsof.proyecto.negocio.modelo.ReparacionMantenimiento;
 
 /**

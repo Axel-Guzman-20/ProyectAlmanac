@@ -1,7 +1,7 @@
 package mx.uam.ingsof.proyecto.negocio;
 
-
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,12 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import mx.uam.ingsof.proyecto.datos.ClienteRepository;
+import mx.uam.ingsof.proyecto.datos.VentaProductoRepository;
+import mx.uam.ingsof.proyecto.datos.VentaRepository;
 import mx.uam.ingsof.proyecto.negocio.modelo.Cliente;
+import mx.uam.ingsof.proyecto.negocio.modelo.Venta;
+import mx.uam.ingsof.proyecto.negocio.modelo.VentaProducto;
 
 /**
  * Esta clase controla el Servicio de los Clientes
  * 
  * @author AxelGuzman
+ * @author EduardoCastro
  *
  */
 
@@ -28,13 +33,20 @@ public class ServicioCliente {
 	@Autowired
 	ClienteRepository clienteRepository;
 
+	@Autowired
+	VentaProductoRepository ventaProductoRepository;
+
+	@Autowired
+	private VentaRepository ventaRepository;
+
 	private static int digitosMaxTelefono = 10;
+	String date = "dd/MM/yyyy";
 
 	public String obtenerFechaActual() {
 
 		String fecha;
-
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		DateFormat dateFormat = new SimpleDateFormat(date);
 
 		fecha = dateFormat.format(new Date());
 
@@ -66,7 +78,7 @@ public class ServicioCliente {
 	public boolean verificarTelefono(String telefono) {
 
 		int i;
-		char tel[];
+		char []tel;
 
 		tel = telefono.toCharArray();
 
@@ -136,7 +148,7 @@ public class ServicioCliente {
 	 * 
 	 * Permite modificar un cliente existente en la base de datos
 	 * 
-
+	 * 
 	 * @param nombreCompleto
 	 * @param genero
 	 * @param direccion
@@ -146,8 +158,8 @@ public class ServicioCliente {
 	 * @throws IllegalArgumentException si existe un error
 	 */
 
-	public Cliente modificarCliente( long id, String nombreCliente, String genero, String direccion,
-			String telefono, String correoElectronico) {
+	public Cliente modificarCliente(long id, String nombreCliente, String genero, String direccion, String telefono,
+			String correoElectronico) {
 
 		Cliente cliente = clienteRepository.findByIdCliente(id);
 
@@ -180,9 +192,6 @@ public class ServicioCliente {
 
 	}
 
-
-
-
 	public Cliente obtenerCliente(long id) {
 
 		Cliente cliente = clienteRepository.findByIdCliente(id);
@@ -211,15 +220,15 @@ public class ServicioCliente {
 
 		return clientes;
 	}
-	
-	
+
 	/**
 	 * 
-	 * Compara el correo electronico registrado con el nuevo correo electronico retorna un
-	 * false si el correo nuevo es igual a un correo de diferentecliente
+	 * Compara el correo electronico registrado con el nuevo correo electronico
+	 * retorna un false si el correo nuevo es igual a un correo de diferentecliente
 	 * true si el nuevo correo es el mismo correo al cliente a modificar
-	 * */
-	public boolean comparacorreos(String correo1, String correo2) {
+	 */
+
+	public boolean comparaCorreos(String correo1, String correo2) {
 
 		if (correo1.compareTo(correo2) == 0) {
 			return true;
@@ -229,8 +238,9 @@ public class ServicioCliente {
 	}
 
 	/**
-	 * Recupera todos los clientes existentes 
+	 * Recupera todos los clientes existentes
 	 * 
+	 * @param 
 	 * @return Una lista con todos los clientes existentes. Una lista vacía
 	 */
 	public List<Cliente> recuperaClientes() {
@@ -241,6 +251,242 @@ public class ServicioCliente {
 			listaClientes.add(cliente);
 		}
 		return listaClientes;
+	}
+	/**
+	 * Recupera un Cliente
+	 * 
+	 * @param id
+	 * @return Un objeto de tipo Cliente. Null si el Cliente no existe
+	 */
+	public Cliente buscaClienteById(String id) {
+		Cliente cliente = null;
+		long idCliente;
+		if(id == null)
+			throw new NullPointerException("No se permiten parametros nulos");
+		
+		if(!id.equals("")) {
+			idCliente = Long.parseLong(id);
+			cliente = clienteRepository.findByIdCliente(idCliente);
+			if(cliente != null)
+				return cliente;
+		}else
+			throw new IllegalArgumentException("La cadena no puede estar vacia");
+		return cliente;
+		
+	}
+	/**
+	 * Recupera todos los clientes existentes
+	 * 
+	 * @param nombre
+	 * @return Una lista con los clientes existentes por el nombre. Una lista vacía
+	 */
+	public List<Cliente> buscaClientebyName(String nombre){
+		List<Cliente> listaClientes = new ArrayList<>();
+		List<Cliente> listaName = new ArrayList<>();
+		int i = 0;
+		int numLetras =0;
+		String name;
+		char [] nameOnChar = nombre.toCharArray();
+		char [] nameOnChar1;
+		for (Cliente cliente : clienteRepository.findAll()) {
+			listaClientes.add(cliente);
+		}
+		while(i<listaClientes.size()) {
+			name = listaClientes.get(i).getNombreCompleto();
+			nameOnChar1 = name.toCharArray();
+			for(int j = 0; j< nombre.length(); j++) {
+				if(Character.compare(nameOnChar[j], nameOnChar1[j]) == 0 && j <= nombre.length())
+					numLetras++;
+				else
+					break;
+			}
+			if(nombre.length() != numLetras)
+				listaClientes.remove(i);
+			else {
+				listaName.add(listaClientes.remove(i));
+			}
+				
+			numLetras = 0;
+			i++;
+			if(i%2 == 0)
+				i = 0;
+		}	
+		return listaName;
+	}
+
+	//
+	// HU-08
+	//
+
+	// Recupera todos las compras de los clientes segun flitros
+	// @param nombreCompleto
+	// @param genero
+	// @param direccion
+	
+	public String[][] buscarHistorial(int idCliente, String fechaInicio, String fechaFinal) throws ParseException {
+
+		List<Venta> ventas = ventaRepository.findByIdCliente(idCliente);
+
+		// Para mostrar todas las compras del cliente
+		if (fechaInicio.equals("") && fechaFinal.equals(""))
+			return convertirListaString(ventas);
+
+		// Si no son vacias algunas de las fechas, aplica el criterio
+		if (!fechaInicio.equals("") || !fechaFinal.equals(""))
+			ventas = criterioFechas(fechaInicio, fechaFinal, ventas);
+
+		if (!ventas.isEmpty())
+			return convertirListaString(ventas);
+
+		else
+			return null;
+
+	}
+
+	public List<Venta> criterioFechas(String fechaDesde, String fechaHasta, List<Venta> ventas) throws ParseException {
+
+		Date fechaInicio;
+		Date fechaFinal;
+		Date fechaVenta;
+		SimpleDateFormat fechaFormato = new SimpleDateFormat(date);
+		List<Venta> nuevaVenta = new ArrayList<>();
+		int i;
+
+		// Para mostrar de acuerdo con las fechas
+		if (!fechaDesde.equals("") && !fechaHasta.equals("")) {
+			fechaInicio = fechaFormato.parse(fechaDesde);
+			fechaFinal = fechaFormato.parse(fechaHasta);
+
+			for (i = 0; i < ventas.size(); i++) {
+
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+
+				if (fechaVenta.compareTo(fechaInicio) >= 0 && fechaVenta.compareTo(fechaFinal) <= 0)
+					nuevaVenta.add(ventas.get(i));
+
+			}
+
+			return nuevaVenta;
+		}
+
+		// Solo tiene fecha de inicio
+		if (!fechaDesde.equals("") && fechaHasta.equals("")) {
+			fechaInicio = fechaFormato.parse(fechaDesde);
+
+			for (i = 0; i < ventas.size(); i++) {
+
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+
+				if (fechaVenta.compareTo(fechaInicio) >= 0)
+					nuevaVenta.add(ventas.get(i));
+			}
+
+			return nuevaVenta;
+		}
+
+		// Solo tiene fecha final
+		if (fechaDesde.equals("") && !fechaHasta.equals("")) {
+			fechaFinal = fechaFormato.parse(fechaHasta);
+
+			for (i = 0; i < ventas.size(); i++) {
+				fechaVenta = fechaFormato.parse(ventas.get(i).getFechaVenta());
+
+				if (fechaVenta.compareTo(fechaFinal) <= 0)
+					nuevaVenta.add(ventas.get(i));
+			}
+
+			return nuevaVenta;
+		}
+
+		return ventas;
+	}
+
+	public String[][] convertirListaString(List<Venta> ventas) {
+
+		int registrosVentas;
+		int columnasTabla = 5;
+
+		double precioTotal;
+		int cantidad;
+		double precio;
+
+		List<VentaProducto> ventasProducto;
+		String[][] datos;
+
+		int i;
+		int k = 0;
+
+		registrosVentas = cuentaProductosPorVenta(ventas);
+
+		datos = new String[registrosVentas][columnasTabla];
+
+	
+
+		for (i = 0; i < ventas.size(); i++) {
+
+			ventasProducto = ventaProductoRepository.findByIdVenta(ventas.get(i).getIdVenta());
+
+			for (int j = 0; j < ventasProducto.size(); j++) {
+
+				// Estos datos ya vienen en la venta
+				datos[k][0] = String.valueOf(ventas.get(i).getFechaVenta());
+
+				datos[k][1] = String.valueOf(ventasProducto.get(j).getProducto().getNombre());
+
+				cantidad = ventasProducto.get(j).getCantidad();
+				datos[k][2] = String.valueOf(cantidad);
+
+				precio = ventasProducto.get(j).getProducto().getPrecio();
+				datos[k][3] = String.valueOf(precio);
+
+				precioTotal = cantidad * precio;
+				datos[k][4] = String.valueOf(precioTotal);
+				k++;
+			}
+
+		}
+
+		return datos;
+	}
+
+	public int cuentaProductosPorVenta(List<Venta> venta) {
+
+		int i;
+		int cantidadProductosVendidos = 0;
+		List<VentaProducto> ventasProducto;
+
+		for (i = 0; i < venta.size(); i++) {
+			ventasProducto = ventaProductoRepository.findByIdVenta(venta.get(i).getIdVenta());
+
+			cantidadProductosVendidos = cantidadProductosVendidos + ventasProducto.size();
+
+		}
+
+		return cantidadProductosVendidos;
+	}
+
+	public boolean comparaFechas(String fechaDesde, String fechaHasta) {
+
+		if (!fechaDesde.equals("") && !fechaHasta.equals("")) {
+
+			SimpleDateFormat fechaFormato = new SimpleDateFormat(date);
+
+			Date fechaInicio;
+			Date fechaFinal;
+
+			try {
+				fechaInicio = fechaFormato.parse(fechaDesde);
+				fechaFinal = fechaFormato.parse(fechaHasta);
+				// Significa que la fecha de inicio es mayor a la final
+				if (fechaInicio.compareTo(fechaFinal) > 0)
+					return false;
+
+				return true;
+			} catch (ParseException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
